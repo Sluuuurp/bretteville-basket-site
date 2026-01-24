@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Document
+    </title>
+  </head>
+  <body>
+    <h1>
+      a laide
+    </h1>
+    <ul>
+      @each(team in teams)
+        <li>
+          <strong>{{ team.nom }}</strong>          <br />
+          Lien: <a href="{{ team.lien }}" target="_blank">{{ team.lien }}</a>          <br />
+          Image:
+          @if(team.image)
+            <img src="{{ team.image }}" alt="{{ team.nom }}" width="80" />
+          @endif
+          <br />
+          Donné en plus {{ team.tabData.join(' | ') }}
+        </li>
+      @endeach
+    </ul>
+
+  </body>
+</html>
