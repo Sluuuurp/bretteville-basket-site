@@ -12,3 +12,5 @@ import router from '@adonisjs/core/services/router'
 router.on('/').render('pages/home')
 
 router.get('/equipes', '#controllers/teams_list_controller.show')
+
+router.get('/test/calendrier', '#controllers/team_calendar_controller.show')

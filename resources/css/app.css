@@ -1,1 +1,10 @@
 @import 'tailwindcss';
+
+@font-face {
+  font-family: 'Timeline';
+  src: url('/public/font/Timeline.ttf');
+}
+
+@theme {
+  --font-timeline: 'Timeline', sans-serif;
+}

@@ -8,6 +8,7 @@ export interface TeamFfbb {
   tabData: any
 }
 
+//recup la lsite des equipes
 export default class FfbbScrapService {
   async getTeam(clubUrl: string): Promise<TeamFfbb[]> {
     const { data: html } = await axios.get(clubUrl, {

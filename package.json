@@ -65,6 +65,7 @@
     "edge.js": "^6.2.1",
     "luxon": "^3.7.2",
     "mysql2": "^3.16.1",
+    "puppeteer": "^24.36.0",
     "reflect-metadata": "^0.2.2",
     "tailwindcss": "^4.1.18"
   },

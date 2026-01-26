@@ -9,23 +9,52 @@
     </title>
   </head>
   <body>
-    <h1 class="text-center bg-yellow-400 uppercase text-3xl">
+    <h1 class="font-timeline text-center bg-yellow-400 uppercase text-3xl">
       liste equipes test
     </h1>
     <ul>
       @each(team in teams)
-        <li>
-          <strong>{{ team.nom }}</strong>          <br />
-          Lien: <a href="{{ team.lien }}" target="_blank">{{ team.lien }}</a>          <br />
-          Image:
-          @if(team.image)
-            <img src="{{ team.image }}" alt="{{ team.nom }}" width="80" />
-          @endif
-          <br />
-          Donné en plus {{ team.tabData.join(' | ') }}
+        <li class="border my-4 py-2 cursor-pointer team-item" data-link="{{ team.lien }}">
+
+          <div class="flex gap-4">
+            @if(team.image)
+              <img src="{{ team.image }}" alt="{{ team.nom }}" width="80" />
+            @endif
+            
+            <div>
+              <h3>
+                {{ team.nom }}
+              </h3>
+              <p>
+                {{ team.tabData.join(' | ') }}
+              </p>
+            </div>
+          </div>
+
+          <!-- zone repliée -->
+          <div class="calendar hidden mt-3">
+          </div>
         </li>
       @endeach
     </ul>
+
+    <script>
+      document.querySelectorAll(".team-item").forEach(item => {
+        item.addEventListener("click", async () => {
+          const calendarDiv = item.querySelector(".calendar");
+          // toggle visuel
+          calendarDiv.classList.toggle("hidden");
+          // si déjà chargé → on ne refait rien
+          if (calendarDiv.dataset.loaded) return;
+          const link = item.dataset.link;
+          calendarDiv.innerHTML = "Chargement...";
+          const res = await fetch(`/equipes/calendrier?url=${encodeURIComponent(link)}`);
+          const html = await res.text();
+          calendarDiv.innerHTML = html;
+          calendarDiv.dataset.loaded = "true";
+        });
+      });
+    </script>
 
   </body>
 </html>
