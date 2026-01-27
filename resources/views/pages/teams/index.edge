@@ -44,11 +44,14 @@
           const calendarDiv = item.querySelector(".calendar");
           // toggle visuel
           calendarDiv.classList.toggle("hidden");
-          // si déjà chargé → on ne refait rien
+          // si déjà chargé on ne refait rien
           if (calendarDiv.dataset.loaded) return;
           const link = item.dataset.link;
           calendarDiv.innerHTML = "Chargement...";
-          const res = await fetch(`/equipes/calendrier?url=${encodeURIComponent(link)}`);
+          //recup que le code equipe
+          const parts = link.split("/");
+          console.log(parts[parts.length - 1]);
+          const res = await fetch(`/calendrier?codeteam=${encodeURIComponent(parts[parts.length - 1])}`);
           const html = await res.text();
           calendarDiv.innerHTML = html;
           calendarDiv.dataset.loaded = "true";
