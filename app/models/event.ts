@@ -18,8 +18,16 @@ export default class Event extends BaseModel {
   declare content: string | null
 
   @column({
-    prepare: (value: any) => JSON.stringify(value),
-    consume: (value: any) => (value ? JSON.parse(value) : []),
+    prepare: (value: { path: string; alt?: string }[]) => JSON.stringify(value || []),
+    consume: (value: string | { path: string; alt?: string }[] | null) => {
+      if (!value) return [] // null ou vide
+      if (Array.isArray(value)) return value // déjà un tableau JS
+      try {
+        return JSON.parse(value) // sinon parse la chaîne JSON
+      } catch {
+        return [] // fallback si corrompu
+      }
+    },
   })
   declare images: { path: string; alt?: string }[]
 }

@@ -17,5 +17,7 @@ router.get('/calendrier', '#controllers/team_data/team_calendar_controller.show'
 
 router.get('/classement', '#controllers/team_data/team_ranking_controller.show')
 
+//crud evenements
 router.get('/evenements/creation', '#controllers/events_news/events_controller.create')
 router.post('/events/store', '#controllers/events_news/events_controller.store')
+router.get('/evenements', '#controllers/events_news/events_controller.index')

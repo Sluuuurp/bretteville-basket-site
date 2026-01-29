@@ -8,13 +8,16 @@ export default class EventsController {
   /**
    * Display a list of resource
    */
-  async index({}: HttpContext) {}
+  async index({ view }: HttpContext) {
+    const eventList = await Event.query().orderBy('created_at', 'desc')
+    return view.render('pages/events_news/index', { eventList })
+  }
 
   /**
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-    return view.render('pages/events_news/index')
+    return view.render('pages/events_news/create')
   }
 
   /**
@@ -28,21 +31,17 @@ export default class EventsController {
       content: checkData.content,
     })
 
+    // 3️⃣ Gérer les images
     const images: { path: string; alt?: string }[] = []
 
-    if (checkData.images) {
+    if (checkData.images && checkData.images.length > 0) {
       for (const image of checkData.images) {
         const ext = image.extname ?? 'jpg'
         const fileName = `${event.id}-${randomUUID()}.${ext}`
 
-        await image.move(app.makePath('uploads/events'), {
-          name: fileName,
-        })
+        await image.move(app.makePath('uploads/events'), { name: fileName })
 
-        images.push({
-          path: `events/${fileName}`,
-          alt: '', // optionnel, tu peux mettre checkData.title ou autre
-        })
+        images.push({ path: `events/${fileName}`, alt: '' }) // alt optionnel
       }
     }
 
@@ -50,7 +49,8 @@ export default class EventsController {
     await event.save()
 
     session.flash('success', 'Événement créé !')
-    return response.redirect('back') // Renvoie a la meme page
+
+    return response.redirect('/evenements')
   }
 
   /**
