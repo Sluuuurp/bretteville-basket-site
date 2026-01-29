@@ -16,3 +16,6 @@ router.get('/equipes', '#controllers/team_data/teams_list_controller.show')
 router.get('/calendrier', '#controllers/team_data/team_calendar_controller.show')
 
 router.get('/classement', '#controllers/team_data/team_ranking_controller.show')
+
+router.get('/evenements/creation', '#controllers/events_news/events_controller.create')
+router.post('/events/store', '#controllers/events_news/events_controller.store')
