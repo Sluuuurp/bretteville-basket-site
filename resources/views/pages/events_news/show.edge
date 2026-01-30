@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>
+      {{ event.title }}
+    </title>
+  </head>
+
+  <body class="p-6">
+
+    <a href="/evenements" class="text-sm text-blue-600 underline">
+      ← Retour à la liste
+    </a>
+
+    <h1 class="text-3xl font-bold mt-4">
+      {{ event.title }}
+    </h1>
+
+    <p class="mt-4 text-gray-700">
+      {{ event.content }}
+    </p>
+
+    @if(event.images.length)
+      <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+        @each(image in event.images)
+          <img
+            src="/uploads/{{ image.path }}"
+            alt="{{ image.alt ?? event.title }}"
+            class="rounded shadow object-cover"
+          />
+        @endeach
+      </div>
+    @endif
+    
+  </body>
+</html>

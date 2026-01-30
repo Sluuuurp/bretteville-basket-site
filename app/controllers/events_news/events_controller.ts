@@ -56,7 +56,11 @@ export default class EventsController {
   /**
    * Show individual record
    */
-  async show({ params }: HttpContext) {}
+  async show({ params, view }: HttpContext) {
+    const event = await Event.findOrFail(params.id)
+
+    return view.render('pages/events_news/show', { event })
+  }
 
   /**
    * Edit individual record
