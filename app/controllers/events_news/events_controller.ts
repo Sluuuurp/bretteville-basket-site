@@ -1,5 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { storeEventsValidator } from '#validators/event'
+import { storeEventsValidator, updateEventsValidator } from '#validators/event'
 import Event from '#models/event'
 import app from '@adonisjs/core/services/app'
 import { randomUUID } from 'node:crypto'
@@ -65,12 +65,46 @@ export default class EventsController {
   /**
    * Edit individual record
    */
-  async edit({ params }: HttpContext) {}
+  async edit({ params, view }: HttpContext) {
+    const event = await Event.findOrFail(params.id)
+
+    return view.render('pages/events_news/edit', { event })
+  }
 
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request }: HttpContext) {}
+  async update({ params, request, response, session }: HttpContext) {
+    const event = await Event.findOrFail(params.id)
+
+    //validation
+    const checkData = await request.validateUsing(updateEventsValidator)
+
+    event.title = checkData.title
+    event.content = checkData.content ?? null
+
+    let images = event.images ?? []
+
+    //supprimer images
+    const removeImages = checkData.removeImages || []
+    images = images.filter((img) => !removeImages.includes(img.path))
+
+    //nouvelle images
+    const uploadedImages = checkData.images || []
+    for (const file of uploadedImages) {
+      await file.move('uploads/events')
+
+      images.push({
+        path: `events/${file.fileName}`,
+      })
+    }
+
+    event.images = images
+    await event.save()
+
+    session.flash('success', 'Événement Modifié !')
+    return response.redirect('/evenements')
+  }
 
   /**
    * Delete record

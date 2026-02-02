@@ -22,3 +22,5 @@ router.get('/evenements/creation', '#controllers/events_news/events_controller.c
 router.post('/events/store', '#controllers/events_news/events_controller.store')
 router.get('/evenements', '#controllers/events_news/events_controller.index')
 router.get('/evenements/:id', '#controllers/events_news/events_controller.show')
+router.get('/evenements/:id/edit', '#controllers/events_news/events_controller.edit')
+router.patch('/evenements/:id', '#controllers/events_news/events_controller.update')
