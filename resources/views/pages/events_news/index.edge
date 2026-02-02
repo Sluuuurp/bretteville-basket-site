@@ -51,6 +51,11 @@
             <a href="/evenements/{{ event.id }}" class="text-blue-600 underline text-sm">Voir l’événement</a>
             <a href="/evenements/{{ event.id }}/edit" class="text-blue-600 underline">Modifier</a>
 
+            <form method="POST" action="/evenements/{{ event.id }}?_method=DELETE">
+              <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+              <button class="btn-danger" onclick="return confirm('Supprimer cet événement ?')">Supprimer</button>
+            </form>
+
           </div>
         @endeach
       </div>

@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import fs from 'node:fs'
 import { storeEventsValidator, updateEventsValidator } from '#validators/event'
 import Event from '#models/event'
 import app from '@adonisjs/core/services/app'
@@ -109,5 +110,26 @@ export default class EventsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params, response, session }: HttpContext) {
+    const event = await Event.findOrFail(params.id)
+
+    //fs verifie si le fichier existe et le supprime
+    for (const image of event.images) {
+      const filePath = `uploads/${image.path}`
+      try {
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath)
+        }
+      } catch (err) {
+        console.error('Erreur suppression image:', filePath, err)
+      }
+    }
+
+    // 2️⃣ Supprimer l’événement
+    await event.delete()
+
+    // 3️⃣ Flash + redirect
+    session.flash('success', 'Événement supprimé !')
+    return response.redirect('/evenements')
+  }
 }
