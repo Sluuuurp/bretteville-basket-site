@@ -12,7 +12,6 @@ export default class extends BaseSchema {
       table.string('name').notNullable()
       table.text('description').nullable()
       table.decimal('price', 10, 2).notNullable()
-      table.string('link', 2048).notNullable()
       table.string('image').notNullable()
     })
   }

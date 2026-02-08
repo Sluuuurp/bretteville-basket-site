@@ -1,10 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import Shop from '#models/shop'
 
 export default class ShopsController {
   /**
    * Display a list of resource
    */
-  async index({}: HttpContext) {}
+  async index({view}: HttpContext) {
+    const shopList = await Shop.query().
+  }
 
   /**
    * Display form to create a new record

@@ -25,3 +25,5 @@ router.get('/evenements/:id', '#controllers/events_news/events_controller.show')
 router.get('/evenements/:id/edit', '#controllers/events_news/events_controller.edit')
 router.patch('/evenements/:id', '#controllers/events_news/events_controller.update')
 router.delete('/evenements/:id', '#controllers/events_news/events_controller.destroy')
+
+//crud shop
