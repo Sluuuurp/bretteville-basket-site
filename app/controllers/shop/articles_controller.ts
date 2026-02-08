@@ -1,12 +1,12 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import Shop from '#models/shop'
+import Article from '#models/articles'
 
-export default class ShopsController {
+export default class ArticlesController {
   /**
    * Display a list of resource
    */
   async index({view}: HttpContext) {
-    const shopList = await Shop.query().
+    const shopList = await Article.query().
   }
 
   /**

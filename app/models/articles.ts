@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import ReservationItem from './reservation_item.js'
 
-export default class Shop extends BaseModel {
+export default class Article extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -15,14 +16,14 @@ export default class Shop extends BaseModel {
   declare name: string
 
   @column()
-  declare content: string | null
+  declare description: string | null
 
   @column()
   declare price: number
 
   @column()
-  declare link: string
-
-  @column()
   declare image: string
+
+  @hasMany(() => ReservationItem)
+  declare reservationItems?: any
 }
