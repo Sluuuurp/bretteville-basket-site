@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>
+      Document
+    </title>
+  </head>
+  <body>
+    <form action="/articles/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+      <!-- CSRF -->
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+      <!-- Nom -->
+      <div>
+        <label for="name" class=" text-sm font-medium">Nom de l'article</label>
+        <input type="text" name="name" required maxlength="250" class="input border" />
+      </div>
+
+      <!-- Description -->
+      <div class="flex flex-col">
+        <label for="description" class=" text-sm font-medium">Description</label>
+        <textarea name="description" rows="5" class="textarea border"></textarea>
+      </div>
+
+      <!-- prix -->
+      <div class="flex flex-col">
+        <label for="price" class=" text-sm font-medium">Prix</label>
+        <input type="number" name="price" step="0.01" min="0" class="input border" />
+      </div>
+
+      <!-- Images -->
+      <div>
+        <label for="image" class=" text-sm font-medium">Image</label>
+        <input class="border" type="file" name="image" multiple accept="image/png,image/jpeg,image/webp" />
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-primary border">
+        Créer l'article
+  </button>
+
+      @if (flashMessages.has('success'))
+        <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
+          {{ flashMessages.get('success') }}
+        </div>
+      @endif
+      
+      @if(flashMessages.has('errors'))
+        <ul class="text-red-500">
+          @each(error in flashMessages.get('errors'))
+            <li>
+              {{ error.message }}
+            </li>
+          @endeach
+        </ul>
+      @endif
+      
+    </form>
+
+  </body>
+</html>
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>
+      Document
+    </title>
+  </head>
+  <body>
+
+    <h1 class="text-2xl font-bold mb-4">
+      Modifier l'article
+    </h1>
+
+    <form
+      method="POST"
+      action="/articles/{{ article.id }}?_method=PATCH"
+      enctype="multipart/form-data"
+      class="space-y-4"
+    >
+      <!-- CSRF -->
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+      <div>
+        <label for="name">Nom article</label>
+        <input type="text" name="name" value="{{ article.name }}" class="input" />
+      </div>
+
+      <div>
+        <label for="description">description</label>
+        <textarea name="description" class="input">{{ article.description }}</textarea>
+      </div>
+
+      <!-- prix -->
+      <div class="flex flex-col">
+        <label for="price" class=" text-sm font-medium">Prix</label>
+        <input type="number" name="price" step="0.01" min="0" value="{{ article.price }}" class="input border" />
+      </div>
+
+      {{-- image --}}
+      <div>
+        <label for="image" class="block mb-1">modifier l'image</label>
+        <input type="file" name="image" class="input" />
+
+        <div class="space-y-2 mt-4">
+          <p class="font-semibold">
+            Images actuelle
+          </p>
+          <img src="/{{ article.image }}" alt="" class="w-24 h-24 object-cover rounded" />
+
+        </div>
+
+      </div>
+
+      <button class="btn-primary">
+        Mettre à jour
+  </button>
+    </form>
+
+  </body>
+</html>

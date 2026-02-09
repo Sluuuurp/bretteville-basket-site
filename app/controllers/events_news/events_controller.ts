@@ -4,6 +4,7 @@ import { storeEventsValidator, updateEventsValidator } from '#validators/event'
 import Event from '#models/event'
 import app from '@adonisjs/core/services/app'
 import { randomUUID } from 'node:crypto'
+import { join } from 'node:path'
 
 export default class EventsController {
   /**
@@ -40,9 +41,9 @@ export default class EventsController {
         const ext = image.extname ?? 'jpg'
         const fileName = `${event.id}-${randomUUID()}.${ext}`
 
-        await image.move(app.makePath('uploads/events'), { name: fileName })
+        await image.move(app.makePath('public/uploads/events'), { name: fileName })
 
-        images.push({ path: `events/${fileName}`, alt: '' }) // alt optionnel
+        images.push({ path: `uploads/events/${fileName}`, alt: '' }) // alt optionnel
       }
     }
 
@@ -88,15 +89,27 @@ export default class EventsController {
 
     //supprimer images
     const removeImages = checkData.removeImages || []
+    for (const imgPath of removeImages) {
+      // Supprimer le fichier du disque
+      const filePath = join(app.publicPath(''), imgPath)
+      try {
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath)
+        }
+      } catch (err) {
+        console.error('Erreur suppression image:', filePath, err)
+      }
+    }
+
     images = images.filter((img) => !removeImages.includes(img.path))
 
     //nouvelle images
     const uploadedImages = checkData.images || []
     for (const file of uploadedImages) {
-      await file.move('uploads/events')
+      await file.move(app.publicPath('uploads/events'))
 
       images.push({
-        path: `events/${file.fileName}`,
+        path: `uploads/events/${file.fileName}`,
       })
     }
 
@@ -115,7 +128,7 @@ export default class EventsController {
 
     //fs verifie si le fichier existe et le supprime
     for (const image of event.images) {
-      const filePath = `uploads/${image.path}`
+      const filePath = join(app.publicPath(''), image.path)
       try {
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath)

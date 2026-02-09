@@ -41,7 +41,7 @@
               <div class="flex gap-2 mt-2">
                 @each(image in event.images)
                   <img
-                    src="/uploads/{{ image.path }}"
+                    src="/{{ image.path }}"
                     class="w-24 h-24 object-cover rounded"
                     alt="{{ image.alt ?? event.title }}"
                   />

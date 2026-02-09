@@ -27,3 +27,9 @@ router.patch('/evenements/:id', '#controllers/events_news/events_controller.upda
 router.delete('/evenements/:id', '#controllers/events_news/events_controller.destroy')
 
 //crud shop
+router.get('/articles/creation', '#controllers/shop/articles_controller.create')
+router.post('/articles/store', '#controllers/shop/articles_controller.store')
+router.get('/articles', '#controllers/shop/articles_controller.index')
+router.get('/articles/:id/edit', '#controllers/shop/articles_controller.edit')
+router.patch('/articles/:id', '#controllers/shop/articles_controller.update')
+router.delete('/articles/:id', '#controllers/shop/articles_controller.destroy')

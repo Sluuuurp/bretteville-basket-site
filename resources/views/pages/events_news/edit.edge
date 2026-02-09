@@ -1,48 +1,63 @@
-<h1 class="text-2xl font-bold mb-4">
-  Modifier l’événement
-</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>
+      Document
+    </title>
+  </head>
+  <body>
 
-<form
-  method="POST"
-  action="/evenements/{{ event.id }}?_method=PATCH"
-  enctype="multipart/form-data"
-  class="space-y-4"
->
-  <!-- CSRF -->
-  <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-  <div>
-    <label for="title">Titre</label>
-    <input type="text" name="title" value="{{ event.title }}" class="input" />
-  </div>
+    <h1 class="text-2xl font-bold mb-4">
+      Modifier l’événement
+    </h1>
 
-  <div>
-    <label for="content">Contenu</label>
-    <textarea name="content" class="input">{{ event.content }}</textarea>
-  </div>
-
-  {{-- image --}}
-  <div>
-    <label for="images[]" class="block mb-1">Ajouter des images</label>
-    <input type="file" name="images[]" multiple class="input" />
-    @if(event.images && event.images.length)
-      <div class="space-y-2 mt-4">
-        <p class="font-semibold">
-          Images existantes
-        </p>
-
-        @each(image in event.images)
-          <label for="removeImages[]" class="flex items-center gap-2">
-            <input type="checkbox" name="removeImages[]" value="{{ image.path }}" />
-            <img src="/uploads/{{ image.path }}" class="w-16 h-16 object-cover rounded" />
-            Supprimer
-      </label>
-        @endeach
+    <form
+      method="POST"
+      action="/evenements/{{ event.id }}?_method=PATCH"
+      enctype="multipart/form-data"
+      class="space-y-4"
+    >
+      <!-- CSRF -->
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <div>
+        <label for="title">Titre</label>
+        <input type="text" name="title" value="{{ event.title }}" class="input" />
       </div>
-    @endif
-    
-  </div>
 
-  <button class="btn-primary">
-    Mettre à jour
+      <div>
+        <label for="content">Contenu</label>
+        <textarea name="content" class="input">{{ event.content }}</textarea>
+      </div>
+
+      {{-- image --}}
+      <div>
+        <label for="images[]" class="block mb-1">Ajouter des images</label>
+        <input type="file" name="images[]" multiple class="input" />
+        @if(event.images && event.images.length)
+          <div class="space-y-2 mt-4">
+            <p class="font-semibold">
+              Images existantes
+            </p>
+
+            @each(image in event.images)
+              <label for="removeImages[]" class="flex items-center gap-2">
+                <input type="checkbox" name="removeImages[]" value="{{ image.path }}" />
+                <img src="/{{ image.path }}" class="w-16 h-16 object-cover rounded" />
+                Supprimer
+      </label>
+            @endeach
+          </div>
+        @endif
+        
+      </div>
+
+      <button class="btn-primary">
+        Mettre à jour
   </button>
-</form>
+    </form>
+
+  </body>
+</html>

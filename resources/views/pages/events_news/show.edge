@@ -26,11 +26,7 @@
     @if(event.images.length)
       <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
         @each(image in event.images)
-          <img
-            src="/uploads/{{ image.path }}"
-            alt="{{ image.alt ?? event.title }}"
-            class="rounded shadow object-cover"
-          />
+          <img src="/{{ image.path }}" alt="{{ image.alt ?? event.title }}" class="rounded shadow object-cover" />
         @endeach
       </div>
     @endif
