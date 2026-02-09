@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <h2>
+      Nombre d'articles: {{ articlesList.length }}
+    </h2>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>
+      Document
+    </title>
+  </head>
+  <body>
+    <form action="/reservations/store" method="post">
+      {{-- csrf --}}
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+      {{-- coordonnées --}}
+      <div>
+        <label for="lastname">Nom</label>
+        <input type="text" name="lastname" required class="input border" />
+
+        <label for="firstname">Prénom</label>
+        <input type="text" name="firstname" required class="input border" />
+
+        <label for="email">Email</label>
+        <input type="email" name="email" required class="input border" />
+
+        <label for="phone">Téléphone (optionnel)</label>
+        <input type="tel" name="phone" class="input border" />
+      </div>
+
+      {{-- article --}}
+      <div id="item-template" class="flex-col gap-2 hidden" data-template>
+        <label>Article</label>
+        <select name="__NAME__[articleId]" required class="input border">
+          @each(article in articlesList)
+            <option value="{{ article.id }}">
+              {{ article.name }} - {{ article.price }}€
+            </option>
+          @endeach
+        </select>
+
+        <label>Taille</label>
+        <select name="__NAME__[size]" required class="input border">
+          <option value="S">
+            S
+          </option>
+          <option value="M">
+            M
+          </option>
+          <option value="L">
+            L
+          </option>
+          <option value="XL">
+            XL
+          </option>
+        </select>
+
+        <label>Quantité</label>
+        <input type="number" name="__NAME__[quantity]" min="1" value="1" class="input border" />
+      </div>
+
+      <!-- 3️⃣ Ajouter un nouvel article (facultatif JS) -->
+      <div id="additional-items">
+      </div>
+      <button type="button" id="add-item-btn" class="btn border">Ajouter un article</button>
+
+      <!-- 4️⃣ Submit -->
+      <button type="submit" class="btn-primary border mt-4">Réserver</button>
+    </form>
+
+    <script>
+      let itemIndex = 0;
+
+      const container = document.getElementById("additional-items");
+
+      const template = document.getElementById("item-template");
+
+      function addItem() {
+        const clone = template.cloneNode(true);
+        clone.style.display = "flex";
+        clone.innerHTML = clone.innerHTML.replaceAll("__NAME__", `items[${itemIndex}]`);
+        container.appendChild(clone);
+        itemIndex++;
+      }
+      // premier item
+
+      addItem();
+
+      document.getElementById("add-item-btn").addEventListener("click", addItem);
+    </script>
+
+  </body>
+</html>
+

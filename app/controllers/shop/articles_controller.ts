@@ -1,6 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Article from '#models/articles'
-import { storeArticlesValidator, updateArticlesValidator } from '#validators/shop'
+import { storeArticlesValidator, updateArticlesValidator } from '#validators/article'
 import { randomUUID } from 'node:crypto'
 import app from '@adonisjs/core/services/app'
 import { join } from 'node:path'
@@ -12,14 +12,14 @@ export default class ArticlesController {
    */
   async index({ view }: HttpContext) {
     const articlesList = await Article.all()
-    return view.render('pages/shop/index', { articlesList })
+    return view.render('pages/articles/index', { articlesList })
   }
 
   /**
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-    return view.render('pages/shop/create')
+    return view.render('pages/articles/create')
   }
 
   /**
@@ -57,7 +57,7 @@ export default class ArticlesController {
   async edit({ params, view }: HttpContext) {
     const article = await Article.findOrFail(params.id)
 
-    return view.render('pages/shop/edit', { article })
+    return view.render('pages/articles/edit', { article })
   }
 
   /**

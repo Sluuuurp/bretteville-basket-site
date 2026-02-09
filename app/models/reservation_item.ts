@@ -21,6 +21,9 @@ export default class ReservationItem extends BaseModel {
   @column()
   declare size: string
 
+  @column()
+  declare quantity: string
+
   @belongsTo(() => Reservation)
   declare reservation?: any
 }

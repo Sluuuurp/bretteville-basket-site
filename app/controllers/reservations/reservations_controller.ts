@@ -1,0 +1,68 @@
+import type { HttpContext } from '@adonisjs/core/http'
+import Reservation from '#models/reservation'
+import { randomUUID } from 'node:crypto'
+import Article from '#models/articles'
+
+export default class ReservationsController {
+  /**
+   * Display a list of resource
+   */
+  async index({}: HttpContext) {}
+
+  /**
+   * Display form to create a new record
+   */
+  async create({ view }: HttpContext) {
+    const articlesList = await Article.all()
+    return view.render('pages/reservations/create', { articlesList })
+  }
+
+  /**
+   * Handle form submission for the create action
+   */
+  async store({ request, response, session }: HttpContext) {
+    const data = request.all()
+    console.log(data)
+
+    //les coordonnées
+    const reservation = await Reservation.create({
+      firstname: data.firstname,
+      lastname: data.lastname,
+      email: data.email,
+      phone: data.phone || null,
+      status: 'pending',
+      token: randomUUID(), // pour lien unique si nécessaire
+    })
+
+    //les items
+    for (const item of data.items) {
+      await reservation.related('reservationItems').create({
+        articleId: Number(item.articleId), // cast en number
+        size: item.size,
+        quantity: Number(item.quantity),
+      })
+    }
+
+    session.flash('success', 'Réservation enregistrée !')
+  }
+
+  /**
+   * Show individual record
+   */
+  async show({ params }: HttpContext) {}
+
+  /**
+   * Edit individual record
+   */
+  async edit({ params }: HttpContext) {}
+
+  /**
+   * Handle form submission for the edit action
+   */
+  async update({ params, request }: HttpContext) {}
+
+  /**
+   * Delete record
+   */
+  async destroy({ params }: HttpContext) {}
+}

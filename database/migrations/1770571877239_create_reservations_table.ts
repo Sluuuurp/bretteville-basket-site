@@ -10,7 +10,7 @@ export default class extends BaseSchema {
       table.timestamps(true)
       table.string('firstname').notNullable()
       table.string('lastname').notNullable()
-      table.string('email', 254).notNullable().unique()
+      table.string('email', 254).notNullable()
       table.string('phone').nullable()
 
       table.string('status').notNullable().defaultTo('pending')

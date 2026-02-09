@@ -26,10 +26,14 @@ router.get('/evenements/:id/edit', '#controllers/events_news/events_controller.e
 router.patch('/evenements/:id', '#controllers/events_news/events_controller.update')
 router.delete('/evenements/:id', '#controllers/events_news/events_controller.destroy')
 
-//crud shop
+//crud article
 router.get('/articles/creation', '#controllers/shop/articles_controller.create')
 router.post('/articles/store', '#controllers/shop/articles_controller.store')
 router.get('/articles', '#controllers/shop/articles_controller.index')
 router.get('/articles/:id/edit', '#controllers/shop/articles_controller.edit')
 router.patch('/articles/:id', '#controllers/shop/articles_controller.update')
 router.delete('/articles/:id', '#controllers/shop/articles_controller.destroy')
+
+//route reservations
+router.get('/reservations/creation', '#controllers/reservations/reservations_controller.create')
+router.post('/reservations/store', '#controllers/reservations/reservations_controller.store')
