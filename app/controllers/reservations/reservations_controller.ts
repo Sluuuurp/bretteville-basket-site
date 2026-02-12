@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Reservation from '#models/reservation'
 import { randomUUID } from 'node:crypto'
 import Article from '#models/articles'
+import { storeReservationValidator } from '#validators/reservation'
 
 export default class ReservationsController {
   /**
@@ -21,21 +22,25 @@ export default class ReservationsController {
    * Handle form submission for the create action
    */
   async store({ request, response, session }: HttpContext) {
-    const data = request.all()
-    console.log(data)
+    const checkData = await request.validateUsing(storeReservationValidator)
+
+    if (!checkData.items || checkData.items.length === 0) {
+      session.flash('error', 'Vous devez réserver au moins un article')
+      return response.redirect().back()
+    }
 
     //les coordonnées
     const reservation = await Reservation.create({
-      firstname: data.firstname,
-      lastname: data.lastname,
-      email: data.email,
-      phone: data.phone || null,
+      firstname: checkData.firstname,
+      lastname: checkData.lastname,
+      email: checkData.email,
+      phone: checkData.phone || null,
       status: 'pending',
       token: randomUUID(), // pour lien unique si nécessaire
     })
 
     //les items
-    for (const item of data.items) {
+    for (const item of checkData.items) {
       await reservation.related('reservationItems').create({
         articleId: Number(item.articleId), // cast en number
         size: item.size,
@@ -44,6 +49,7 @@ export default class ReservationsController {
     }
 
     session.flash('success', 'Réservation enregistrée !')
+    return response.redirect('back')
   }
 
   /**

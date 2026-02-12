@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <h2>
-      Nombre d'articles: {{ articlesList.length }}
-    </h2>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -12,10 +9,58 @@
     </title>
   </head>
   <body>
+    @if (flashMessages.has('success'))
+      <div class="p-3 mb-4 bg-green-100 text-green-700 rounded">
+        {{ flashMessages.get('success') }}
+      </div>
+    @endif
+    
+    @if (flashMessages.has('error'))
+      <div class="p-3 mb-4 bg-red-100 text-red-700 rounded">
+        {{ flashMessages.get('error') }}
+      </div>
+    @endif
+    
+    
+    
+    <section>
+      <h3>
+        Ajouter un article
+      </h3>
+
+      <select id="select-article">
+        @each(article in articlesList)
+          <option value="{{ article.id }}" data-price="{{ article.price }}">
+            {{ article.name }} - {{ article.price }}€
+          </option>
+        @endeach
+      </select>
+      <select id="select-size">
+        <option>
+          S
+        </option>
+        <option>
+          M
+        </option>
+        <option>
+          L
+        </option>
+        <option>
+          XL
+        </option>
+      </select>
+
+      <input type="number" id="select-qty" min="1" value="1" />
+
+      <button type="button" id="add-to-cart">
+        Ajouter au panier
+  </button>
+    </section>
+    <hr class="py-10" />
     <form action="/reservations/store" method="post">
-      {{-- csrf --}}
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
+      <!-- coordonnées -->
       {{-- coordonnées --}}
       <div>
         <label for="lastname">Nom</label>
@@ -30,66 +75,63 @@
         <label for="phone">Téléphone (optionnel)</label>
         <input type="tel" name="phone" class="input border" />
       </div>
-
-      {{-- article --}}
-      <div id="item-template" class="flex-col gap-2 hidden" data-template>
-        <label>Article</label>
-        <select name="__NAME__[articleId]" required class="input border">
-          @each(article in articlesList)
-            <option value="{{ article.id }}">
-              {{ article.name }} - {{ article.price }}€
-            </option>
-          @endeach
-        </select>
-
-        <label>Taille</label>
-        <select name="__NAME__[size]" required class="input border">
-          <option value="S">
-            S
-          </option>
-          <option value="M">
-            M
-          </option>
-          <option value="L">
-            L
-          </option>
-          <option value="XL">
-            XL
-          </option>
-        </select>
-
-        <label>Quantité</label>
-        <input type="number" name="__NAME__[quantity]" min="1" value="1" class="input border" />
+      <hr class="py-10" />
+      <h3>
+        Votre panier
+      </h3>
+      <div id="cart">
       </div>
 
-      <!-- 3️⃣ Ajouter un nouvel article (facultatif JS) -->
-      <div id="additional-items">
-      </div>
-      <button type="button" id="add-item-btn" class="btn border">Ajouter un article</button>
+      <p id="empty-cart">
+        Votre panier est vide
+      </p>
 
-      <!-- 4️⃣ Submit -->
-      <button type="submit" class="btn-primary border mt-4">Réserver</button>
+      <button type="submit">Réserver</button>
     </form>
 
     <script>
-      let itemIndex = 0;
+      const cart = [];
 
-      const container = document.getElementById("additional-items");
+      const cartContainer = document.getElementById("cart");
 
-      const template = document.getElementById("item-template");
+      const emptyCart = document.getElementById("empty-cart");
 
-      function addItem() {
-        const clone = template.cloneNode(true);
-        clone.style.display = "flex";
-        clone.innerHTML = clone.innerHTML.replaceAll("__NAME__", `items[${itemIndex}]`);
-        container.appendChild(clone);
-        itemIndex++;
+      function renderCart() {
+        cartContainer.innerHTML = "";
+        emptyCart.style.display = cart.length ? "none" : "block";
+        cart.forEach((item, index) => {
+          cartContainer.insertAdjacentHTML("beforeend", `
+                                                                                                                                          <div>
+                                                                                                                                            ${item.name} - ${item.size} × ${item.quantity}
+
+                                                                                                                                            <input type="hidden" name="items[${index}][articleId]" value="${item.articleId}">
+                                                                                                                                            <input type="hidden" name="items[${index}][size]" value="${item.size}">
+                                                                                                                                            <input type="hidden" name="items[${index}][quantity]" value="${item.quantity}">
+
+                                                                                                                                            <button type="button" onclick="removeItem(${index})">✕</button>
+                                                                                                                                          </div>
+                                                                                                                                        `);
+        });
       }
-      // premier item
 
-      addItem();
+      function removeItem(index) {
+        cart.splice(index, 1);
+        renderCart();
+      }
+      //add au panier;
 
-      document.getElementById("add-item-btn").addEventListener("click", addItem);
+      document.getElementById("add-to-cart").addEventListener("click", () => {
+        const articleSelect = document.getElementById("select-article");
+        const size = document.getElementById("select-size").value;
+        const quantity = Number(document.getElementById("select-qty").value);
+        cart.push({
+          articleId: articleSelect.value,
+          name: articleSelect.options[articleSelect.selectedIndex].text,
+          size: size,
+          quantity: quantity
+        });
+        renderCart();
+      });
     </script>
 
   </body>
