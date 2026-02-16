@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>
+      Document
+    </title>
+  </head>
+  <body>
+
+    <h1 class="text-2xl font-bold mb-4">
+      Modifier le sponsor
+    </h1>
+
+    <form
+      method="POST"
+      action="/sponsors/{{ sponsor.id }}?_method=PATCH"
+      enctype="multipart/form-data"
+      class="space-y-4"
+    >
+      <!-- CSRF -->
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <div>
+        <label for="nom_ent">Nom de l'entreprise</label>
+        <input type="text" name="nom_ent" value="{{ sponsor.nom_ent }}" class="input" />
+      </div>
+
+      <div>
+        <label for="ville">Ville</label>
+        <input type="text" name="ville" value="{{ sponsor.ville }}" class="input" />
+      </div>
+
+      <div>
+        <label for="lien" class=" text-sm font-medium">Lien site entreprise(optionnel)</label>
+        <input type="text" name="lien" class="input border" value="{{ sponsor.lien || '' }}" />
+      </div>
+
+    </div>
+
+    @if (flashMessages.has('success'))
+      <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
+        {{ flashMessages.get('success') }}
+      </div>
+    @endif
+      
+    @if(flashMessages.has('errors'))
+      <ul class="text-red-500">
+        @each(error in flashMessages.get('errors'))
+          <li>
+            {{ error.message }}
+          </li>
+        @endeach
+      </ul>
+    @endif
+    
+    <button class="btn-primary">
+      Mettre à jour
+  </button>
+  </form>
+
+</body>
+</html>
+

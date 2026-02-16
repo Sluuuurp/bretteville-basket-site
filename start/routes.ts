@@ -34,6 +34,14 @@ router.get('/articles/:id/edit', '#controllers/shop/articles_controller.edit')
 router.patch('/articles/:id', '#controllers/shop/articles_controller.update')
 router.delete('/articles/:id', '#controllers/shop/articles_controller.destroy')
 
+//crud sponsor
+router.get('/sponsors/creation', '#controllers/sponsors/sponsors_controller.create')
+router.post('/sponsors/store', '#controllers/sponsors/sponsors_controller.store')
+router.get('/sponsors', '#controllers/sponsors/sponsors_controller.index')
+router.get('/sponsors/:id/edit', '#controllers/sponsors/sponsors_controller.edit')
+router.patch('/sponsors/:id', '#controllers/sponsors/sponsors_controller.update')
+router.delete('/sponsors/:id', '#controllers/sponsors/sponsors_controller.destroy')
+
 //route reservations
 router.get('/reservations/creation', '#controllers/reservations/reservations_controller.create')
 router.post('/reservations/store', '#controllers/reservations/reservations_controller.store')
