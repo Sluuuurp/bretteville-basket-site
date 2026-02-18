@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 @import 'tailwindcss';
 
 @font-face {
@@ -7,4 +9,27 @@
 
 @theme {
   --font-timeline: 'Timeline', sans-serif;
+  --font-teko: 'Teko', sans-serif;
+  --font-manrope: 'Manrope', sans-serif;
+}
+
+:root {
+  --color-rose: #da0f83;
+  --color-bleu: #0065a0;
+}
+
+.bg-bleu {
+  background-color: var(--color-bleu);
+}
+
+.text-bleu {
+  color: var(--color-bleu);
+}
+
+.text-roses {
+  color: var(--color-rose);
+}
+
+.bg-roses {
+  background-color: var(--color-rose);
 }
