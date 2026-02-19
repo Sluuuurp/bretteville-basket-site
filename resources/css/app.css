@@ -11,6 +11,7 @@
   --font-timeline: 'Timeline', sans-serif;
   --font-teko: 'Teko', sans-serif;
   --font-manrope: 'Manrope', sans-serif;
+  --breakpoint-md: 800px;
 }
 
 :root {
