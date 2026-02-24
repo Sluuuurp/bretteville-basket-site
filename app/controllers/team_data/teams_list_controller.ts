@@ -15,7 +15,7 @@ export default class TeamsListController {
 
     if (request.input('gender')) {
       // Si c'est un fetch AJAX, on retourne **la partielle uniquement**
-      return view.render('components/teams-list', { teams: teamsFiltered })
+      return view.render('components/teams-list', { teams: teamsFiltered, gender })
     }
 
     // Sinon on retourne la page complète

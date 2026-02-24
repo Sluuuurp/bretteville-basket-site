@@ -1,13 +1,20 @@
 @layout('components.layout')
 
   @slot('main')
-    <section>
-      <div>
-        <button class="border" id="masc">Masculin</button>
-        <button class="border" id="fem">Feminine</button>
+    <section class=" flex flex-col items-center">
+      <div class="my-20 flex">
+        <button
+          class="bg-black text-white mr-20 text-xl font-timeline py-1 px-5 [clip-path:polygon(10%_0,100%_0,90%_100%,0_100%)] relative group"
+          id="masc"
+        >Masculin<span class="absolute bottom-0 left-0 w-0 h-1.5 bg-roses group-hover:w-full"></span></button>
+
+        <button
+          class="bg-black text-white text-xl font-timeline py-1 px-5 [clip-path:polygon(10%_0,100%_0,90%_100%,0_100%)] relative group"
+          id="fem"
+        >Feminine<span class="absolute bottom-0 left-0 w-0 h-1.5 bg-roses group-hover:w-full"></span></button>
       </div>
 
-      <div id="teams-container">
+      <div class="md:w-9/10 xl:8/10" id="teams-container">
         @component('components/teams-list', { teams })
 
         @end
