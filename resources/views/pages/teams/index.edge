@@ -14,7 +14,7 @@
         >Feminine<span class="absolute bottom-0 left-0 w-0 h-1.5 bg-roses group-hover:w-full"></span></button>
       </div>
 
-      <div class="md:w-9/10 xl:8/10" id="teams-container">
+      <div class="w-11/12 xl:8/10" id="teams-container" data-gender="{{ gender }}">
         @component('components/teams-list', { teams })
 
         @end
@@ -37,6 +37,7 @@
       function loadTeams(gender) {
         fetch(`/equipes?gender=${gender}`).then(res => res.text()).then(html => {
           container.innerHTML = html;
+          container.dataset.gender = gender;
         });
       }
     </script>

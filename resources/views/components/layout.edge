@@ -141,9 +141,17 @@
       burger.addEventListener("click", () => {
         menuMobile.classList.remove("translate-x-full");
       });
+      //ferme le menu si clic ailleurs
 
       closeBtn.addEventListener("click", () => {
         menuMobile.classList.add("translate-x-full");
+      });
+
+      document.addEventListener("click", event => {
+        const isMenuOpen = !menuMobile.classList.contains("translate-x-full");
+        if (isMenuOpen && !menuMobile.contains(event.target) && !burger.contains(event.target)) {
+          menuMobile.classList.add("translate-x-full");
+        }
       });
     </script>
   </body>
