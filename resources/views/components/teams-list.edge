@@ -1,6 +1,6 @@
 <ul>
   @each(team in teams)
-    <li class="border my-4 py-2 cursor-pointer team-item" data-link="{{ team.lien }}" >
+    <li class="border mb-7 py-2 cursor-pointer team-item" data-link="{{ team.lien }}">
       <div class="flex gap-4 h-24 md:h-36">
         @if(team.image)
           <img class="mx-3 " src="{{ team.image }}" alt="{{ team.nom }}" />
@@ -14,7 +14,7 @@
           >
             {{ team.nom }}
           </h3>
-          
+
           <p class="font-manrope font-bold uppercase">
             <strong>{{ team.tabData[0] }}</strong>
 
@@ -25,7 +25,11 @@
           </p>
         </div>
 
-        <img class='hidden h-7 md:h-10 sm:block absolute right-22 mt-10 md:right-30 md:mt-15 opacity-65' src="/public/img/downarrow.png" alt="fleche">
+        <img
+          class='hidden h-7 md:h-10 sm:block absolute right-22 mt-10 md:right-30 md:mt-15 opacity-65'
+          src="/public/img/downarrow.png"
+          alt="fleche"
+        />
 
       </div>
 
@@ -36,14 +40,17 @@
       <div class="loading">
         Chargement...
       </div>
+
+      {{-- bouton du classement --}}
+      <a
+        class="classement-btn hidden p-2 mx-auto w-fit bg-[#0065a0] font-manrope font-bold uppercase text-white text-sm md:text-base tracking-wide"
+        href="/classement/{{ team.lien.split('/equipes/')[1] }}"
+      >> Classement</a>
+
       <div class="matches grid gap-0.5">
 
       </div>
     </div>
   @endeach
 </ul>
-
-<script>
-  window.gender = ;
-</script>
 

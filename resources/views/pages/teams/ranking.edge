@@ -1,0 +1,84 @@
+@layout('components.layout')
+
+  @slot('main')
+
+    <h1 class="my-10 container mx-auto font-teko font-bold uppercase text-3xl">
+      Classement - {{ currentTeam?.equipe }}
+    </h1>
+    <section class="container mx-auto">
+      <table class="border">
+        <thead class="border">
+          <tr class="border">
+            <th class="border">
+              Equipes
+            </th>
+            <th class="pl-4 pr-20">
+              PTS
+            </th>
+            <th class="pl-4 pr-4">
+              J
+            </th>
+            <th class="pl-4 pr-4">
+              G
+            </th>
+            <th class="pl-4 pr-4">
+              P
+            </th>
+            <th class="pl-4 pr-20">
+              N
+            </th>
+            <th class="pl-4 pr-4">
+              M
+            </th>
+            <th class="pl-4 pr-4">
+              E
+            </th>
+            <th class="pl-4 pr-4">
+              D
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @each(team in ranking)
+            <tr class="border">
+              <td class=" flex items-center pr-4">
+                <span class="font-manrope font-bold px-2">{{ team.position }}</span>
+                <img
+                  class="h-15 px-5"
+                  src="{{ team.logo && !team.logo.includes('defaultLogo') ? team.logo : '/img/logo-ffbb.jpg' }}"
+                  alt=""
+                />
+                <span class="font-manrope font-bold text-xs">{{ team.equipe }}</span>
+              </td>
+              <td class="border pl-4">
+                {{ team.points }}
+              </td>
+              <td class="border text-center">
+                {{ team.joues }}
+              </td>
+              <td class="border  text-center">
+                {{ team.gagnes }}
+              </td>
+              <td class="border  text-center">
+                {{ team.perdus }}
+              </td>
+              <td class="border pl-4">
+                {{ team.nuls }}
+              </td>
+              <td class="border text-center">
+                {{ team.scored }}
+              </td>
+              <td class="border text-center">
+                {{ team.taked }}
+              </td>
+              <td class="text-center">
+                {{ team.differential }}
+              </td>
+            </tr>
+          @end
+        </tbody>
+      </table>
+    </section>
+  @end
+  
+@endlayout

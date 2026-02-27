@@ -8,10 +8,10 @@ container.addEventListener('click', async (e) => {
   const matchesDiv = calendarDiv.querySelector('.matches')
   const loadingDiv = calendarDiv.querySelector('.loading')
   const gender = container.dataset.gender
-  console.log(gender)
+  const rankBtn = calendarDiv.querySelector('.classement-btn')
 
   const colorGender = gender === 'F' ? 'bg-[rgba(218,15,131,0.2)]' : 'bg-[rgba(0,101,160,0.2)]'
-  console.log(colorGender)
+
   calendarDiv.classList.toggle('hidden')
 
   if (calendarDiv.dataset.loaded) return
@@ -26,9 +26,15 @@ container.addEventListener('click', async (e) => {
 
     matchesDiv.innerHTML = matches
       .map((match, index) => {
-        const bgclass = index % 2 === 0 ? `${colorGender}` : 'bg-white'
+        //double ternaire ici, un peu lourd mais tailwind ne semble pas fomctionne avec md: + variable dynamique bref l index pour le 1/2 et le gender pour la couleur
+        const bgclass =
+          index % 2 === 0
+            ? gender === 'F'
+              ? 'md:bg-[rgba(218,15,131,0.2)]'
+              : 'md:bg-[rgba(0,101,160,0.2)]'
+            : 'md:bg-white'
         return `
-      <div class="match mt-3 md:mt-1 p-4 flex items-center md:${bgclass} font-manrope max-w-375">
+      <div class="match mt-5 md:mt-10 p-4 flex items-center ${bgclass} font-manrope max-w-375">
         <div class="grid grid-cols-6 font-bold items-center relative">
          
           <p class=' w-50 col-start-1 text-sm'><span class='uppercase mr-5 md:mr-0.5 xl:mr-5'>${match.journee}</span> | <span class='opacity-65 ml-5 md:ml-0.5 xl:ml-5'>${match.date}</span></p>
@@ -57,5 +63,6 @@ container.addEventListener('click', async (e) => {
     console.error(err)
   } finally {
     loadingDiv.style.display = 'none'
+    rankBtn.style.display = 'block'
   }
 })
