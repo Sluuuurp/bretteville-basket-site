@@ -6,8 +6,10 @@ export default class SponsorsController {
   /**
    * Display a list of resource
    */
-  async index({ view }: HttpContext) {
+  async index({ view, auth }: HttpContext) {
+    await auth.check()
     const sponsorsList = await Sponsor.all()
+
     return view.render('pages/sponsors/index', { sponsorsList })
   }
 

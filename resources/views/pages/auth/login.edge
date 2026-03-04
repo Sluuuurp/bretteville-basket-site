@@ -3,7 +3,7 @@
     Login
   </h1>
 
-  <form method="POST" action="{{ route('auth.login.store') }}">
+  <form method="POST" action="{{ route('login.store') }}">
 
     {{ csrfField() }}
     @error('E_INVALID_CREDENTIALS')

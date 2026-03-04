@@ -9,9 +9,14 @@
     </title>
   </head>
   <body>
-
-    <a href="/sponsors/creation" class="btn-primary mb-4 inline-block">Ajouter un sponsor</a>
-
+    <h1>
+      {{ auth.isAuthenticated }}
+    </h1>
+    @if(auth.isAuthenticated)
+      <a href="/sponsors/creation" class="btn-primary mb-4 inline-block">Ajouter un sponsor</a>
+    @end
+    
+    
     @if(flashMessages.has('success'))
       <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
         {{ flashMessages.get('success') }}
