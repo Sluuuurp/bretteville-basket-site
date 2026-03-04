@@ -7,44 +7,71 @@
 |
 */
 
+const TeamsListController = () => import('#controllers/team_data/teams_list_controller')
+const CalendarsController = () => import('#controllers/team_data/team_calendar_controller')
+const TeamRankingController = () => import('#controllers/team_data/team_ranking_controller')
+const EventsController = () => import('#controllers/events_news/events_controller')
+const ArticlesController = () => import('#controllers/shop/articles_controller')
+const ReservationsController = () => import('#controllers/reservations/reservations_controller')
+const SponsorsController = () => import('#controllers/sponsors/sponsors_controller')
+const RegisterController = () => import('#controllers/auth/register_controller')
+const LogoutController = () => import('#controllers/auth/logout_controller')
+import LoginController from '#controllers/auth/login_controller'
 import router from '@adonisjs/core/services/router'
 
-router.on('/').render('pages/home')
+router.get('/', async (ctx) => {
+  await ctx.auth.check()
+  return ctx.view.render('pages/admin/board')
+})
 
-router.get('/equipes', '#controllers/team_data/teams_list_controller.show')
+//auth admin
+router
+  .group(() => {
+    router.get('/register', [RegisterController, 'show']).as('register.show')
+    router.post('/register', [RegisterController, 'store']).as('register.store')
 
-router.get('/calendrier', '#controllers/team_data/team_calendar_controller.show')
+    router.get('/login', [LoginController, 'show']).as('login.show')
+    router.post('/login', [LoginController, 'store']).as('login.store')
 
-router.get('/classement/:codeteam', '#controllers/team_data/team_ranking_controller.show')
+    router.post('/logout', [LogoutController, 'handle']).as('logout')
+  })
+  .as('auth')
+
+//liste des equipes et calendrier
+router.get('/equipes', [TeamsListController, 'show'])
+router.get('/calendrier', [CalendarsController, 'show'])
+
+//classement equipe
+router.get('/classement/:codeteam', [TeamRankingController, 'show'])
 router.get('/classement', async ({ response }) => {
   return response.redirect('/equipes')
 })
 
 //crud evenements
-router.get('/evenements/creation', '#controllers/events_news/events_controller.create')
-router.post('/events/store', '#controllers/events_news/events_controller.store')
-router.get('/evenements', '#controllers/events_news/events_controller.index')
-router.get('/evenements/:id', '#controllers/events_news/events_controller.show')
-router.get('/evenements/:id/edit', '#controllers/events_news/events_controller.edit')
-router.patch('/evenements/:id', '#controllers/events_news/events_controller.update')
-router.delete('/evenements/:id', '#controllers/events_news/events_controller.destroy')
+router.get('/evenements/creation', [EventsController, 'create'])
+router.post('/events/store', [EventsController, 'store'])
+router.get('/evenements', [EventsController, 'index'])
+router.get('/evenements/:id', [EventsController, 'show'])
+router.get('/evenements/:id/edit', [EventsController, 'edit'])
+router.patch('/evenements/:id', [EventsController, 'update'])
+router.delete('/evenements/:id', [EventsController, 'destroy'])
 
 //crud article
-router.get('/articles/creation', '#controllers/shop/articles_controller.create')
-router.post('/articles/store', '#controllers/shop/articles_controller.store')
-router.get('/articles', '#controllers/shop/articles_controller.index')
-router.get('/articles/:id/edit', '#controllers/shop/articles_controller.edit')
-router.patch('/articles/:id', '#controllers/shop/articles_controller.update')
-router.delete('/articles/:id', '#controllers/shop/articles_controller.destroy')
+router.get('/articles/creation', [ArticlesController, 'create'])
+router.post('/articles/store', [ArticlesController, 'store'])
+router.get('/articles', [ArticlesController, 'index'])
+router.get('/articles/:id/edit', [ArticlesController, 'edit'])
+router.patch('/articles/:id', [ArticlesController, 'update'])
+router.delete('/articles/:id', [ArticlesController, 'destroy'])
 
 //crud sponsor
-router.get('/sponsors/creation', '#controllers/sponsors/sponsors_controller.create')
-router.post('/sponsors/store', '#controllers/sponsors/sponsors_controller.store')
-router.get('/sponsors', '#controllers/sponsors/sponsors_controller.index')
-router.get('/sponsors/:id/edit', '#controllers/sponsors/sponsors_controller.edit')
-router.patch('/sponsors/:id', '#controllers/sponsors/sponsors_controller.update')
-router.delete('/sponsors/:id', '#controllers/sponsors/sponsors_controller.destroy')
+router.get('/sponsors/creation', [SponsorsController, 'create'])
+router.post('/sponsors/store', [SponsorsController, 'store'])
+router.get('/sponsors', [SponsorsController, 'index'])
+router.get('/sponsors/:id/edit', [SponsorsController, 'edit'])
+router.patch('/sponsors/:id', [SponsorsController, 'update'])
+router.delete('/sponsors/:id', [SponsorsController, 'destroy'])
 
 //route reservations
-router.get('/reservations/creation', '#controllers/reservations/reservations_controller.create')
-router.post('/reservations/store', '#controllers/reservations/reservations_controller.store')
+router.get('/reservations/creation', [ReservationsController, 'create'])
+router.post('/reservations/store', [ReservationsController, 'store'])

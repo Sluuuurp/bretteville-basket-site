@@ -1,0 +1,16 @@
+@layoutAdmin()
+  @if (auth.user)
+    <p>
+      Logged as {{auth.user.fullName}}
+    </p>
+
+    <form method="post" action="{{ route('auth.logout') }}">
+      {{ csrfField() }}
+      <button type="submit">Logout</button>
+    </form>
+  @else
+    <a href="{{ route('auth.register.show') }}">Register</a>
+    <a href="{{ route('auth.login.show') }}">Login</a>
+
+  @endif
+@end

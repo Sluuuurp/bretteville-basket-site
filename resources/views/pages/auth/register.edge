@@ -1,0 +1,49 @@
+@layoutAdmin({pageTitle: 'Register'})
+
+  <section>
+    <h1>
+      Register
+    </h1>
+
+    <form method="POST" action="{{ route('auth.register.store') }}">
+
+      {{ csrfField() }}
+
+        <label for="fullname">
+        <span>Fullname</span>
+
+        <input type="text" name="fullname" value="{{ old('fullname') || '' }}" />
+
+        @inputError('fullname')
+          {{ $message.join(', ') }}
+        @end
+        
+      </label>
+
+      <label for="email">
+        <span>Email</span>
+
+        <input type="email" name="email" value="{{ old('email') || '' }}" />
+
+        @inputError('email')
+          {{ $message.join(',') }}
+        @end
+        
+      </label>
+
+      <label for="password">
+        <span>Password</span>
+
+        <input type="password" name="password" value="{{ old('password') || '' }}" />
+
+        @inputError('password')
+          {{ $message.join(', ') }}
+        @end
+        
+      </label>
+
+      <button type="submit">Register</button>
+
+    </form>
+  </section>
+@end
