@@ -12,17 +12,20 @@ export default class TeamRankingController {
       'https://competitions.ffbb.com/ligues/nor/comites/0014/clubs/nor0014052'
     )
 
+    const currentTeam = teamsList.find((team) => team.lien.includes(codeTeam))
+    const gender = currentTeam?.tabData[0].includes('M') ? 'M' : 'F'
+
     if (!codeTeam) {
     }
 
     const scraperRanking = new FfbbRankingScrapService()
     const ranking = await scraperRanking.getRanking(codeTeam)
-    const currentTeam = ranking.find((team) => team.equipe.toLowerCase().includes('bretteville'))
 
     return view.render('pages/teams/ranking', {
       ranking: ranking,
       team: teamsList,
       currentTeam: currentTeam,
+      gender: gender,
     })
   }
 }

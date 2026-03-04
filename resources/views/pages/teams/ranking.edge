@@ -2,83 +2,138 @@
 
   @slot('main')
 
-    <h1 class="my-10 container mx-auto font-teko font-bold uppercase text-3xl">
-      Classement - {{ currentTeam?.equipe }}
+    <h1 class="my-10 ml-2 sm:ml-auto container mx-auto font-teko font-bold uppercase text-3xl pl-1">
+      Classement - {{ currentTeam?.nom }}
     </h1>
-    <section class="container mx-auto">
-      <table class="border">
-        <thead class="border">
-          <tr class="border">
-            <th class="border">
-              Equipes
-            </th>
-            <th class="pl-4 pr-20">
-              PTS
-            </th>
-            <th class="pl-4 pr-4">
-              J
-            </th>
-            <th class="pl-4 pr-4">
-              G
-            </th>
-            <th class="pl-4 pr-4">
-              P
-            </th>
-            <th class="pl-4 pr-20">
-              N
-            </th>
-            <th class="pl-4 pr-4">
-              M
-            </th>
-            <th class="pl-4 pr-4">
-              E
-            </th>
-            <th class="pl-4 pr-4">
-              D
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+
+    
+
+    <section class="container mx-auto my-10">
+      <a href="/equipes" class="px-2 py-1 text-white font-manrope font-bold block w-fit mb-10 ml-2 bg-[#0065a0]"><- EQUIPE</a>
+      <div class="flex border font-manrope font-bold">
+
+        <!-- COLONNE FIXE EQUIPE  -->
+
+        <div class="shrink-0 bg-white ml-1">
+
+          <!-- HEADER -->
+          <div class="h-14 flex items-center justify-center border-b border-r px-4 bg-white">
+            Equipes
+          </div>
+
+          <!-- BODY -->
           @each(team in ranking)
-            <tr class="border">
-              <td class=" flex items-center pr-4">
-                <span class="font-manrope font-bold px-2">{{ team.position }}</span>
+            <div
+              class="h-14 flex items-center border-r px-4 {{ gender === 'F' ? 'even:bg-[#da0f83]/20' : 'even:bg-[#0065a0]/20' }}"
+            >
+              <div class="flex items-center gap-3">
+
+                <span class="w-6 text-center">
+                  {{ team.position }}
+            </span>
+
                 <img
-                  class="h-15 px-5"
+                  class="h-8 w-8 object-contain"
                   src="{{ team.logo && !team.logo.includes('defaultLogo') ? team.logo : '/img/logo-ffbb.jpg' }}"
                   alt=""
                 />
-                <span class="font-manrope font-bold text-xs">{{ team.equipe }}</span>
-              </td>
-              <td class="border pl-4">
-                {{ team.points }}
-              </td>
-              <td class="border text-center">
-                {{ team.joues }}
-              </td>
-              <td class="border  text-center">
-                {{ team.gagnes }}
-              </td>
-              <td class="border  text-center">
-                {{ team.perdus }}
-              </td>
-              <td class="border pl-4">
-                {{ team.nuls }}
-              </td>
-              <td class="border text-center">
-                {{ team.scored }}
-              </td>
-              <td class="border text-center">
-                {{ team.taked }}
-              </td>
-              <td class="text-center">
-                {{ team.differential }}
-              </td>
-            </tr>
+
+                <span class="text-xs whitespace-nowrap">
+                  {{ team.equipe }}
+            </span>
+
+              </div>
+            </div>
           @end
-        </tbody>
-      </table>
+            
+        </div>
+
+
+        <!-- PARTIE SCROLLABLE     -->
+
+        <div class="overflow-x-auto w-full">
+
+          <div class="min-w-max">
+
+            <!-- HEADER -->
+            <div class="grid grid-cols-3 h-14 items-center min-w-160 border-b bg-white">
+
+              <div class=" text-center ">
+                PTS
+              </div>
+              <div class="flex justify-between w-30">
+                <div class="px-1 text-center">
+                  J
+                </div>
+                <div class="px-1 text-center">
+                  G
+                </div>
+                <div class="px-1 text-center">
+                  P
+                </div>
+                <div class="px-1 text-center">
+                  N
+                </div>
+              </div>
+              <div class="flex justify-between w-30">
+                <div class="px-1 text-center">
+                  M
+                </div>
+                <div class="px-1 text-center">
+                  E
+                </div>
+                <div class="px-1 text-center">
+                  D
+                </div>
+              </div>
+
+            </div>
+
+            <!-- BODY -->
+            @each(team in ranking)
+              <div
+                class="grid grid-cols-3 h-14 items-center {{ gender === 'F' ? 'even:bg-[#da0f83]/20' : 'even:bg-[#0065a0]/20' }}"
+              >
+
+                <div class="text-center opacity-70 mx-1">
+                  {{ team.points }}
+                </div>
+                <div class="flex justify-between w-30">
+                  <div class="px-1 text-center opacity-70">
+                    {{ team.joues }}
+                  </div>
+                  <div class="px-1 text-center opacity-70">
+                    {{ team.gagnes }}
+                  </div>
+                  <div class="px-1 text-center opacity-70">
+                    {{ team.perdus }}
+                  </div>
+                  <div class="px-1 text-center opacity-70">
+                    {{ team.nuls }}
+                  </div>
+                </div>
+                <div class="flex justify-between w-30">
+                  <div class="px-1 text-center opacity-70">
+                    {{ team.scored }}
+                  </div>
+                  <div class="px-1 text-center opacity-70">
+                    {{ team.taked }}
+                  </div>
+                  <div class="px-1 text-center opacity-70">
+                    {{ team.differential }}
+                  </div>
+                </div>
+
+              </div>
+            @end
+              
+          </div>
+
+        </div>
+
+      </div>
+
     </section>
   @end
-  
+    
 @endlayout
