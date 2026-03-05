@@ -26,6 +26,8 @@ router
   })
   .use(middleware.auth())
 
+router.on('/').render('pages/home')
+
 //auth admin
 router.get('/register', [RegisterController, 'show']).as('register.show')
 router.post('/register', [RegisterController, 'store']).as('register.store')

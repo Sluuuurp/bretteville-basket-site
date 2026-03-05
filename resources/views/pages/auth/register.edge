@@ -1,48 +1,70 @@
 @layoutAdmin({pageTitle: 'Register'})
 
-  <section>
-    <h1>
-      Register
+  <section
+    class="font-manrope w-10/12 sm:w-100 mx-auto  bg-gray-100 shadow-2xl border border-gray-400 rounded p-8 mt-10"
+  >
+    <h1 class="font-bold uppercase my-5 font-teko text-2xl">
+      Creation de compte
     </h1>
 
-    <form method="POST" action="{{ route('register.store') }}">
+    <form class="flex flex-col gap-4" novalidate method="POST" action="{{ route('register.store') }}">
 
       {{ csrfField() }}
 
-        <label for="fullname">
-        <span>Fullname</span>
+      <label class="flex flex-col gap-2">
+        <span class="font-bold">Nom :</span>
 
-        <input type="text" name="fullname" value="{{ old('fullname') || '' }}" />
+        <input
+          class="border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1 disabled"
+          type="text"
+          name="fullname"
+          value="{{ old('fullname') || '' }}"
+        />
 
         @inputError('fullname')
-          {{ $message.join(', ') }}
+          <p class="text-red-500 text-sm">
+            {{ $messages.join(', ') }}
+          </p>
         @end
         
       </label>
 
-      <label for="email">
-        <span>Email</span>
+      <label class="flex flex-col gap-2">
+        <span class="font-bold">Email :</span>
 
-        <input type="email" name="email" value="{{ old('email') || '' }}" />
+        <input
+          class="border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1 disabled"
+          type="email"
+          name="email"
+          value="{{ old('email') || '' }}"
+        />
 
         @inputError('email')
-          {{ $message.join(',') }}
+          <p class="text-red-500 text-sm">
+            {{ $messages.join(', ') }}
+          </p>
         @end
         
       </label>
 
-      <label for="password">
-        <span>Password</span>
+      <label class="flex flex-col gap-2">
+        <span class="font-bold">Mots de passe :</span>
 
-        <input type="password" name="password" value="{{ old('password') || '' }}" />
+        <input
+          class="border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1 disabled"
+          type="password"
+          name="password"
+        />
 
         @inputError('password')
-          {{ $message.join(', ') }}
+          <p class="text-red-500 text-sm">
+            {{ $messages.join(', ') }}
+          </p>
         @end
         
       </label>
 
-      <button type="submit">Register</button>
+      <button class="bg-blue-600 mt-10 text-white px-4 py-1 rounded hover:bg-blue-700 w-fit" type="submit">Valider</button>
 
     </form>
   </section>
