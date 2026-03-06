@@ -1,38 +1,59 @@
-@layout({title: 'Login'})
-  <h1>
-    Login
-  </h1>
+@layoutAdmin({pageTitle: 'login'})
 
-  <form method="POST" action="{{ route('login.store') }}">
+  <section
+    class="font-manrope w-10/12 sm:w-100 mx-auto  bg-gray-100 shadow-2xl border border-gray-400 rounded p-8 mt-10"
+  >
+    <h1 class="font-bold uppercase my-5 font-teko text-2xl">
+      Connectez-vous
+    </h1>
 
-    {{ csrfField() }}
-    @error('E_INVALID_CREDENTIALS')
-      {{ $message }}
-    @end
-    
-    <label for="">
-      <span>Email</span>
+    <form class="flex flex-col gap-4" novalidate method="POST" action="{{ route('login.store') }}">
 
-      <input type="email" name="email" value="{{ old('email') || '' }}" />
+      {{ csrfField() }}
+         
+      <label class="flex flex-col gap-2">
+        <span class="font-bold">Email :</span>
 
-      @inputError('email')
-        {{ $message.join(', ') }}
-      @end
+        <input
+          class="border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1 disabled"
+          type="email"
+          name="email"
+          value="{{ old('email') || '' }}"
+        />
+
+        @inputError('email')
+          <p class="text-red-500 text-sm">
+            {{ $messages.join(', ') }}
+          </p>
+        @end
         
-    </label>
+      </label>
 
-    <label for="">
-      <span>Password</span>
+      <label class="flex flex-col gap-2">
+        <span class="font-bold">Mots de passe :</span>
 
-      <input type="password" name="password" value="{{ old('password') || '' }}" />
+        <input
+          class="border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1 disabled"
+          type="password"
+          name="password"
+        />
 
-      @inputError('password')
-        {{ $message.join(', ') }}
-      @end
+        @inputError('password')
+          <p class="text-red-500 text-sm">
+            {{ $messages.join(', ') }}
+          </p>
+        @end
         
-    </label>
+      </label>
 
-    <button type="submit">Login</button>
+      @error('E_INVALID_CREDENTIALS')
+        <p class="text-red-500 text-sm">
+          {{ $message =' Mauvais email/mot de passe' }}
+        </p>
+      @end
+      
+      <button class="bg-blue-600 mt-10 text-white px-4 py-1 rounded hover:bg-blue-700 w-fit" type="submit">Valider</button>
 
-  </form>
+    </form>
+  </section>
 @end
