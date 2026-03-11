@@ -4,7 +4,7 @@ export const storeEventsValidator = vine.compile(
   vine.object({
     title: vine.string().maxLength(250),
 
-    content: vine.string().maxLength(400).optional(),
+    content: vine.string().maxLength(3000).optional(),
 
     images: vine
       .array(
@@ -21,7 +21,7 @@ export const updateEventsValidator = vine.compile(
   vine.object({
     title: vine.string().maxLength(250),
 
-    content: vine.string().maxLength(400).optional(),
+    content: vine.string().maxLength(3000).optional(),
 
     images: vine
       .array(

@@ -78,6 +78,7 @@ router.post('/reservations/store', [ReservationsController, 'store'])
 
 router
   .group(() => {
+    //crud sponsor
     router.get('/sponsors/creation', [SponsorsController, 'create'])
     router.post('/sponsors/store', [SponsorsController, 'store'])
     router.get('/sponsors/:id/edit', [SponsorsController, 'edit'])

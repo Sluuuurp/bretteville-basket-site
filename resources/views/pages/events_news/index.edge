@@ -2,19 +2,21 @@
 
   @slot('main')
 
-    <section>
-      <a
-        href="/evenements/creation"
-        class="px-2 py-1 text-white font-manrope font-bold block w-fit my-10 ml-2 bg-[#0065a0]"
-      >Créer un événement</a>
-
+    <section class="font-manrope w-10/12 mx-auto rounded p-8 mt-5">
+      @if(auth.isAuthenticated)
+        <a
+          href="/evenements/creation"
+          class="px-2 py-1 text-white font-manrope font-bold block w-fit my-10 ml-5 bg-[#0065a0]"
+        >Créer un événement</a>
+      @end
+      
       @if(flashMessages.has('success'))
         <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
           {{ flashMessages.get('success') }}
         </div>
       @endif
       
-      <h1 class="text-2xl font-bold mb-4">
+      <h1 class="text-2xl font-bold ml-5 mb-12">
         Liste des événements
       </h1>
 
@@ -23,35 +25,49 @@
           Aucun événement pour le moment.
         </p>
       @else
-        <div class="grid gap-4">
+        {{-- liste --}}
+        <div class="grid lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
           @each(event in eventList)
-            <div class="p-4 border rounded shadow-sm">
-              <h2 class="text-xl font-semibold">
-                {{ event.title }}
-              </h2>
-              <p class="text-gray-700">
-                {{ event.content }}
-              </p>
-
-              @if(event.images)
-                <div class="flex gap-2 mt-2">
-                  @each(image in event.images)
-                    <img
-                      src="/{{ image.path }}"
-                      class="w-24 h-24 object-cover rounded"
-                      alt="{{ image.alt ?? event.title }}"
-                    />
-                  @endeach
+            {{-- individuel --}}
+            <div
+              class="flex flex-col max-w-120 ml-5 p-4 border border-gray-400 hover:border-[#0065a0] rounded shadow-sm"
+            >
+              <a href="/evenements/{{ event.id }}">
+                <div class="flex justify-center gap-2 mt-2">
+                  <img
+                    src="/{{ event.images?.[0]?.path ?? 'img/logo-bbc.png' }}"
+                    class="w-100 h-100 object-cover rounded"
+                    alt="{{ event.images?.[0]?.alt ?? event.title }}"
+                  />
                 </div>
-              @endif
-              <a href="/evenements/{{ event.id }}" class="text-blue-600 underline text-sm">Voir l’événement</a>
-              <a href="/evenements/{{ event.id }}/edit" class="text-blue-600 underline">Modifier</a>
 
-              <form method="POST" action="/evenements/{{ event.id }}?_method=DELETE">
-                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                <button class="btn-danger" onclick="return confirm('Supprimer cet événement ?')">Supprimer</button>
-              </form>
+                <h2 class="text-2xl font-bold font-teko uppercase mt-4">
+                  {{ event.title }}
+                </h2>
+                <p class="text-black/60 font-manrope text-sm font-semibold">
+                  {{ event.createdAt.toFormat('dd/MM/yyyy') }}
+                </p>
+                @if(event.content !== 'null')
+                  <p class="text-black font-manrope text-sm line-clamp-1 mt-2 first-letter:uppercase">
+                    {{ event.content }}
+                  </p>
+                @end
+              </a>
 
+              <a
+                href="/evenements/{{ event.id }}"
+                class="px-2 py-1 w-fit border border-gray-600 text-sm mt-4 font-semibold hover:text-[#0065a0] hover:border-[#0065a0]"
+              >Continuer ></a>
+              <div class="flex gap-4 mt-4">
+                @if(auth.isAuthenticated)
+                  <a href="/evenements/{{ event.id }}/edit" class="bg-[#0065a0] text-white py-1 px-2">Modifier</a>
+
+                  <form method="POST" action="/evenements/{{ event.id }}?_method=DELETE">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                    <button class="bg-red-600 text-white py-1 px-2" onclick="return confirm('Supprimer cet événement ?')">Supprimer</button>
+                  </form>
+                @end
+              </div>
             </div>
           @endeach
         </div>

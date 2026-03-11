@@ -1,35 +1,39 @@
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>
-      {{ event.title }}
-    </title>
-  </head>
+@layout('components.layout')
 
-  <body class="p-6">
+  @slot('main')
 
-    <a href="/evenements" class="text-sm text-blue-600 underline">
-      ← Retour à la liste
+    <section class="font-manrope text-sm mx-auto sm:w-10/12 sm:text-base max-w-220 rounded p-8">
+      <a
+        href="/evenements"
+        class="px-2 py-1 w-fit border border-gray-500 text-sm font-semibold hover:text-[#0065a0] hover:border-[#0065a0]"
+      >
+        ← Retour à la liste
     </a>
 
-    <h1 class="text-3xl font-bold mt-4">
-      {{ event.title }}
-    </h1>
+      <h1 class="text-xl sm:text-3xl font-bold uppercase font-manrope mt-10">
+        {{ event.title }}
+      </h1>
 
-    <p class="mt-4 text-gray-700">
-      {{ event.content }}
-    </p>
-
-    @if(event.images.length)
-      <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-        @each(image in event.images)
-          <img src="/{{ image.path }}" alt="{{ image.alt ?? event.title }}" class="rounded shadow object-cover" />
-        @endeach
-      </div>
-    @endif
-    
-  </body>
-</html>
+      <p class="text-xs sm:text-sm text-gray-500 mt-3">
+        Créé le {{ event.createdAt.toFormat('dd/MM/yyyy') }}
+        @if(event.createdAt.toMillis() !== event.updatedAt.toMillis())
+          <span class="ml-2">
+            (modifié le {{ event.updatedAt.toFormat('dd/MM/yyyy') }})
+    </span>
+        @end
+      </p>
+      @if(event.content !== 'null')
+        <p class="mt-4 text-gray-700 first-letter:uppercase">
+          {{ event.content }}
+        </p>
+      @end
+      @if(event.images.length)
+        <div class="mt-20 flex flex-wrap justify-center gap-20">
+          @each(image in event.images)
+            <img src="/{{ image.path }}" alt="{{ image.alt ?? event.title }}" class="rounded shadow object-cover" />
+          @endeach
+        </div>
+      @endif
+    </section>
+  @end
+@end

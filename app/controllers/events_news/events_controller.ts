@@ -10,8 +10,9 @@ export default class EventsController {
   /**
    * Display a list of resource
    */
-  async index({ view }: HttpContext) {
+  async index({ view, auth }: HttpContext) {
     const eventList = await Event.query().orderBy('created_at', 'desc')
+    await auth.check()
     return view.render('pages/events_news/index', { eventList })
   }
 
