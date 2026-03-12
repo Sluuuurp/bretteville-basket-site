@@ -10,8 +10,9 @@ export default class ArticlesController {
   /**
    * Display a list of resource
    */
-  async index({ view }: HttpContext) {
+  async index({ view, auth }: HttpContext) {
     const articlesList = await Article.all()
+    await auth.check()
     return view.render('pages/articles/index', { articlesList })
   }
 

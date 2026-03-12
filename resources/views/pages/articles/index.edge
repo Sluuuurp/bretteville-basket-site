@@ -1,61 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>
-      Document
-    </title>
-  </head>
-  <body>
+@layout('components.layout')
 
-    <a href="/articles/creation" class="btn-primary mb-4 inline-block">Créer un article</a>
+  @slot('main')
 
-    @if(flashMessages.has('success'))
-      <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
-        {{ flashMessages.get('success') }}
-      </div>
-    @endif
-    
-    <h1 class="text-2xl font-bold mb-4">
-      Liste des Article
-    </h1>
-
-    @if(articlesList.length === 0)
-      <p>
-        Aucun Article pour le moment.
-      </p>
-    @else
-      <div class="grid gap-4">
-        @each(article in articlesList)
-          <div class="p-4 border rounded shadow-sm">
-            <h2 class="text-xl font-semibold">
-              {{ article.name }}
-            </h2>
-            <p class="text-gray-700">
-              {{ article.description }}
-            </p>
-
-            <p class="text-gray-700">
-              {{ article.price }}
-            </p>
-
-            <img src="{{ article.image }}" alt="" class="w-24 h-24 object-cover rounded" />
-
-            {{-- <a href="/articles/{{ article.id }}" class="text-blue-600 underline text-sm">Voir l’événement</a> --}}
-            <a href="/articles/{{ article.id }}/edit" class="text-blue-600 underline">Modifier</a>
-
-            <form method="POST" action="/articles/{{ article.id }}?_method=DELETE">
-              <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-              <button class="btn-danger" onclick="return confirm('Supprimer cet article ?')">Supprimer</button>
-            </form>
-
-          </div>
-        @endeach
-      </div>
-    @endif
-    
+    <section class="font-manrope w-10/12 mx-auto rounded p-8 mt-5">
+      @if(auth.isAuthenticated)
+        <a
+          href="/articles/creation"
+          class="px-2 py-1 text-white font-manrope font-bold block w-fit my-10 bg-[#0065a0]"
+        >Créer un article</a>
+      @end
+      @if(flashMessages.has('success'))
+        <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
+          {{ flashMessages.get('success') }}
+        </div>
+      @endif
       
-  </body>
-</html>
+      <h1 class="text-2xl font-bold mb-4">
+        Liste des Article
+      </h1>
+
+      @if(articlesList.length === 0)
+        <p>
+          Aucun Article pour le moment.
+        </p>
+      @else
+        <div class="grid grid-cols-2 gap-4">
+          @each(article in articlesList)
+            <div class="p-4 border rounded shadow-sm">
+              <h2 class="text-2xl font-semibold uppercase font-manrope text-[#0065a0]">
+                {{ article.name }}
+              </h2>
+
+              <img src="{{ article.image }}" alt="" class="w-24 h-24 object-cover rounded" />
+
+              <p class="text-gray-700">
+                {{ article.description }}
+              </p>
+
+              <p class="text-[#0065a0]/80 font-semibold">
+                {{ article.price }} €
+              </p>
+
+              @if(auth.isAuthenticated)
+                <div class="flex gap-3 mt-5">
+                  {{-- <a href="/articles/{{ article.id }}" class="text-blue-600 underline text-sm">Voir l’événement</a> --}}
+                  <a href="/articles/{{ article.id }}/edit" class="bg-[#0065a0] text-white py-1 px-2">Modifier</a>
+
+                  <form method="POST" action="/articles/{{ article.id }}?_method=DELETE">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                    <button class="bg-red-600 text-white py-1 px-2" onclick="return confirm('Supprimer cet article ?')">Supprimer</button>
+                  </form>
+                </div>
+              @end
+            </div>
+          @endeach
+        </div>
+      @endif
+    </section>
+  @end
+@end

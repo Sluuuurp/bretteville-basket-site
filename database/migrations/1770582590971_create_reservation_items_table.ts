@@ -15,7 +15,13 @@ export default class extends BaseSchema {
         .inTable('reservations')
         .onDelete('CASCADE')
 
-      table.integer('article_id').unsigned().notNullable().references('id').inTable('articles')
+      table
+        .integer('article_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('articles')
+        .onDelete('CASCADE')
 
       table.string('size').notNullable()
       table.integer('quantity').unsigned().notNullable()
