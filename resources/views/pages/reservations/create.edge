@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>
-      Document
-    </title>
-  </head>
-  <body>
+@layout()
+
+  @slot('main')
+
     @if (flashMessages.has('success'))
       <div class="p-3 mb-4 bg-green-100 text-green-700 rounded">
         {{ flashMessages.get('success') }}
@@ -23,117 +16,93 @@
     
     
     
-    <section>
-      <h3>
-        Ajouter un article
+    <section class="font-manrope w-10/12 mx-auto rounded p-8 mt-5">
+      <h3 class="text-xl font-bold font-timeline mb-1">
+        Reservez vos articles
       </h3>
+      <div class="h-1.5 w-full bg-[#da0f83]">
+      </div>
 
-      <select id="select-article">
-        @each(article in articlesList)
-          <option value="{{ article.id }}" data-price="{{ article.price }}">
-            {{ article.name }} - {{ article.price }}€
+      <form action="/reservations/store" method="post" class="mt-10">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+        <!-- coordonnées -->
+        {{-- coordonnées --}}
+        <fieldset class="grid gap-4">
+          <legend class="mb-6 font-manrope font-bold">
+            Coordonnées :
+          </legend>
+
+          <label for="lastname" class="grid">
+            <span>Nom</span>
+            <input id="lastname" type="text" name="lastname" required class="input border" />
+          </label>
+
+          <label for="firstname" class="grid">
+            <span>Prénom</span>
+            <input id="firstname" type="text" name="firstname" required class="input border" />
+          </label>
+
+          <label for="email" class="grid">
+            <span>Email</span>
+            <input id="email" type="email" name="email" required class="input border" />
+          </label>
+
+          <label for="phone" class="grid">
+            <span>Téléphone (optionnel)</span>
+            <input id="phone" type="tel" name="phone" class="input border" />
+          </label>
+        </fieldset>
+
+        <hr class="mt-10" />
+        {{-- selection article --}}
+        <select id="select-article">
+          @each(article in articlesList)
+            <option value="{{ article.id }}" data-price="{{ article.price }}">
+              {{ article.name }} - {{ article.price }}€
+            </option>
+          @endeach
+        </select>
+        <select id="select-size">
+          <option value="S">
+            S
           </option>
-        @endeach
-      </select>
-      <select id="select-size">
-        <option>
-          S
-        </option>
-        <option>
-          M
-        </option>
-        <option>
-          L
-        </option>
-        <option>
-          XL
-        </option>
-      </select>
+          <option value="M">
+            M
+          </option>
+          <option value="L">
+            L
+          </option>
+          <option value="XL">
+            XL
+          </option>
+          <option value="XXL">
+            XXL
+          </option>
+        </select>
 
-      <input type="number" id="select-qty" min="1" value="1" />
+        <input type="number" id="select-qty" min="1" value="1" />
 
-      <button type="button" id="add-to-cart">
-        Ajouter au panier
+        <button type="button" id="add-to-cart">
+          Ajouter au panier
   </button>
+        <hr class="py-10" />
+        <h3>
+          Votre panier
+        </h3>
+        <div id="cart">
+        </div>
+
+        <p id="empty-cart">
+          Votre panier est vide
+        </p>
+
+        <p id="cart-total">
+          Total : 0 €
+        </p>
+
+        <button type="submit">Réserver</button>
+      </form>
     </section>
-    <hr class="py-10" />
-    <form action="/reservations/store" method="post">
-      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-
-      <!-- coordonnées -->
-      {{-- coordonnées --}}
-      <div>
-        <label for="lastname">Nom</label>
-        <input type="text" name="lastname" required class="input border" />
-
-        <label for="firstname">Prénom</label>
-        <input type="text" name="firstname" required class="input border" />
-
-        <label for="email">Email</label>
-        <input type="email" name="email" required class="input border" />
-
-        <label for="phone">Téléphone (optionnel)</label>
-        <input type="tel" name="phone" class="input border" />
-      </div>
-      <hr class="py-10" />
-      <h3>
-        Votre panier
-      </h3>
-      <div id="cart">
-      </div>
-
-      <p id="empty-cart">
-        Votre panier est vide
-      </p>
-
-      <button type="submit">Réserver</button>
-    </form>
-
-    <script>
-      const cart = [];
-
-      const cartContainer = document.getElementById("cart");
-
-      const emptyCart = document.getElementById("empty-cart");
-
-      function renderCart() {
-        cartContainer.innerHTML = "";
-        emptyCart.style.display = cart.length ? "none" : "block";
-        cart.forEach((item, index) => {
-          cartContainer.insertAdjacentHTML("beforeend", `
-                                                                                                                                          <div>
-                                                                                                                                            ${item.name} - ${item.size} × ${item.quantity}
-
-                                                                                                                                            <input type="hidden" name="items[${index}][articleId]" value="${item.articleId}">
-                                                                                                                                            <input type="hidden" name="items[${index}][size]" value="${item.size}">
-                                                                                                                                            <input type="hidden" name="items[${index}][quantity]" value="${item.quantity}">
-
-                                                                                                                                            <button type="button" onclick="removeItem(${index})">✕</button>
-                                                                                                                                          </div>
-                                                                                                                                        `);
-        });
-      }
-
-      function removeItem(index) {
-        cart.splice(index, 1);
-        renderCart();
-      }
-      //add au panier;
-
-      document.getElementById("add-to-cart").addEventListener("click", () => {
-        const articleSelect = document.getElementById("select-article");
-        const size = document.getElementById("select-size").value;
-        const quantity = Number(document.getElementById("select-qty").value);
-        cart.push({
-          articleId: articleSelect.value,
-          name: articleSelect.options[articleSelect.selectedIndex].text,
-          size: size,
-          quantity: quantity
-        });
-        renderCart();
-      });
-    </script>
-
-  </body>
-</html>
-
+  @end
+@end
