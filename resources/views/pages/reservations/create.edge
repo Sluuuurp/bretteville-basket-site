@@ -54,39 +54,55 @@
           </label>
         </fieldset>
 
-        <hr class="mt-10" />
+        <div class="w-full h-1 bg-black my-10">
+        </div>
         {{-- selection article --}}
-        <select id="select-article">
+        <div class="flex flex-wrap gap-5" id="select-article">
           @each(article in articlesList)
-            <option value="{{ article.id }}" data-price="{{ article.price }}">
-              {{ article.name }} - {{ article.price }}€
-            </option>
+            <div
+              class="border flex flex-col items-center w-70 article-card"
+              data-id="{{ article.id }}"
+              data-price="{{ article.price }}"
+              data-name="{{ article.name }}"
+            >
+              <p class="my-5">
+                {{ article.name }} - {{ article.price }}€
+              </p>
+
+              <img class="w-30 h-30" src="/{{ article.image }}" alt="" />
+
+              <div class="flex gap-3 my-5">
+                <span>Taille:</span>
+                <select class="select-size">
+                  <option value="S">
+                    S
+                  </option>
+                  <option value="M">
+                    M
+                  </option>
+                  <option value="L">
+                    L
+                  </option>
+                  <option value="XL">
+                    XL
+                  </option>
+                  <option value="XXL">
+                    XXL
+                  </option>
+                </select>
+                <span>Qte</span>
+                <input type="number" class="select-qty" min="1" max="99" value="1" />
+              </div>
+
+              <button class="bg-[#0065a0] py-1 px-2 text-white mb-5 rounded add-to-cart" type="button">Ajouter au panier</button>
+
+            </div>
           @endeach
-        </select>
-        <select id="select-size">
-          <option value="S">
-            S
-          </option>
-          <option value="M">
-            M
-          </option>
-          <option value="L">
-            L
-          </option>
-          <option value="XL">
-            XL
-          </option>
-          <option value="XXL">
-            XXL
-          </option>
-        </select>
+        </div>
 
-        <input type="number" id="select-qty" min="1" value="1" />
+        <div class="w-full h-1 bg-black my-10">
+        </div>
 
-        <button type="button" id="add-to-cart">
-          Ajouter au panier
-  </button>
-        <hr class="py-10" />
         <h3>
           Votre panier
         </h3>

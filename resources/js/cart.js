@@ -44,28 +44,32 @@ export function initCart() {
 
   //add au panier;
 
-  document.getElementById('add-to-cart').addEventListener('click', () => {
-    const articleSelect = document.getElementById('select-article')
-    const articleId = articleSelect.value
-    const name = articleSelect.options[articleSelect.selectedIndex].text
-    const size = document.getElementById('select-size').value
-    const price = Number(articleSelect.options[articleSelect.selectedIndex].dataset.price)
-    const quantity = Number(document.getElementById('select-qty').value)
+  document.querySelectorAll('.add-to-cart').forEach((button) => {
+    button.addEventListener('click', (e) => {
+      const card = e.target.closest('.article-card')
 
-    const existingItem = cart.find((item) => item.articleId === articleId && item.size === size)
+      const articleId = card.dataset.id
+      const name = card.dataset.name
+      const price = Number(card.dataset.price)
 
-    if (existingItem) {
-      existingItem.quantity += quantity
-    } else {
-      cart.push({
-        articleId: articleId,
-        name: name,
-        size: size,
-        quantity: quantity,
-        price: price,
-      })
-    }
+      const size = card.querySelector('.select-size').value
+      const quantity = Number(card.querySelector('.select-qty').value)
 
-    renderCart()
+      const existingItem = cart.find((item) => item.articleId === articleId && item.size === size)
+
+      if (existingItem) {
+        existingItem.quantity += quantity
+      } else {
+        cart.push({
+          articleId,
+          name,
+          size,
+          quantity,
+          price,
+        })
+      }
+
+      renderCart()
+    })
   })
 }
