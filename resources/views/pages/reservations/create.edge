@@ -16,10 +16,10 @@
     
     
     
-    <section class="font-manrope w-10/12 mx-auto rounded p-8 mt-5">
-      <h3 class="text-xl font-bold font-timeline mb-1">
+    <section class="font-manrope w-11/12 mx-auto rounded p-8 mt-5">
+      <h2 class="text-xl font-bold font-timeline mb-1">
         Reservez vos articles
-      </h3>
+      </h2>
       <div class="h-1.5 w-full bg-[#da0f83]">
       </div>
 
@@ -28,35 +28,43 @@
 
         <!-- coordonnées -->
         {{-- coordonnées --}}
-        <fieldset class="grid gap-4">
-          <legend class="mb-6 font-manrope font-bold">
+        <fieldset class="grid sm:grid-cols-2 gap-4 max-w-150">
+          <legend class="mb-6 font-manrope font-bold text-black/70 text-xl">
             Coordonnées :
           </legend>
 
           <label for="lastname" class="grid">
-            <span>Nom</span>
-            <input id="lastname" type="text" name="lastname" required class="input border" />
+            <span class="py-1 text-black/70 font-semibold">Nom</span>
+            <input id="lastname" type="text" name="lastname" required class="input border border-gray-500 max-w-60" />
           </label>
 
           <label for="firstname" class="grid">
-            <span>Prénom</span>
-            <input id="firstname" type="text" name="firstname" required class="input border" />
+            <span class="py-1 text-black/70 font-semibold">Prénom</span>
+            <input
+              id="firstname"
+              type="text"
+              name="firstname"
+              required
+              class="input border border-gray-500 max-w-60"
+            />
           </label>
 
           <label for="email" class="grid">
-            <span>Email</span>
-            <input id="email" type="email" name="email" required class="input border" />
+            <span class="py-1 text-black/70 font-semibold">Email</span>
+            <input id="email" type="email" name="email" required class="input border border-gray-500 max-w-60" />
           </label>
 
           <label for="phone" class="grid">
-            <span>Téléphone (optionnel)</span>
-            <input id="phone" type="tel" name="phone" class="input border" />
+            <span class="py-1 text-black/70 font-semibold">Téléphone (optionnel)</span>
+            <input id="phone" type="tel" name="phone" class="input border border-gray-500 max-w-60" />
           </label>
         </fieldset>
 
-        <div class="w-full h-1 bg-black my-10">
-        </div>
         {{-- selection article --}}
+        <h3 class="mb-10 font-manrope my-20 font-bold text-black/70 text-xl">
+          Liste des Articles :
+        </h3>
+
         <div class="flex flex-wrap gap-5" id="select-article">
           @each(article in articlesList)
             <div
@@ -65,15 +73,18 @@
               data-price="{{ article.price }}"
               data-name="{{ article.name }}"
             >
-              <p class="my-5">
+              <p class="my-5 font-bold uppercase text-[#0065a0]">
                 {{ article.name }} - {{ article.price }}€
               </p>
 
               <img class="w-30 h-30" src="/{{ article.image }}" alt="" />
 
+              <div class="h-1 mt-2 w-5/8 bg-[#da0f83]">
+              </div>
+
               <div class="flex gap-3 my-5">
-                <span>Taille:</span>
-                <select class="select-size">
+                <span class="">Taille:</span>
+                <select class="select-size border p-0.5 border-gray-500 rounded ">
                   <option value="S">
                     S
                   </option>
@@ -90,8 +101,14 @@
                     XXL
                   </option>
                 </select>
-                <span>Qte</span>
-                <input type="number" class="select-qty" min="1" max="99" value="1" />
+                <span>Qte:</span>
+                <input
+                  type="number"
+                  class="select-qty border rounded border-gray-500 pl-1.5 p-0.5"
+                  min="1"
+                  max="99"
+                  value="1"
+                />
               </div>
 
               <button class="bg-[#0065a0] py-1 px-2 text-white mb-5 rounded add-to-cart" type="button">Ajouter au panier</button>
@@ -100,24 +117,27 @@
           @endeach
         </div>
 
-        <div class="w-full h-1 bg-black my-10">
-        </div>
-
-        <h3>
-          Votre panier
+        <h3 class="mb-6 font-manrope font-bold my-10 text-black/70 text-xl">
+          Votre panier:
         </h3>
-        <div id="cart">
+        <div class="flex flex-col gap-4 max-w-130" id="cart">
         </div>
 
-        <p id="empty-cart">
+        <p class="text-black/70 italic" id="empty-cart">
           Votre panier est vide
         </p>
 
-        <p id="cart-total">
+        <div class="h-1 mt-6 w-3/8 bg-[#da0f83]">
+        </div>
+
+        <p class="mt-2" id="cart-total">
           Total : 0 €
         </p>
 
-        <button type="submit">Réserver</button>
+        <button
+          class="bg-[#0065a0] py-2 px-3 text-white mb-5 rounded mt-6 uppercase font-semibold"
+          type="submit"
+        >Réserver</button>
       </form>
     </section>
   @end
