@@ -27,6 +27,7 @@ export default class ArticlesController {
    * Handle form submission for the create action
    */
   async store({ request, response, session }: HttpContext) {
+    console.log(request.file('image'))
     const checkData = await request.validateUsing(storeArticlesValidator)
 
     // gestion image

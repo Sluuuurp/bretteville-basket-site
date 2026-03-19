@@ -14,7 +14,7 @@ export const storeArticlesValidator = vine.compile(
 
     image: vine.file({
       size: '2mb',
-      extnames: ['jpg', 'jpeg', 'png', 'webp'],
+      extnames: ['jpg', 'jpeg', 'png', 'webp', 'avif'],
     }),
   })
 )
@@ -34,7 +34,7 @@ export const updateArticlesValidator = vine.compile(
     image: vine
       .file({
         size: '2mb',
-        extnames: ['jpg', 'jpeg', 'png', 'webp'],
+        extnames: ['jpg', 'jpeg', 'png', 'webp', 'avif'],
       })
       .optional(),
   })

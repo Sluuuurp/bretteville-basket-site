@@ -42,7 +42,17 @@
       {{-- image --}}
       <div>
         <label for="image" class="block mb-1">modifier l'image</label>
-        <input type="file" name="image" class="input" />
+        <input
+          id="image-input"
+          type="file"
+          name="image"
+          accept="image/png,image/jpeg,image/webp,image/avif"
+          class="input border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+        />
+
+        <!-- Preview nouvelle image -->
+        <div id="image-preview" class="mt-4">
+        </div>
 
         <div class="space-y-2 mt-4">
           <p class="font-semibold">
