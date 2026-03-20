@@ -20,8 +20,35 @@
 
       <!-- Images -->
       <div>
-        <label class=" text-sm font-medium">Images</label>
-        <input class="border" type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" />
+        <!-- Bouton visible pour ajouter des images -->
+        <label
+          for="images-input"
+          class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 cursor-pointer inline-block"
+        >+ Ajouter des images</label>
+
+        <!-- Input file caché -->
+        <input
+          id="images-input"
+          class="absolute opacity-0 w-0 h-0"
+          type="file"
+          name="images[]"
+          multiple
+          accept="image/png,image/jpeg,image/webp,image/avif"
+        />
+
+        <!-- Zone de drop -->
+        <div
+          id="drop-zone"
+          class="mt-4 p-8 border-2 border-dashed border-gray-300 rounded bg-gray-50 text-center cursor-pointer hover:bg-gray-100 transition"
+        >
+          <p class="text-gray-600">
+            Ou glisse tes images ici
+          </p>
+        </div>
+
+        <!-- Preview -->
+        <div id="images-preview" class="grid grid-cols-3 gap-4 mt-4">
+        </div>
       </div>
 
       <!-- Submit -->

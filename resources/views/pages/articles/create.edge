@@ -1,26 +1,32 @@
 @layout('components.layout')
 
   @slot('main')
-    <section class="font-manrope w-10/12 mx-auto rounded p-8 mt-5">
+    <section class="font-manrope w-6/12 mx-auto rounded p-8 mt-5">
+      <a
+        href="/articles"
+        class="px-2 py-1 block mb-6 w-fit border border-gray-500 text-sm font-semibold hover:text-[#0065a0] hover:border-[#0065a0]"
+      >
+        ← Retour à la liste
+    </a>
       <form action="/articles/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
         <!-- CSRF -->
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
         <!-- Nom -->
-        <div>
-          <label for="name" class=" text-sm font-medium">Nom de l'article</label>
+        <div class="flex flex-col gap-2">
+          <label for="name" class=" text-sm sm:text-base font-medium">Nom de l'article:</label>
           <input
             type="text"
             name="name"
             required
             maxlength="250"
-            class="input border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+            class="input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
           />
         </div>
 
         <!-- Description -->
-        <div class="flex flex-col">
-          <label for="description" class=" text-sm font-medium">Description</label>
+        <div class="flex flex-col gap-2">
+          <label for="description" class=" text-sm sm:text-base  font-medium">Description:</label>
           <textarea
             name="description"
             rows="5"
@@ -29,35 +35,35 @@
         </div>
 
         <!-- prix -->
-        <div class="flex flex-col">
-          <label for="price" class=" text-sm font-medium">Prix</label>
+        <div class="flex gap-2 mt-3">
+          <label for="price" class=" text-sm sm:text-base  font-medium">Prix:</label>
           <input
             type="number"
             name="price"
             step="0.01"
             min="0"
-            class="input border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+            class="input border max-w-20 rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
           />
         </div>
 
         <!-- Images -->
-        <div>
-          <label for="image" class=" text-sm font-medium">Image</label>
+        <div class="flex items-end gap-5 mb-5">
+          <label for="image" class=" text-sm sm:text-base font-medium">Image:</label>
           <input
             id="image-input"
             type="file"
             name="image"
             required
             accept="image/png,image/jpeg,image/webp,image/avif"
-            class="input border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+            class="mt-2 px-2 py-1 bg-[#0065a0]/90 text-white text-sm rounded hover:bg-[#0065a0]"
           />
           <!-- Preview -->
-          <div id="image-preview" class="mt-4">
-          </div>
-        </div>
 
+        </div>
+        <div id="image-preview" class="mt-4 mx-auto">
+        </div>
         <!-- Submit -->
-        <button type="submit" class="btn-primary border">
+        <button type="submit" class="bg-[#0065a0]/90 text-white py-1 px-2 w-fit hover:bg-[#0065a0]">
           Créer l'article
         </button>
 

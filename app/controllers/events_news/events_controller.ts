@@ -27,6 +27,7 @@ export default class EventsController {
    * Handle form submission for the create action
    */
   async store({ request, response, session }: HttpContext) {
+    console.log(request.files('images'))
     const checkData = await request.validateUsing(storeEventsValidator)
 
     const event = await Event.create({
