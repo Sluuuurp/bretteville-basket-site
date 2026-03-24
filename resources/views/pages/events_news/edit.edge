@@ -1,63 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>
-      Document
-    </title>
-  </head>
-  <body>
+@layout('components/layoutAdmin')
 
-    <h1 class="text-2xl font-bold mb-4">
-      Modifier l’événement
-    </h1>
+  @slot('main')
 
-    <form
-      method="POST"
-      action="/evenements/{{ event.id }}?_method=PATCH"
-      enctype="multipart/form-data"
-      class="space-y-4"
-    >
-      <!-- CSRF -->
-      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-      <div>
-        <label for="title">Titre</label>
-        <input type="text" name="title" value="{{ event.title }}" class="input" />
-      </div>
+    <section class="font-manrope w-11/12  sm:w-6/12  mx-auto rounded p-8 mt-5">
+      <a
+        href="/evenements"
+        class="px-2 py-1 block mb-6 w-fit border border-gray-500 text-sm font-semibold hover:text-[#0065a0] hover:border-[#0065a0]"
+      >
+        ← Retour à la liste
+    </a>
 
-      <div>
-        <label for="content">Contenu</label>
-        <textarea name="content" class="input">{{ event.content }}</textarea>
-      </div>
+      <h1
+        class="text-3xl font-bold mb-8 underline decoration-[#da0f83] decoration-3 underline-offset-6 uppercase font-teko "
+      >
+        Modifier l’événement
+      </h1>
 
-      {{-- image --}}
-      <div>
-        <label for="images[]" class="block mb-1">Ajouter des images</label>
-        <input type="file" name="images[]" multiple class="input" />
-        @if(event.images && event.images.length)
-          <div class="space-y-2 mt-4">
-            <p class="font-semibold">
-              Images existantes
-            </p>
+      <form
+        method="POST"
+        action="/evenements/{{ event.id }}?_method=PATCH"
+        enctype="multipart/form-data"
+        class="flex flex-col gap-4"
+      >
+        <!-- CSRF -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
-            @each(image in event.images)
-              <label for="removeImages[]" class="flex items-center gap-2">
-                <input type="checkbox" name="removeImages[]" value="{{ image.path }}" />
-                <img src="/{{ image.path }}" class="w-16 h-16 object-cover rounded" />
-                Supprimer
-      </label>
-            @endeach
+        <div class="flex flex-col gap-2">
+          <label class="text-sm sm:text-base font-medium" for="title">Titre</label>
+          <input
+            type="text"
+            name="title"
+            value="{{ event.title }}"
+            class="input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm sm:text-base font-medium" for="content">Contenu</label>
+          <textarea
+            name="content"
+            class="textarea input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          >{{ event.content }}</textarea>
+        </div>
+
+        {{-- image --}}
+        <div class="">
+          <div class="flex items-center gap-5">
+            <label
+              for="images-input"
+              class="mt-2 px-4 py-2 h-fit bg-[#0065a0]/90 text-white rounded hover:bg-[#0065a0] cursor-pointer inline-block"
+            >+ Ajouter des images</label>
+
+            <!-- Input file caché -->
+            <input
+              id="images-input"
+              class="absolute opacity-0 w-0 h-0"
+              type="file"
+              name="images[]"
+              multiple
+              accept="image/png,image/jpeg,image/webp,image/avif"
+            />
+
+            <!-- Zone de drop -->
+            <div
+              id="drop-zone"
+              class="mt-4 p-8 border-2 text-gray-600 w-60 border-dashed border-gray-300 rounded bg-gray-50 text-center cursor-pointer hover:bg-gray-200 hover:border-blue-300 transition"
+            >
+              Ou glisse tes images ici
+            </div>
           </div>
-        @endif
-        
-      </div>
 
-      <button class="btn-primary">
-        Mettre à jour
+          <!-- Preview -->
+          <div
+            id="images-preview"
+            class="flex text-gray-400 italic flex-wrap gap-4 mt-4 border-y border-gray-400 py-5"
+          >
+            aucune image ...
+          </div>
+
+          @if(event.images && event.images.length)
+            <div class="space-y-2 mt-4">
+              <p class="font-semibold">
+                Images existantes / cochez pour supprimer
+              </p>
+
+              @each(image in event.images)
+                <label for="removeImages[]" class="flex items-center gap-2">
+                  <input type="checkbox" name="removeImages[]" value="{{ image.path }}" />
+                  <img src="/{{ image.path }}" class="w-16 object-cover rounded" />
+                  Supprimer
+      </label>
+              @endeach
+            </div>
+          @endif
+        </div>
+
+        <button class="bg-[#0065a0]/90 text-white py-1 px-2 mt-6 w-fit hover:bg-[#0065a0]">
+          Mettre à jour
   </button>
-    </form>
-
-  </body>
-</html>
+      </form>
+    </section>
+  @end
+@end

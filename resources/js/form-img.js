@@ -14,8 +14,12 @@ export function formImg() {
           const reader = new FileReader()
           reader.onload = (event) => {
             const img = document.createElement('img')
+            const title = document.createElement('h3')
+            title.textContent = 'Nouvelle Image'
+            title.className = 'font-semibold mb-5'
             img.src = event.target.result
-            img.className = 'w-48 rounded border-2 border-gray-300'
+            img.className = 'w-32 rounded border-2 border-gray-300'
+            previewContainer.appendChild(title)
             previewContainer.appendChild(img)
           }
           reader.readAsDataURL(file)
@@ -47,16 +51,18 @@ export function formImg() {
       if (dropZone) {
         dropZone.addEventListener('dragover', (e) => {
           e.preventDefault()
-          dropZone.classList.add('border-blue-500', 'bg-blue-50')
+          dropZone.classList.add('border-green-500', 'bg-green-50')
+          dropZone.textContent = 'Deposez'
         })
 
         dropZone.addEventListener('dragleave', () => {
-          dropZone.classList.remove('border-blue-500', 'bg-blue-50')
+          dropZone.classList.remove('border-green-500', 'bg-green-50')
+          dropZone.textContent = 'Ou glisse tes images ici'
         })
 
         dropZone.addEventListener('drop', (e) => {
           e.preventDefault()
-          dropZone.classList.remove('border-blue-500', 'bg-blue-50')
+          dropZone.classList.remove('border-green-500', 'bg-green-50')
 
           const files = Array.from(e.dataTransfer.files).filter((file) =>
             file.type.startsWith('image/')
@@ -83,7 +89,7 @@ export function formImg() {
             // Image
             const img = document.createElement('img')
             img.src = event.target.result
-            img.className = 'w-32 h-32 object-cover rounded border-2 border-gray-300'
+            img.className = 'w-32 object-cover rounded border-2 border-gray-300'
 
             // Bouton delete
             const deleteBtn = document.createElement('button')

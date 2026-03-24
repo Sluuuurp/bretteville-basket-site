@@ -1,78 +1,102 @@
-@layout('components.layout')
+@layout('components/layoutAdmin')
 
   @slot('main')
+    <section class="font-manrope w-11/12  sm:w-6/12  mx-auto rounded p-8 mt-5">
+      <a
+        href="/evenements"
+        class="px-2 py-1 block mb-6 w-fit border border-gray-500 text-sm font-semibold hover:text-[#0065a0] hover:border-[#0065a0]"
+      >
+        ← Retour à la liste
+    </a>
 
-    <form action="/events/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
-      <!-- CSRF -->
-      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <h1
+        class="text-3xl font-bold mb-8 underline decoration-[#da0f83] decoration-3 underline-offset-6 uppercase font-teko "
+      >
+        Creation d'evenements
+      </h1>
+      <form action="/events/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+        <!-- CSRF -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
-      <!-- Titre -->
-      <div>
-        <label class=" text-sm font-medium">Titre</label>
-        <input type="text" name="title" required maxlength="250" class="input border" />
-      </div>
+        <!-- Titre -->
+        <div class="flex flex-col gap-2">
+          <label class=" text-sm sm:text-base font-medium">Titre :</label>
+          <input
+            type="text"
+            name="title"
+            required
+            maxlength="250"
+            class="input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          />
+        </div>
 
-      <!-- Contenu -->
-      <div class="flex flex-col">
-        <label class=" text-sm font-medium">Contenu</label>
-        <textarea name="content" rows="5" class="textarea border"></textarea>
-      </div>
+        <!-- Contenu -->
+        <div class="flex flex-col gap-2">
+          <label class=" text-sm sm:text-base font-medium">Contenu :</label>
+          <textarea
+            name="content"
+            rows="5"
+            class="textarea input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          ></textarea>
+        </div>
 
-      <!-- Images -->
-      <div>
-        <!-- Bouton visible pour ajouter des images -->
-        <label
-          for="images-input"
-          class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 cursor-pointer inline-block"
-        >+ Ajouter des images</label>
+        <!-- Images -->
+        <div class="flex items-center gap-10 my-5">
+          <!-- Bouton visible pour ajouter des images -->
+          <label
+            for="images-input"
+            class="mt-2 px-4 py-2 h-fit bg-[#0065a0]/90 text-white rounded hover:bg-[#0065a0] cursor-pointer inline-block"
+          >+ Ajouter des images</label>
 
-        <!-- Input file caché -->
-        <input
-          id="images-input"
-          class="absolute opacity-0 w-0 h-0"
-          type="file"
-          name="images[]"
-          multiple
-          accept="image/png,image/jpeg,image/webp,image/avif"
-        />
+          <!-- Input file caché -->
+          <input
+            id="images-input"
+            class="absolute opacity-0 w-0 h-0"
+            type="file"
+            name="images[]"
+            multiple
+            accept="image/png,image/jpeg,image/webp,image/avif"
+          />
 
-        <!-- Zone de drop -->
-        <div
-          id="drop-zone"
-          class="mt-4 p-8 border-2 border-dashed border-gray-300 rounded bg-gray-50 text-center cursor-pointer hover:bg-gray-100 transition"
-        >
-          <p class="text-gray-600">
+          <!-- Zone de drop -->
+          <div
+            id="drop-zone"
+            class="mt-4 w-60 p-8 border-2 text-gray-600 border-dashed border-gray-300 rounded bg-gray-50 text-center cursor-pointer hover:bg-gray-200 hover:border-blue-300 transition"
+          >
             Ou glisse tes images ici
-          </p>
-        </div>
+          </div>
 
+        </div>
         <!-- Preview -->
-        <div id="images-preview" class="grid grid-cols-3 gap-4 mt-4">
+        <div
+          id="images-preview"
+          class="flex text-gray-400 italic flex-wrap gap-4 mt-4 border-y border-gray-400 py-5"
+        >
+          aucune image ...
         </div>
-      </div>
 
-      <!-- Submit -->
-      <button type="submit" class="btn-primary border">
-        Créer l’événement
+        <!-- Submit -->
+        <button type="submit" class="bg-[#0065a0]/90 text-white py-1 px-2 mt-6 w-fit hover:bg-[#0065a0]">
+          Créer l’événement
   </button>
 
-      @if (flashMessages.has('success'))
-        <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
-          {{ flashMessages.get('success') }}
-        </div>
-      @endif
-      
-      @if(flashMessages.has('errors'))
-        <ul class="text-red-500">
-          @each(error in flashMessages.get('errors'))
-            <li>
-              {{ error.message }}
-            </li>
-          @endeach
-        </ul>
-      @endif
-      
-    </form>
-
+        @if (flashMessages.has('success'))
+          <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
+            {{ flashMessages.get('success') }}
+          </div>
+        @endif
+        
+        @if(flashMessages.has('errors'))
+          <ul class="text-red-500">
+            @each(error in flashMessages.get('errors'))
+              <li>
+                {{ error.message }}
+              </li>
+            @endeach
+          </ul>
+        @endif
+        
+      </form>
+    </section>
   @end
 @end

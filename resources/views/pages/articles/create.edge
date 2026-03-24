@@ -1,6 +1,7 @@
-@layout('components.layout')
+@layout('components/layoutAdmin')
 
   @slot('main')
+
     <section class="font-manrope w-6/12 mx-auto rounded p-8 mt-5">
       <a
         href="/articles"
@@ -8,13 +9,20 @@
       >
         ← Retour à la liste
     </a>
+
+      <h1
+        class="text-3xl font-bold mb-8 underline decoration-[#da0f83] decoration-3 underline-offset-6 uppercase font-teko"
+      >
+        Cree l'article
+      </h1>
+
       <form action="/articles/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
         <!-- CSRF -->
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
         <!-- Nom -->
         <div class="flex flex-col gap-2">
-          <label for="name" class=" text-sm sm:text-base font-medium">Nom de l'article:</label>
+          <label for="name" class=" text-sm sm:text-base font-medium">Nom de l'article :</label>
           <input
             type="text"
             name="name"
@@ -26,7 +34,7 @@
 
         <!-- Description -->
         <div class="flex flex-col gap-2">
-          <label for="description" class=" text-sm sm:text-base  font-medium">Description:</label>
+          <label for="description" class=" text-sm sm:text-base  font-medium">Description :</label>
           <textarea
             name="description"
             rows="5"
@@ -36,7 +44,7 @@
 
         <!-- prix -->
         <div class="flex gap-2 mt-3">
-          <label for="price" class=" text-sm sm:text-base  font-medium">Prix:</label>
+          <label for="price" class=" text-sm sm:text-base  font-medium">Prix :</label>
           <input
             type="number"
             name="price"

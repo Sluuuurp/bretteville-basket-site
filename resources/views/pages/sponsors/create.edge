@@ -1,59 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>
-      Document
-    </title>
-  </head>
-  <body>
-    <form action="/sponsors/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
-      <!-- CSRF -->
-      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+@layout('components/layoutAdmin')
 
-      <!-- Nom -->
-      <div>
-        <label for="nom_ent" class=" text-sm font-medium">Nom de l'entreprise</label>
-        <input type="text" name="nom_ent" required maxlength="250" class="input border" />
-      </div>
+  @slot('main')
 
-      <!-- ville -->
-      <div class="flex flex-col">
-        <label for="ville" class=" text-sm font-medium">ville/commune</label>
-        <input type="text" name="ville" required maxlength="250" class="input border" />
-      </div>
+    <section class="font-manrope w-6/12 mx-auto rounded p-8 mt-5">
+      <a
+        href="/sponsors"
+        class="px-2 py-1 block mb-6 w-fit border border-gray-500 text-sm font-semibold hover:text-[#0065a0] hover:border-[#0065a0]"
+      >
+        ← Retour à la liste
+    </a>
 
-      <!-- lien -->
-      <div class="flex flex-col">
-        <label for="lien" class=" text-sm font-medium">Lien site entreprise(optionnel)</label>
-        <input type="text" name="lien" class="input border" />
-      </div>
+      <h1
+        class="text-3xl font-bold mb-8 underline decoration-[#da0f83] decoration-3 underline-offset-6 uppercase font-teko "
+      >
+        Creation sponsors
+      </h1>
 
-      <!-- Submit -->
-      <button type="submit" class="btn-primary border">
-        Créer le sponsor
-  </button>
+      <form action="/sponsors/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+        <!-- CSRF -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
-      @if (flashMessages.has('success'))
-        <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
-          {{ flashMessages.get('success') }}
+        <!-- Nom -->
+        <div class="flex flex-col gap-2">
+          <label for="nom_ent" class=" text-sm sm:text-base font-medium">Nom de l'entreprise</label>
+          <input
+            type="text"
+            name="nom_ent"
+            required
+            maxlength="250"
+            class="input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          />
         </div>
-      @endif
-      
-      @if(flashMessages.has('errors'))
-        <ul class="text-red-500">
-          @each(error in flashMessages.get('errors'))
-            <li>
-              {{ error.message }}
-            </li>
-          @endeach
-        </ul>
-      @endif
-      
-    </form>
 
-  </body>
-</html>
+        <!-- ville -->
+        <div class="flex flex-col gap-2">
+          <label for="ville" class=" text-sm sm:text-base font-medium">Ville/Commune</label>
+          <input
+            type="text"
+            name="ville"
+            required
+            maxlength="250"
+            class="input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          />
+        </div>
+
+        <!-- lien -->
+        <div class="flex flex-col gap-2 mb-10">
+          <label for="lien" class=" text-sm sm:text-base font-medium">Lien site entreprise(optionnel)</label>
+          <input
+            type="text"
+            name="lien"
+            class="input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          />
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="bg-[#0065a0]/90 text-white py-1 px-2 w-fit hover:bg-[#0065a0]">
+          Créer le sponsor
+        </button>
+
+        @if (flashMessages.has('success'))
+          <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
+            {{ flashMessages.get('success') }}
+          </div>
+        @endif
+        
+        @if(flashMessages.has('errors'))
+          <ul class="text-red-500">
+            @each(error in flashMessages.get('errors'))
+              <li>
+                {{ error.message }}
+              </li>
+            @endeach
+          </ul>
+        @endif
+        
+      </form>
+    </section>
+  @end
+@end
 
