@@ -83,10 +83,27 @@
           </div>
         </div>
 
+        @if (flashMessages.has('success'))
+          <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
+            {{ flashMessages.get('success') }}
+          </div>
+        @endif
+        
+        @if(flashMessages.has('errors'))
+          <ul class="text-red-500">
+            @each(error in flashMessages.get('errors'))
+              <li>
+                {{ error.message }}
+              </li>
+            @endeach
+          </ul>
+        @endif
+        
         <button class="bg-[#0065a0]/90 text-white py-1 px-2 w-fit hover:bg-[#0065a0]">
           Mettre à jour
   </button>
       </form>
+
     </section>
   @end
 @end

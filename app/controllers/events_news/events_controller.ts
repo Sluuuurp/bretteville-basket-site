@@ -27,34 +27,44 @@ export default class EventsController {
    * Handle form submission for the create action
    */
   async store({ request, response, session }: HttpContext) {
-    console.log(request.files('images'))
-    const checkData = await request.validateUsing(storeEventsValidator)
+    try {
+      console.log(request.files('images'))
 
-    const event = await Event.create({
-      title: checkData.title,
-      content: checkData.content,
-    })
+      // validation
+      const checkData = await request.validateUsing(storeEventsValidator)
 
-    // 3️⃣ Gérer les images
-    const images: { path: string; alt?: string }[] = []
+      const event = await Event.create({
+        title: checkData.title,
+        content: checkData.content,
+      })
 
-    if (checkData.images && checkData.images.length > 0) {
-      for (const image of checkData.images) {
-        const ext = image.extname ?? 'jpg'
-        const fileName = `${event.id}-${randomUUID()}.${ext}`
+      // 3️⃣ Gérer les images
+      const images: { path: string; alt?: string }[] = []
 
-        await image.move(app.makePath('public/uploads/events'), { name: fileName })
+      if (checkData.images && checkData.images.length > 0) {
+        for (const image of checkData.images) {
+          const ext = image.extname ?? 'jpg'
+          const fileName = `${event.id}-${randomUUID()}.${ext}`
 
-        images.push({ path: `uploads/events/${fileName}`, alt: '' }) // alt optionnel
+          await image.move(app.makePath('public/uploads/events'), { name: fileName })
+
+          images.push({ path: `uploads/events/${fileName}`, alt: '' }) // alt optionnel
+        }
       }
+
+      event.images = images
+      await event.save()
+
+      session.flash('success', 'Événement créé !')
+
+      return response.redirect('/evenements')
+    } catch (error) {
+      if (error.messages) {
+        // Récupère toutes les erreurs Vine et les envoie à la vue
+        session.flash('errors', error.messages)
+      }
+      return response.redirect('back')
     }
-
-    event.images = images
-    await event.save()
-
-    session.flash('success', 'Événement créé !')
-
-    return response.redirect('/evenements')
   }
 
   /**
@@ -79,47 +89,55 @@ export default class EventsController {
    * Handle form submission for the edit action
    */
   async update({ params, request, response, session }: HttpContext) {
-    const event = await Event.findOrFail(params.id)
+    try {
+      const event = await Event.findOrFail(params.id)
 
-    //validation
-    const checkData = await request.validateUsing(updateEventsValidator)
+      // validation
+      const checkData = await request.validateUsing(updateEventsValidator)
 
-    event.title = checkData.title
-    event.content = checkData.content ?? null
+      event.title = checkData.title
+      event.content = checkData.content ?? null
 
-    let images = event.images ?? []
+      let images = event.images ?? []
 
-    //supprimer images
-    const removeImages = checkData.removeImages || []
-    for (const imgPath of removeImages) {
-      // Supprimer le fichier du disque
-      const filePath = join(app.publicPath(''), imgPath)
-      try {
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath)
+      // supprimer images
+      const removeImages = checkData.removeImages || []
+      for (const imgPath of removeImages) {
+        // Supprimer le fichier du disque
+        const filePath = join(app.publicPath(''), imgPath)
+        try {
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath)
+          }
+        } catch (err) {
+          console.error('Erreur suppression image:', filePath, err)
         }
-      } catch (err) {
-        console.error('Erreur suppression image:', filePath, err)
       }
+
+      images = images.filter((img) => !removeImages.includes(img.path))
+
+      // nouvelles images
+      const uploadedImages = checkData.images || []
+      for (const file of uploadedImages) {
+        await file.move(app.publicPath('uploads/events'))
+
+        images.push({
+          path: `uploads/events/${file.fileName}`,
+        })
+      }
+
+      event.images = images
+      await event.save()
+
+      session.flash('success', 'Événement Modifié !')
+      return response.redirect('/evenements')
+    } catch (error) {
+      if (error.messages) {
+        // Récupère toutes les erreurs Vine et les envoie à la vue
+        session.flash('errors', error.messages)
+      }
+      return response.redirect('back')
     }
-
-    images = images.filter((img) => !removeImages.includes(img.path))
-
-    //nouvelle images
-    const uploadedImages = checkData.images || []
-    for (const file of uploadedImages) {
-      await file.move(app.publicPath('uploads/events'))
-
-      images.push({
-        path: `uploads/events/${file.fileName}`,
-      })
-    }
-
-    event.images = images
-    await event.save()
-
-    session.flash('success', 'Événement Modifié !')
-    return response.redirect('/evenements')
   }
 
   /**

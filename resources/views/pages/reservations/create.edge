@@ -2,32 +2,41 @@
 
   @slot('main')
 
-    @if (flashMessages.has('success'))
-      <div class="p-3 mb-4 bg-green-100 text-green-700 rounded">
-        {{ flashMessages.get('success') }}
-      </div>
-    @endif
-    
-    @if (flashMessages.has('error'))
-      <div class="p-3 mb-4 bg-red-100 text-red-700 rounded">
-        {{ flashMessages.get('error') }}
-      </div>
-    @endif
-    
-    
-    
     <section class="font-manrope w-11/12 mx-auto rounded p-8 mt-5">
       <a href="/articles" class="px-2 py-1 uppercase block mb-6 w-fit text-sm font-bold">
         <img src="/public/img/arrow-back.png" class="h-8 rounded-xl" alt="" />
       </a>
 
+      @if (flashMessages.has('success'))
+        <div class="p-3 mb-4 bg-green-100 text-green-700 rounded">
+          {{ flashMessages.get('success') }}
+        </div>
+      @endif
+      
+      @if(flashMessages.has('errors'))
+        <ul class="text-red-500 p-3 mb-4 bg-red-100 rounded">
+          @each(error in flashMessages.get('errors'))
+            <li>
+              {{ error.message }}
+            </li>
+          @endeach
+        </ul>
+      @endif
+      
+      {{-- Affichage des erreurs custom --}}
+      @if(flashMessages.has('error'))
+        <div class="text-red-500 p-3 mb-4 bg-red-100 rounded">
+          {{ flashMessages.get('error') }}
+        </div>
+      @endif
+      
       <h2 class="text-xl font-bold font-timeline mb-1">
         Reservez vos articles
       </h2>
       <div class="h-1.5 w-full bg-[#da0f83]">
       </div>
 
-      <form action="/reservations/store" method="post" class="mt-10">
+      <form action="/reservations/store" method="post" class="mt-10" novalidate>
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
         <!-- coordonnées -->

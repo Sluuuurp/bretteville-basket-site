@@ -14,7 +14,13 @@
       >
         Creation d'evenements
       </h1>
-      <form action="/events/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+      <form
+        action="/events/store"
+        method="POST"
+        enctype="multipart/form-data"
+        class="flex flex-col gap-4"
+        novalidate
+      >
         <!-- CSRF -->
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 

@@ -20,11 +20,11 @@
     </span>
         @end
       </p>
-      @if(event.content !== 'null')
-        <p class="mt-4 text-gray-700 first-letter:uppercase">
-          {{ event.content }}
-        </p>
-      @end
+
+      <p class="mt-4 text-gray-700 first-letter:uppercase">
+        {{ event.content || '' }}
+      </p>
+
       @if(event.images.length)
         <div class="mt-20 flex flex-wrap justify-center gap-20">
           @each(image in event.images)

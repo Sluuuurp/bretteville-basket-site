@@ -21,6 +21,7 @@
         action="/sponsors/{{ sponsor.id }}?_method=PATCH"
         enctype="multipart/form-data"
         class="space-y-4"
+        novalidate
       >
         <!-- CSRF -->
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />

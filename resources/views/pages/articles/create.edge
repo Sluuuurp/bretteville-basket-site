@@ -16,7 +16,13 @@
         Cree l'article
       </h1>
 
-      <form action="/articles/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+      <form
+        action="/articles/store"
+        method="POST"
+        enctype="multipart/form-data"
+        class="flex flex-col gap-4"
+        novalidate
+      >
         <!-- CSRF -->
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 

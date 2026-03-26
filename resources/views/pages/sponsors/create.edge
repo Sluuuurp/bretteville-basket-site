@@ -16,7 +16,13 @@
         Creation sponsors
       </h1>
 
-      <form action="/sponsors/store" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+      <form
+        action="/sponsors/store"
+        method="POST"
+        enctype="multipart/form-data"
+        class="flex flex-col gap-4"
+        novalidate
+      >
         <!-- CSRF -->
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 

@@ -53,11 +53,11 @@
                 <p class="text-black/60 font-manrope text-sm font-semibold">
                   {{ event.createdAt.toFormat('dd/MM/yyyy') || '' }}
                 </p>
-                @if(event.content !== 'null')
-                  <p class="text-black font-manrope text-sm line-clamp-1 mt-2 first-letter:uppercase">
-                    {{ event.content }}
-                  </p>
-                @end
+
+                <p class="text-black font-manrope text-sm line-clamp-1 mt-2 first-letter:uppercase">
+                  {{ event.content || '...' }}
+                </p>
+
               </a>
 
               <a

@@ -16,9 +16,13 @@
         <p>
           {{ lastEvent.content }}
         </p>
-        <p>
-          {{ lastEvent.images[0].path }}
-        </p>
+        {{-- au cas ou levent na pas dimage --}}
+        @if(lastEvent.images[0])
+          <p>
+            {{ lastEvent.images[0].path }}
+          </p>
+        @end
+        
       </div>
 
     </section>

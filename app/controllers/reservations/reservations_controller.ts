@@ -22,34 +22,42 @@ export default class ReservationsController {
    * Handle form submission for the create action
    */
   async store({ request, response, session }: HttpContext) {
-    const checkData = await request.validateUsing(storeReservationValidator)
+    try {
+      const checkData = await request.validateUsing(storeReservationValidator)
 
-    if (!checkData.items || checkData.items.length === 0) {
-      session.flash('error', 'Vous devez réserver au moins un article')
-      return response.redirect().back()
-    }
+      if (!checkData.items || checkData.items.length === 0) {
+        session.flash('error', 'Vous devez réserver au moins un article')
+        return response.redirect().back()
+      }
 
-    //les coordonnées
-    const reservation = await Reservation.create({
-      firstname: checkData.firstname,
-      lastname: checkData.lastname,
-      email: checkData.email,
-      phone: checkData.phone || null,
-      status: 'pending',
-      token: randomUUID(), // pour lien unique si nécessaire
-    })
-
-    //les items
-    for (const item of checkData.items) {
-      await reservation.related('reservationItems').create({
-        articleId: Number(item.articleId), // cast en number
-        size: item.size,
-        quantity: Number(item.quantity),
+      // Les coordonnées
+      const reservation = await Reservation.create({
+        firstname: checkData.firstname,
+        lastname: checkData.lastname,
+        email: checkData.email,
+        phone: checkData.phone || null,
+        status: 'pending',
+        token: randomUUID(), // pour lien unique si nécessaire
       })
-    }
 
-    session.flash('success', 'Réservation enregistrée !')
-    return response.redirect('back')
+      // Les items
+      for (const item of checkData.items) {
+        await reservation.related('reservationItems').create({
+          articleId: Number(item.articleId), // cast en number
+          size: item.size,
+          quantity: Number(item.quantity),
+        })
+      }
+
+      session.flash('success', 'Réservation enregistrée !')
+      return response.redirect('back')
+    } catch (error) {
+      if (error.messages) {
+        // Récupère toutes les erreurs Vine et les envoie au front
+        session.flash('errors', error.messages)
+      }
+      return response.redirect('back')
+    }
   }
 
   /**
@@ -65,7 +73,7 @@ export default class ReservationsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request }: HttpContext) {}
+  // async update({ params, request }: HttpContext) {}
 
   /**
    * Delete record

@@ -27,25 +27,30 @@ export default class ArticlesController {
    * Handle form submission for the create action
    */
   async store({ request, response, session }: HttpContext) {
-    console.log(request.file('image'))
-    const checkData = await request.validateUsing(storeArticlesValidator)
+    try {
+      const checkData = await request.validateUsing(storeArticlesValidator)
 
-    // gestion image
-    const imgName = `${randomUUID()}.${checkData.image.extname}`
-    await checkData.image.move(app.makePath('public/uploads/articles'), { name: imgName })
+      // gestion image
+      const imgName = `${randomUUID()}.${checkData.image.extname}`
+      await checkData.image.move(app.makePath('public/uploads/articles'), { name: imgName })
 
-    const article = await Article.create({
-      name: checkData.name,
-      description: checkData.description,
-      price: checkData.price,
-      image: `uploads/articles/${imgName}`,
-    })
+      const article = await Article.create({
+        name: checkData.name,
+        description: checkData.description,
+        price: checkData.price,
+        image: `uploads/articles/${imgName}`,
+      })
 
-    await article.save()
-
-    session.flash('success', 'Article créé !')
-
-    return response.redirect('/articles')
+      await article.save()
+      session.flash('success', 'Article créé !')
+      return response.redirect('/articles')
+    } catch (error) {
+      if (error.messages) {
+        // Vine renvoie ses erreurs ici
+        session.flash('errors', error.messages)
+      }
+      return response.redirect('back')
+    }
   }
 
   /**
@@ -66,35 +71,43 @@ export default class ArticlesController {
    * Handle form submission for the edit action
    */
   async update({ params, request, response, session }: HttpContext) {
-    const article = await Article.findOrFail(params.id)
+    try {
+      const article = await Article.findOrFail(params.id)
 
-    //validation
-    const checkData = await request.validateUsing(updateArticlesValidator)
+      // validation
+      const checkData = await request.validateUsing(updateArticlesValidator)
 
-    article.name = checkData.name
-    article.description = checkData.description ?? null
-    article.price = checkData.price
+      article.name = checkData.name
+      article.description = checkData.description ?? null
+      article.price = checkData.price
 
-    //gestion image
-    if (checkData.image) {
-      // Supprime l’ancienne image si elle existe
-      if (article.image) {
-        const oldPath = join(app.publicPath(''), article.image)
-        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath)
+      // gestion image
+      if (checkData.image) {
+        // Supprime l’ancienne image si elle existe
+        if (article.image) {
+          const oldPath = join(app.publicPath(''), article.image)
+          if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath)
+        }
+
+        // Déplace la nouvelle image
+        const fileName = `${article.id}-${randomUUID()}.${checkData.image.extname}`
+        await checkData.image.move(app.publicPath('uploads/articles'), { name: fileName })
+
+        // Stocke le chemin relatif dans DB
+        article.image = `uploads/articles/${fileName}`
       }
 
-      // Déplace la nouvelle image
-      const fileName = `${article.id}-${randomUUID()}.${checkData.image.extname}`
-      await checkData.image.move(app.publicPath('uploads/articles'), { name: fileName })
+      await article.save()
 
-      // Stocke le chemin relatif dans DB
-      article.image = `uploads/articles/${fileName}`
+      session.flash('success', 'Article mis à jour !')
+      return response.redirect('/articles')
+    } catch (error) {
+      if (error.messages) {
+        // Récupère toutes les erreurs Vine et les envoie à la vue
+        session.flash('errors', error.messages)
+      }
+      return response.redirect('back')
     }
-
-    await article.save()
-
-    session.flash('success', 'Article mis à jour !')
-    return response.redirect('/articles')
   }
 
   /**

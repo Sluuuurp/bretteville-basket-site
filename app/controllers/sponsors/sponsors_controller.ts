@@ -24,19 +24,28 @@ export default class SponsorsController {
    * Handle form submission for the create action
    */
   async store({ request, response, session }: HttpContext) {
-    const checkData = await request.validateUsing(storeSponsorValidator)
+    try {
+      // Validation
+      const checkData = await request.validateUsing(storeSponsorValidator)
 
-    const sponsor = await Sponsor.create({
-      nom_ent: checkData.nom_ent,
-      ville: checkData.ville,
-      lien: checkData.lien,
-    })
+      const sponsor = await Sponsor.create({
+        nom_ent: checkData.nom_ent,
+        ville: checkData.ville,
+        lien: checkData.lien,
+      })
 
-    await sponsor.save()
+      await sponsor.save()
 
-    session.flash('success', 'Sponsor créé !')
+      session.flash('success', 'Sponsor créé !')
 
-    return response.redirect('/sponsors')
+      return response.redirect('/sponsors')
+    } catch (error) {
+      if (error.messages) {
+        // Récupère toutes les erreurs Vine et les envoie à la vue
+        session.flash('errors', error.messages)
+      }
+      return response.redirect('back')
+    }
   }
 
   /**
@@ -56,18 +65,27 @@ export default class SponsorsController {
    * Handle form submission for the edit action
    */
   async update({ params, request, response, session }: HttpContext) {
-    const sponsor = await Sponsor.findOrFail(params.id)
+    try {
+      const sponsor = await Sponsor.findOrFail(params.id)
 
-    const checkData = await request.validateUsing(updateSponsorValidator)
+      // Validation
+      const checkData = await request.validateUsing(updateSponsorValidator)
 
-    sponsor.nom_ent = checkData.nom_ent
-    sponsor.ville = checkData.ville
-    sponsor.lien = checkData.lien ?? null
+      sponsor.nom_ent = checkData.nom_ent
+      sponsor.ville = checkData.ville
+      sponsor.lien = checkData.lien ?? null
 
-    await sponsor.save()
+      await sponsor.save()
 
-    session.flash('success', 'Sponsor mis à jour !')
-    return response.redirect('/sponsors')
+      session.flash('success', 'Sponsor mis à jour !')
+      return response.redirect('/sponsors')
+    } catch (error) {
+      if (error.messages) {
+        // Récupère toutes les erreurs Vine et les envoie à la vue
+        session.flash('errors', error.messages)
+      }
+      return response.redirect('back')
+    }
   }
 
   /**
