@@ -1,0 +1,38 @@
+@layout('components/layoutAdmin')
+
+  @slot('main')
+    <section class="font-manrope w-10/12 mx-auto rounded p-8 mt-5">
+      <form method="POST" action="/arbitrage">
+        <h1
+          class="text-3xl font-bold mb-8 underline decoration-[#da0f83] decoration-3 underline-offset-6 uppercase font-teko"
+        >
+          Convocation table d'arbitrage
+        </h1>
+
+        @if (flashMessages.has('success'))
+          <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
+            {{ flashMessages.get('success') }}
+          </div>
+        @endif
+        
+        @if(flashMessages.has('errors'))
+          <ul class="text-red-500">
+            @each(error in flashMessages.get('errors'))
+              <li>
+                {{ error.message }}
+              </li>
+            @endeach
+          </ul>
+        @endif
+        
+        <div>
+          <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+          <textarea name="content" rows="20" class="border input w-full font-mono">{{ content }}</textarea>
+        </div>
+
+        <button class="bg-[#0065a0]/90 text-white py-1 px-2 w-fit mt-8 hover:bg-[#0065a0]" type="submit">Sauvegarder</button>
+
+      </form>
+    </section>
+  @end
+@end

@@ -17,16 +17,20 @@ const SponsorsController = () => import('#controllers/sponsors/sponsors_controll
 const RegisterController = () => import('#controllers/auth/register_controller')
 const LogoutController = () => import('#controllers/auth/logout_controller')
 const LoginController = () => import('#controllers/auth/login_controller')
+const RefereesTableController = () => import('#controllers/referee_table/referees_table_controller')
+const HomeController = () => import('#controllers/home_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 
+//dashboard admin
 router
   .get('/administration', async ({ view }) => {
     return view.render('pages/admin/board')
   })
   .use(middleware.auth())
 
-router.on('/').render('pages/home')
+//home
+router.get('/', [HomeController, 'index'])
 
 //auth admin
 router.get('/register', [RegisterController, 'show']).as('register.show')
@@ -75,6 +79,11 @@ router.get('/sponsors', [SponsorsController, 'index'])
 //route reservations
 router.get('/reservations/creation', [ReservationsController, 'create'])
 router.post('/reservations/store', [ReservationsController, 'store'])
+
+//table d arbitrage
+router.get('/arbitrage', [RefereesTableController, 'show'])
+router.get('/arbitrage/edit', [RefereesTableController, 'edit'])
+router.post('/arbitrage', [RefereesTableController, 'update'])
 
 router
   .group(() => {

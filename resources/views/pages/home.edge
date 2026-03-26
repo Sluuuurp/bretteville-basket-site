@@ -1,1 +1,71 @@
-accueil
+@layout('components/layoutAdmin')
+
+  @slot('main')
+
+    <h1>
+      {{ hi }}
+    </h1>
+
+    {{-- events --}}
+    <section class="font-manrope w-6/12 mx-auto rounded bg-red-500 p-8 mt-5">
+
+      <div class="border m-5">
+        <p>
+          {{ lastEvent.title }}
+        </p>
+        <p>
+          {{ lastEvent.content }}
+        </p>
+        <p>
+          {{ lastEvent.images[0].path }}
+        </p>
+      </div>
+
+    </section>
+
+    {{-- Match --}}
+    <section class="font-manrope w-6/12 mx-auto rounded bg-blue-500 p-8 mt-5">
+
+      @each(match in cleanMatches)
+        @if(match)
+          <div class="border bg-white ">
+            <p>
+              {{ match.equipe }} - {{match.teamBBC}}
+            </p>
+            <p>
+              {{ match.scoreBBC }} - {{ match.scoreExt }}
+            </p>
+            <p>
+              {{ match.date }}
+            </p>
+          </div>
+          <hr />
+        @endif
+      @endeach
+      
+      
+    </section>
+
+    {{-- Table arbitrage --}}
+    <section class="font-manrope w-6/12 mx-auto rounded bg-yellow-500 p-8 mt-5">
+      ouvrir fenetre modal avec les convos
+    </section>
+
+    {{-- Sponsors --}}
+    <section class="font-manrope w-6/12 mx-auto rounded bg-green-500 p-8 mt-5">
+      @each(sponsor in sponsors)
+        <div class="border m-5">
+          <p>
+            {{ sponsor.nom_ent }}
+          </p>
+          <p>
+            {{ sponsor.ville }}
+          </p>
+          <p>
+            {{ sponsor.lien }}
+          </p>
+        </div>
+      @end
+    </section>
+  @end
+@end
