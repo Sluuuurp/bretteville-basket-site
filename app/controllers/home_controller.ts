@@ -1,5 +1,7 @@
 import Sponsor from '#models/sponsor'
 import Event from '#models/event'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import CacheScrapService from '#services/cache_scrapper'
 import FfbbScrapService from '#services/ffbb_scrapper_services'
 import FfbbCalendarScrapService from '#services/ffbb_scrapper_calendar'
@@ -7,9 +9,17 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 export default class HomeController {
   async index({ view }: HttpContext) {
-    const hi = 'hello there'
     const lastEvent = await Event.query().orderBy('created_at', 'desc').first()
     const sponsors = await Sponsor.all()
+    //table arbitre
+    const filePath = path.join(process.cwd(), 'public/uploads/referee-table.txt')
+    let refTable = ''
+
+    try {
+      refTable = await fs.readFile(filePath, 'utf-8')
+    } catch (e) {
+      refTable = 'Fichier non trouve'
+    }
 
     const cleanMatches = await CacheScrapService.get('last_matches', async () => {
       //scrap ici
@@ -42,7 +52,7 @@ export default class HomeController {
     })
 
     return view.render('pages/home', {
-      hi,
+      refTable,
       sponsors,
       lastEvent,
       cleanMatches,
