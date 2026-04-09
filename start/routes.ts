@@ -32,9 +32,9 @@ router
 //home
 router.get('/', [HomeController, 'index'])
 
-//auth admin
-router.get('/register', [RegisterController, 'show']).as('register.show')
-router.post('/register', [RegisterController, 'store']).as('register.store')
+// pour la creation de compte
+// router.get('/register', [RegisterController, 'show']).as('register.show')
+// router.post('/register', [RegisterController, 'store']).as('register.store')
 
 router.get('/login', [LoginController, 'show']).as('login.show')
 router.post('/login', [LoginController, 'store']).as('login.store')
@@ -45,46 +45,7 @@ router.post('/logout', [LogoutController, 'handle']).as('logout')
 router.get('/equipes', [TeamsListController, 'show'])
 router.get('/calendrier', [CalendarsController, 'show'])
 
-//classement equipe
-router.get('/classement/:codeteam', [TeamRankingController, 'show'])
-router.get('/classement', async ({ response }) => {
-  return response.redirect('/equipes')
-})
-
-//crud evenements
-router.get('/evenements/creation', [EventsController, 'create'])
-router.post('/events/store', [EventsController, 'store'])
-router.get('/evenements', [EventsController, 'index'])
-router.get('/evenements/:id', [EventsController, 'show'])
-router.get('/evenements/:id/edit', [EventsController, 'edit'])
-router.patch('/evenements/:id', [EventsController, 'update'])
-router.delete('/evenements/:id', [EventsController, 'destroy'])
-
-//crud article
-router.get('/articles/creation', [ArticlesController, 'create'])
-router.post('/articles/store', [ArticlesController, 'store'])
-router.get('/articles', [ArticlesController, 'index'])
-router.get('/articles/:id/edit', [ArticlesController, 'edit'])
-router.patch('/articles/:id', [ArticlesController, 'update'])
-router.delete('/articles/:id', [ArticlesController, 'destroy'])
-
-//crud sponsor
-// router.get('/sponsors/creation', [SponsorsController, 'create'])
-// router.post('/sponsors/store', [SponsorsController, 'store'])
-router.get('/sponsors', [SponsorsController, 'index'])
-// router.get('/sponsors/:id/edit', [SponsorsController, 'edit'])
-// router.patch('/sponsors/:id', [SponsorsController, 'update'])
-// router.delete('/sponsors/:id', [SponsorsController, 'destroy'])
-
-//route reservations
-router.get('/reservations/creation', [ReservationsController, 'create'])
-router.post('/reservations/store', [ReservationsController, 'store'])
-
-//table d arbitrage
-router.get('/arbitrage', [RefereesTableController, 'show'])
-router.get('/arbitrage/edit', [RefereesTableController, 'edit'])
-router.post('/arbitrage', [RefereesTableController, 'update'])
-
+//route securisee
 router
   .group(() => {
     //crud sponsor
@@ -93,5 +54,46 @@ router
     router.get('/sponsors/:id/edit', [SponsorsController, 'edit'])
     router.patch('/sponsors/:id', [SponsorsController, 'update'])
     router.delete('/sponsors/:id', [SponsorsController, 'destroy'])
+
+    // table arbitrage
+    router.get('/arbitrage/edit', [RefereesTableController, 'edit'])
+    router.post('/arbitrage', [RefereesTableController, 'update'])
+
+    //articles
+    router.get('/articles/creation', [ArticlesController, 'create'])
+    router.post('/articles/store', [ArticlesController, 'store'])
+    router.get('/articles/:id/edit', [ArticlesController, 'edit'])
+    router.patch('/articles/:id', [ArticlesController, 'update'])
+    router.delete('/articles/:id', [ArticlesController, 'destroy'])
+
+    //evenements
+    router.get('/evenements/creation', [EventsController, 'create'])
+    router.post('/events/store', [EventsController, 'store'])
+    router.get('/evenements/:id/edit', [EventsController, 'edit'])
+    router.patch('/evenements/:id', [EventsController, 'update'])
+    router.delete('/evenements/:id', [EventsController, 'destroy'])
   })
   .use(middleware.auth())
+
+//classement equipe
+router.get('/classement/:codeteam', [TeamRankingController, 'show'])
+router.get('/classement', async ({ response }) => {
+  return response.redirect('/equipes')
+})
+
+//crud evenements
+router.get('/evenements', [EventsController, 'index'])
+router.get('/evenements/:id(\\d+)', [EventsController, 'show'])
+
+//crud article
+router.get('/articles', [ArticlesController, 'index'])
+
+//crud sponsor
+router.get('/sponsors', [SponsorsController, 'index'])
+
+//route reservations
+router.get('/reservations/creation', [ReservationsController, 'create'])
+router.post('/reservations/store', [ReservationsController, 'store'])
+
+//table d arbitrage
+router.get('/arbitrage', [RefereesTableController, 'show'])
