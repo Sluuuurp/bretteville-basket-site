@@ -1,8 +1,8 @@
-@layout('components/layoutAdmin')
+@layout('components.layout')
 
   @slot('main')
 
-    <section class="font-manrope w-6/12 mx-auto rounded p-8 mt-5">
+    <section class="font-manrope w-12/12 sm:w-10/12 xl:w-8/12  mx-auto rounded my-10">
       @if(auth.isAuthenticated)
         <a href="/sponsors/creation" class="bg-[#0065a0]/90 text-white py-1 px-2 w-fit hover:bg-[#0065a0]">Ajouter un sponsor</a>
       @end
@@ -14,44 +14,51 @@
         </div>
       @endif
       
-      <h1
-        class="text-3xl font-bold my-8 underline decoration-[#da0f83] decoration-3 underline-offset-6 uppercase font-teko "
-      >
-        Liste des sponsors
-      </h1>
+      <h2 class="text-2xl font-bold font-timeline mb-1 mt-10">
+        Nos Partenaires
+      </h2>
+      <div class="h-1.5 mb-10 w-full bg-[#da0f83]">
+      </div>
 
       @if(sponsorsList.length === 0)
         <p>
           Aucun sponsors pour le moment.
         </p>
       @else
-        <div class="grid gap-4">
+        <div class="flex flex-wrap justify-center gap-10">
+
           @each(sponsor in sponsorsList)
-            <div class="p-4 border rounded shadow-sm">
-              <h2 class="text-xl uppercase font-semibold mb-3">
-                {{ sponsor.nom_ent }}
-              </h2>
-              <p>
-                <span class="font-semibold text-black/70 mr-2">Addresse:</span>{{ sponsor.ville }}
-              </p>
+            <a href="{{ sponsor.lien || '' }}">
+              <div
+                class="border-t-10 border-t-[#0065a0] border shadow-3xl w-45 {{ auth.isAuthenticated ? '' : 'h-30' }} flex flex-col items-center justify-center rounded"
+              >
+                <h4 class="uppercase text-center font-bold text-sm">
+                  {{ sponsor.nom_ent }}
+                </h4>
+                <div class="h-1 w-10 my-2 mx-auto bg-[#da0f83]">
+                </div>
+                <address class="text-sm text-center w-11/12">
+                  {{ sponsor.ville }}
+                </address>
 
-              <p>
-                <span class="font-semibold text-black/70 mr-2">Lien:</span>{{ sponsor.lien }}
-              </p>
+                @if(auth.isAuthenticated)
+                  <div class="flex gap-3 my-5 text-xs">
+                    <a href="/sponsors/{{ sponsor.id }}/edit" class="bg-[#0065a0] text-white py-1 px-2">Modifier</a>
 
-              <div class="flex gap-3 mt-5">
-                <a href="/sponsors/{{ sponsor.id }}/edit" class="bg-[#0065a0] text-white py-1 px-2">Modifier</a>
-
-                <form method="POST" action="/sponsors/{{ sponsor.id }}?_method=DELETE">
-                  <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                  <button class="bg-red-600 text-white py-1 px-2" onclick="return confirm('Supprimer ce sponsor ?')">Supprimer</button>
-                </form>
+                    <form method="POST" action="/sponsors/{{ sponsor.id }}?_method=DELETE">
+                      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                      <button class="bg-red-600 text-white py-1 px-2" onclick="return confirm('Supprimer ce sponsor ?')">Supprimer</button>
+                    </form>
+                  </div>
+                @end
               </div>
-            </div>
-          @endeach
+            </a>
+          @end
         </div>
-      @endif
+
+      </div>
+    @endif
       
-    </section>
-  @end
+  </section>
+@end
 @end

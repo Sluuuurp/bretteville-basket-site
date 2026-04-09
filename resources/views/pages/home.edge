@@ -1,4 +1,4 @@
-@layout('components/layoutAdmin')
+@layout('components.layout')
 
   @slot('main')
 
@@ -21,7 +21,7 @@
             <div
               class="w-full bg-black/60 hover:bg-black/40 hover:underline underline-offset-5 decoration-white decoration-4  h-full absolute top-0 flex justify-center items-center"
             >
-              <h3 class="uppercase text-2xl text-white font-bold font-timeline">
+              <h3 class="uppercase text-2xl text-center text-white font-bold font-timeline">
                 Derniers evenements
               </h3>
             </div>
@@ -50,7 +50,7 @@
 
 
     {{-- Match --}}
-<section class="font-manrope w-6/8  sm:w-6/12 mx-auto my-20 relative">
+<section class="font-manrope w-1/2 md:w-8/10 xl:w-5/10 mx-auto my-20 relative">
 
   <h2 class="font-timeline uppercase text-center text-2xl">Derniers Matchs</h2>
   <div class="h-2 w-30 mx-auto mt-3 bg-[#da0f83] mb-15"></div>
@@ -62,11 +62,11 @@
     <div id="carousel" class="flex transition-transform duration-500">
 
       @each(match in cleanMatches)
-        @if(match)
+        @if(match && match.journee.toLowerCase().includes('j'))
           <div class="w-full md:w-1/3 shrink-0 p-2">
             <div class="rounded shadow-2xl bg-white">
 
-              <p class="bg-[#0065a0]/80 text-center h-12 flex items-center justify-center p-2 rounded-t font-semibold text-white">
+              <p class="bg-[#0065a0]/80 text-center text-[0.85rem] h-12 flex items-center justify-center p-2 rounded-t font-semibold text-white">
                 {{match.teamBBC}}
               </p>
 
@@ -117,7 +117,7 @@
     {{-- Table arbitrage --}}
     <section class="font-manrope w-full mx-auto rounded bg-[url('/img/board.png')] h-55 p-8 mt-10 flex flex-col items-center">
       <h3 class=" sm:text-2xl text-white text-center font-timeline uppercase">Convocation Tables d'arbitrages</h3>
-      <div class="h-2 w-30 mt-4 bg-[#da0f83]"></div>
+  
       <button id="open-modal" class="mx-auto block px-4 py-2 uppercase font-teko font-bold text-white sm:text-2xl mt-10 bg-black hover:border">Cliquez ici</button>
     </section>
 
@@ -134,69 +134,133 @@
 
         <button id="close-modal" class="mt-8 bg-red-500 mx-auto block text-white px-4 py-2 rounded">
           Fermer
-    </button>
+        </button>
 
       </div>
     </div>
 
     {{-- Sponsors --}}
-  
-    <section class="font-manrope w-full xl:w-7/12 mx-auto  mt-20 ">
-      <h2 class="text-center font-timeline text-2xl mb-15">Nos Partenaires</h2>
-      <div class="flex flex-wrap justify-center gap-10">
-        @each(sponsor in sponsors)
-        <a href="{{sponsor.lien || ''}}">
-          <div class="border-t-10 border-t-[#0065a0] border shadow-3xl w-45 h-30 flex flex-col items-center justify-center rounded">
-            <h4 class="uppercase text-center font-bold text-sm">
-              {{ sponsor.nom_ent }}
-            </h4>
-            <div class="h-1 w-10 my-2 bg-[#da0f83]"></div>
-            <address class="text-sm text-center w-11/12">
-              {{ sponsor.ville }}
-            </address>
-          </div>
-          </a>
-        @end
+    <section class="font-manrope w-10/12 md:w-10/12 xl:w-7/12 mx-auto mt-30 relative">
+
+      <h2 class="text-center font-timeline text-2xl ">Nos Partenaires</h2>
+      <div class="h-2 w-30 mx-auto mt-4 mb-10 bg-[#da0f83]"></div>
+
+      <!-- Container -->
+      <div class="overflow-hidden">
+        
+        <!-- Track -->
+        <div id="carousel-sponsors" class="flex transition-transform duration-500">
+
+          @each(sponsor in sponsors)
+            <div class="w-1/2 md:w-1/4 shrink-0 p-2">
+              <a href="{{sponsor.lien || ''}}">
+                <div class="border-t-10 border-t-[#0065a0] border shadow-3xl h-30 flex flex-col items-center justify-center rounded">
+                  
+                  <h4 class="uppercase text-center font-bold text-sm">
+                    {{ sponsor.nom_ent }}
+                  </h4>
+
+                  <div class="h-1 w-10 my-2 bg-[#da0f83]"></div>
+
+                  <address class="text-sm text-center w-11/12">
+                    {{ sponsor.ville }}
+                  </address>
+
+                </div>
+              </a>
+            </div>
+          @end
+
+        </div>
       </div>
-      </section>
+
+      <!-- Boutons -->
+      <button id="prevSponsors" class="absolute -left-8 top-1/2 -translate-y-1/2 bg-white border px-3 py-1 shadow">‹</button>
+      <button id="nextSponsors" class="absolute -right-8 top-1/2 -translate-y-1/2 bg-white border px-3 py-1 shadow">›</button>
+
+      <a
+        href="/sponsors"
+        class="p-2 text-white mx-auto font-manrope font-bold block w-fit mt-10 bg-[#0065a0]"
+      >
+        Tout nos sponsors
+      </a>
+
+    </section>
 
 
       <script>
-       let index = 0
-const carousel = document.getElementById('carousel')
+        let index = 0
+        const carousel = document.getElementById('carousel')
 
-function getVisible() {
-  return window.innerWidth < 768 ? 1 : 3 // md breakpoint
-}
+        function getVisible() {
+          return window.innerWidth < 768 ? 1 : 3 // md breakpoint
+        }
 
-function update() {
-  const visible = getVisible()
-  const translate = (index * 100) / visible
-  carousel.style.transform = `translateX(-${translate}%)`
-}
+        function update() {
+          const visible = getVisible()
+          const translate = (index * 100) / visible
+          carousel.style.transform = `translateX(-${translate}%)`
+        }
 
-document.getElementById('next').addEventListener('click', () => {
-  const visible = getVisible()
-  const total = carousel.children.length
+        document.getElementById('next').addEventListener('click', () => {
+          const visible = getVisible()
+          const total = carousel.children.length
 
-  if (index < total - visible) {
-    index++
-    update()
-  }
-})
+          if (index < total - visible) {
+            index++
+            update()
+          }
+        })
 
-document.getElementById('prev').addEventListener('click', () => {
-  if (index > 0) {
-    index--
-    update()
-  }
-})
+        document.getElementById('prev').addEventListener('click', () => {
+          if (index > 0) {
+            index--
+            update()
+          }
+        })
 
-// 🔥 super important → reset quand resize
-window.addEventListener('resize', () => {
-  index = 0
-  update()
-})
+        // 🔥 super important → reset quand resize
+        window.addEventListener('resize', () => {
+          index = 0
+          update()
+        })
+
+        let indexSponsors = 0
+        const carouselSponsors = document.getElementById('carousel-sponsors')
+
+        function getVisibleSponsors() {
+          if (window.innerWidth < 640) return 2
+          if (window.innerWidth < 768) return 2
+          return 4
+        }
+
+        function updateSponsors() {
+          const visible = getVisibleSponsors()
+          const translate = (indexSponsors * 100) / visible
+          carouselSponsors.style.transform = `translateX(-${translate}%)`
+        }
+
+        document.getElementById('nextSponsors').addEventListener('click', () => {
+          const visible = getVisibleSponsors()
+          const total = carouselSponsors.children.length
+
+          if (indexSponsors < total - visible) {
+            indexSponsors++
+            updateSponsors()
+          }
+        })
+
+        document.getElementById('prevSponsors').addEventListener('click', () => {
+          if (indexSponsors > 0) {
+            indexSponsors--
+            updateSponsors()
+          }
+        })
+
+        window.addEventListener('resize', () => {
+          indexSponsors = 0
+          updateSponsors()
+        })
       </script>
   @end
 @end
