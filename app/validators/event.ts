@@ -13,6 +13,7 @@ export const storeEventsValidator = vine.compile(
           extnames: ['jpg', 'jpeg', 'png', 'webp'],
         })
       )
+      .maxLength(25)
       .optional(),
   })
 )
@@ -30,6 +31,7 @@ export const updateEventsValidator = vine.compile(
           extnames: ['jpg', 'jpeg', 'png', 'webp'],
         })
       )
+      .maxLength(25)
       .optional(),
 
     removeImages: vine.array(vine.string()).optional(),

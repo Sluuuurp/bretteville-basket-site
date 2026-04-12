@@ -104,5 +104,13 @@
         
       </form>
     </section>
+
+    <script>
+      if (input.files.length > 5) {
+        alert("Maximum 5 images");
+        input.value = "";
+      }
+    </script>
   @end
 @end
+

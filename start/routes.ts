@@ -83,7 +83,7 @@ router.get('/classement', async ({ response }) => {
 
 //crud evenements
 router.get('/evenements', [EventsController, 'index'])
-router.get('/evenements/:id(\\d+)', [EventsController, 'show'])
+router.get('/evenements/:id', [EventsController, 'show'])
 
 //crud article
 router.get('/articles', [ArticlesController, 'index'])

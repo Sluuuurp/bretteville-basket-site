@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import { storeEventsValidator, updateEventsValidator } from '#validators/event'
 import Event from '#models/event'
 import app from '@adonisjs/core/services/app'
+import ImageService from '#services/image_compression'
 import { randomUUID } from 'node:crypto'
 import { join } from 'node:path'
 
@@ -30,6 +31,10 @@ export default class EventsController {
     try {
       console.log(request.files('images'))
 
+      console.log(request.all())
+      console.log(typeof request.input('content'))
+      console.log(request.input('content')?.length)
+
       // validation
       const checkData = await request.validateUsing(storeEventsValidator)
 
@@ -43,12 +48,9 @@ export default class EventsController {
 
       if (checkData.images && checkData.images.length > 0) {
         for (const image of checkData.images) {
-          const ext = image.extname ?? 'jpg'
-          const fileName = `${event.id}-${randomUUID()}.${ext}`
+          const path = await ImageService.processAndSave(image, 'uploads/events')
 
-          await image.move(app.makePath('public/uploads/events'), { name: fileName })
-
-          images.push({ path: `uploads/events/${fileName}`, alt: '' }) // alt optionnel
+          images.push({ path, alt: '' })
         }
       }
 
@@ -118,12 +120,11 @@ export default class EventsController {
 
       // nouvelles images
       const uploadedImages = checkData.images || []
-      for (const file of uploadedImages) {
-        await file.move(app.publicPath('uploads/events'))
 
-        images.push({
-          path: `uploads/events/${file.fileName}`,
-        })
+      for (const image of uploadedImages) {
+        const path = await ImageService.processAndSave(image, 'uploads/events')
+
+        images.push({ path, alt: '' })
       }
 
       event.images = images
