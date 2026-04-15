@@ -97,3 +97,5 @@ router.post('/reservations/store', [ReservationsController, 'store'])
 
 //table d arbitrage
 router.get('/arbitrage', [RefereesTableController, 'show'])
+
+router.on('/mentions-legales').render('pages/legal/mentions_legales')
