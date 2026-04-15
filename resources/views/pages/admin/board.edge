@@ -1,4 +1,4 @@
-@layoutAdmin()
+@layoutAdmin({pageTitle: 'admin dashboard'})
   @if (auth.user)
     <p>
       Logged as {{auth.user.fullName}}

@@ -18,9 +18,11 @@
     />
     <meta property="og:url" content="{{ request.completeUrl() }}" />
     <meta property="og:site_name" content="Bretteville Basket Cingal" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="{{ request.completeUrl() }}" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>
-      {{ pageTitle }}
+      {{ pageTitle || test }}
     </title>
 
   </head>
@@ -43,7 +45,7 @@
       <img
         src="/public/img/logo-bbc.png"
         class="min-w-120 w-180 absolute  md:-right-89.5 -top-20 sm:-top-22 opacity-40"
-        alt=""
+        alt="logo club BBC"
       />
 
       <div class="relative ml-5 xl:ml-20">
@@ -103,16 +105,16 @@
 
     <footer class="mt-30">
       <div class="bg-roses">
-        <img src="/public/img/footer.png" class="w-min-full" alt="" />
+        <img src="/public/img/footer.png" class="w-min-full" alt="image bandeau footer" />
         <address class="font-manrope not-italic  ml-20 pb-4 text-sm sm:text-base">
           <div class="flex items-center">
-            <img src="/public/img/graphics-solid-squarephonesvg.png" alt="" />
+            <img src="/public/img/graphics-solid-squarephonesvg.png" alt="icone mobile" />
             <p class="text-white ml-3 font-bold">
               06 72 37 18 67
             </p>
           </div>
           <div class="flex items-center">
-            <img src="/public/img/graphics-solid-envelopesvg.png" alt="" />
+            <img src="/public/img/graphics-solid-envelopesvg.png" alt="icone email" />
             <p class="text-white ml-3 font-bold">
               bbcingal
               @gmail.com
@@ -120,7 +122,7 @@
           </div>
 
           <div class="flex items-center">
-            <img src="/public/img/graphics-brands-squarefacebooksvg.png" alt="" />
+            <img src="/public/img/graphics-brands-squarefacebooksvg.png" alt="icone facebook" />
             <a
               class="text-white font-bold ml-3"
               href="https://www.facebook.com/BrettevilleBasketCingalPage/?locale=fr_FR"

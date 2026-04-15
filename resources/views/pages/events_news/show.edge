@@ -1,4 +1,10 @@
-@layout('components.layout')
+@layout({
+  pageTitle: 'BBC - ' + event.title,
+  metaDescription: event.content || 'Evenements Bretteville Basket Cingal',
+  metaKeywords: `basket, club, Bretteville Basket Cingal, Bretteville-sur-Laize, 14680, evenements, ${event.title}, ${event.content || 'Evenements Bretteville Basket Cingal'}`,
+  opengraphTitle: event.title,
+  opengraphDescription: event.content || 'Evenements Bretteville Basket Cingal'
+  }) 
 
   @slot('main')
 
