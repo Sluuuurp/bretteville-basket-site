@@ -21,35 +21,45 @@ export default class HomeController {
       refTable = 'Fichier non trouve'
     }
 
-    const cleanMatches = await CacheScrapService.get('last_matches', async () => {
-      //scrap ici
+    let cleanMatches = []
 
-      const scraperTeam = new FfbbScrapService()
-      const teamsList = await scraperTeam.getTeam(
-        'https://competitions.ffbb.com/ligues/nor/comites/0014/clubs/nor0014052'
-      )
+    try {
+      cleanMatches = await CacheScrapService.get('last_matches', async () => {
+        const scraperTeam = new FfbbScrapService()
+        const teamsList = await scraperTeam.getTeam(
+          'https://competitions.ffbb.com/ligues/nor/comites/0014/clubs/nor0014052'
+        )
 
-      const scraperMatch = new FfbbCalendarScrapService()
+        const scraperMatch = new FfbbCalendarScrapService()
 
-      const lastMatchesPerTeam = await Promise.all(
-        teamsList.map(async (team) => {
-          const codeTeam = team.lien.split('/equipes/')[1]
+        const lastMatchesPerTeam = await Promise.all(
+          teamsList.map(async (team) => {
+            try {
+              const codeTeam = team.lien.split('/equipes/')[1]
 
-          const matches = await scraperMatch.getCalendar(codeTeam)
+              const matches = await scraperMatch.getCalendar(codeTeam)
 
-          const lastMatch = matches.filter((m) => m.scoreBBC !== '' && m.scoreExt !== '0').pop()
+              const lastMatch = matches.filter((m) => m.scoreBBC !== '' && m.scoreExt !== '0').pop()
 
-          if (!lastMatch) return null
+              if (!lastMatch) return null
 
-          return {
-            ...lastMatch,
-            teamBBC: team.nom,
-          }
-        })
-      )
+              return {
+                ...lastMatch,
+                teamBBC: team.nom,
+              }
+            } catch (e) {
+              console.error('Erreur équipe', team.nom, e)
+              return null
+            }
+          })
+        )
 
-      return lastMatchesPerTeam.filter(Boolean)
-    })
+        return lastMatchesPerTeam.filter(Boolean)
+      })
+    } catch (error) {
+      console.error('Erreur globale scrap', error)
+      cleanMatches = [] // fallback safe
+    }
 
     return view.render('pages/home', {
       refTable,

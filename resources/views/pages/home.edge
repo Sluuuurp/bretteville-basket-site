@@ -1,10 +1,10 @@
 @layout({
-  pageTitle: "Accueil BBC", 
+  pageTitle: "Accueil BBC",
   metaDescription: "Bienvenue sur le site du club du Bretteville Basket Cingal",
   metaKeywords: "basket, club, Bretteville Basket Cingal, Bretteville-sur-Laize, 14680, Accueil",
   opengraphTitle:"Bretteville Basket Cingal",
   opengraphDescription: "Bienvenue sur le site du Bretteville Basket Cingal"
-  }) 
+})
 
   @slot('main')
 
@@ -54,77 +54,99 @@
 
     </section>
 
-
     {{-- Match --}}
-<section class="font-manrope w-1/2 md:w-8/10 xl:w-5/10 mx-auto my-20 relative">
+    <section class="font-manrope w-1/2 md:w-8/10 xl:w-5/10 mx-auto my-20 relative">
 
-  <h2 class="font-timeline uppercase text-center text-2xl">Derniers Matchs</h2>
-  <div class="h-2 w-30 mx-auto mt-3 bg-[#da0f83] mb-15"></div>
+      <h2 class="font-timeline uppercase text-center text-2xl">
+        Derniers Matchs
+      </h2>
+      <div class="h-2 w-30 mx-auto mt-3 bg-[#da0f83] mb-15">
+      </div>
+      @if(cleanMatches.length !== 0)
 
-  <!-- Container -->
-  <div class="overflow-hidden">
-    
-    <!-- Track -->
-    <div id="carousel" class="flex transition-transform duration-500">
+        <!-- Container -->
+        <div class="overflow-hidden">
 
-      @each(match in cleanMatches)
-        @if(match && match.journee.toLowerCase().includes('j'))
-          <div class="w-full md:w-1/3 shrink-0 p-2">
-            <div class="rounded shadow-2xl bg-white">
+          <!-- Track -->
+          <div id="carousel" class="flex transition-transform duration-500">
 
-              <p class="bg-[#0065a0]/80 text-center text-[0.85rem] h-12 flex items-center justify-center p-2 rounded-t font-semibold text-white">
-                {{match.teamBBC}}
-              </p>
+            @each(match in cleanMatches)
+              @if(match && match.journee.toLowerCase().includes('j'))
+                <div class="w-full md:w-1/3 shrink-0 p-2">
+                  <div class="rounded shadow-2xl bg-white">
 
-              <div class="flex justify-between border-b-2 text-black/70 font-semibold border-b-gray-500 px-2 mt-1">
-                <p>{{match.journee}}</p>
-                <p>{{ match.date }}</p>
-              </div>
+                    <p
+                      class="bg-[#0065a0]/80 text-center text-[0.85rem] h-12 flex items-center justify-center p-2 rounded-t font-semibold text-white"
+                    >
+                      {{ match.teamBBC }}
+                    </p>
 
-              <div class='flex h-10 md:h-15 justify-center my-4 items-center'>
-                
-                <img class="h-10" src='/public/img/logo-bbc.png'>
+                    <div class="flex justify-between border-b-2 text-black/70 font-semibold border-b-gray-500 px-2 mt-1">
+                      <p>
+                        {{ match.journee }}
+                      </p>
+                      <p>
+                        {{ match.date }}
+                      </p>
+                    </div>
 
-                <div class='flex items-center gap-3 font-teko text-4xl'>
-                  <span>{{match.scoreBBC || '0'}}</span>
-                  <img src='/public/img/versus.png'>
-                  <span>{{match.scoreExt}}</span>
+                    <div class='flex h-10 md:h-15 justify-center my-4 items-center'>
+
+                      <img class="h-10" src='/public/img/logo-bbc.png' />
+
+                      <div class='flex items-center gap-3 font-teko text-4xl'>
+                        <span>{{ match.scoreBBC || '0' }}</span>
+                        <img src='/public/img/versus.png' />
+                        <span>{{ match.scoreExt }}</span>
+                      </div>
+
+                      <img
+                        class='ml-5 h-10'
+                        src="{{ match.img && !match.img.includes('defaultLogo') ? match.img : '/public/img/logo-ffbb.jpg' }}"
+                      />
+                    </div>
+
+                    <p class="border-t-2 text-center text-black/70 font-semibold border-t-gray-500 px-4 py-1">
+                      {{ match.lieu }}
+                    </p>
+
+                  </div>
                 </div>
-
-                <img class='ml-5 h-10'
-                  src={{match.img && !match.img.includes('defaultLogo') ? match.img : '/public/img/logo-ffbb.jpg'}} />
-              </div>
-
-              <p class="border-t-2 text-center text-black/70 font-semibold border-t-gray-500 px-4 py-1">
-                {{ match.lieu }}
-              </p>
-
-            </div>
+              @endif
+            @endeach
+            
           </div>
-        @endif
-      @endeach
+        </div>
 
-    </div>
-  </div>
+        <!-- Boutons -->
+        <button id="prev" class="absolute -left-8 top-6/10 -translate-y-1/2 bg-white border px-3 py-1 shadow">‹</button>
+        <button id="next" class="absolute -right-8 top-6/10 -translate-y-1/2 bg-white border px-3 py-1 shadow">›</button>
 
-  <!-- Boutons -->
-  <button id="prev" class="absolute -left-8 top-6/10 -translate-y-1/2 bg-white border px-3 py-1 shadow">‹</button>
-  <button id="next" class="absolute -right-8 top-6/10 -translate-y-1/2 bg-white border px-3 py-1 shadow">›</button>
-
-  <a
-    href="/equipes"
-    class="p-2 text-white mx-auto font-manrope font-bold block w-fit mt-10 bg-[#0065a0]"
-    >Listes des equipes
+      @else
+        <p class="text-xl font-semibold text-center">
+          Match indisponible pour le moment
+        </p>
+      @end
+      <a
+        href="/equipes"
+        class="p-2 text-white mx-auto font-manrope font-bold block w-fit mt-10 bg-[#0065a0]"
+      >Listes des equipes
   </a>
 
-</section>
-
+    </section>
 
     {{-- Table arbitrage --}}
-    <section class="font-manrope w-full mx-auto rounded bg-[url('/img/board.png')] h-55 p-8 mt-10 flex flex-col items-center">
-      <h3 class=" sm:text-2xl text-white text-center font-timeline uppercase">Convocation Tables d'arbitrages</h3>
-  
-      <button id="open-modal" class="mx-auto block px-4 py-2 uppercase font-teko font-bold text-white sm:text-2xl mt-10 bg-black hover:border">Cliquez ici</button>
+    <section
+      class="font-manrope w-full mx-auto rounded bg-[url('/img/board.png')] h-55 p-8 mt-10 flex flex-col items-center"
+    >
+      <h3 class=" sm:text-2xl text-white text-center font-timeline uppercase">
+        Convocation Tables d'arbitrages
+      </h3>
+
+      <button
+        id="open-modal"
+        class="mx-auto block px-4 py-2 uppercase font-teko font-bold text-white sm:text-2xl mt-10 bg-black hover:border"
+      >Cliquez ici</button>
     </section>
 
     {{-- la fenetre modal --}}
@@ -138,6 +160,7 @@
         <!-- prettier-ignore -->
         <pre>{{ refTable }}</pre>
 
+
         <button id="close-modal" class="mt-8 bg-red-500 mx-auto block text-white px-4 py-2 rounded">
           Fermer
         </button>
@@ -148,25 +171,31 @@
     {{-- Sponsors --}}
     <section class="font-manrope w-10/12 md:w-10/12 xl:w-7/12 mx-auto mt-30 relative">
 
-      <h2 class="text-center font-timeline text-2xl ">Nos Partenaires</h2>
-      <div class="h-2 w-30 mx-auto mt-4 mb-10 bg-[#da0f83]"></div>
+      <h2 class="text-center font-timeline text-2xl ">
+        Nos Partenaires
+      </h2>
+      <div class="h-2 w-30 mx-auto mt-4 mb-10 bg-[#da0f83]">
+      </div>
 
       <!-- Container -->
       <div class="overflow-hidden">
-        
+
         <!-- Track -->
         <div id="carousel-sponsors" class="flex transition-transform duration-500">
 
           @each(sponsor in sponsors)
             <div class="w-1/2 md:w-1/4 shrink-0 p-2">
-              <a href="{{sponsor.lien || ''}}">
-                <div class="border-t-10 border-t-[#0065a0] border shadow-3xl h-30 flex flex-col items-center justify-center rounded">
-                  
+              <a href="{{ sponsor.lien || '' }}">
+                <div
+                  class="border-t-10 border-t-[#0065a0] border shadow-3xl h-30 flex flex-col items-center justify-center rounded"
+                >
+
                   <h4 class="uppercase text-center font-bold text-sm">
                     {{ sponsor.nom_ent }}
                   </h4>
 
-                  <div class="h-1 w-10 my-2 bg-[#da0f83]"></div>
+                  <div class="h-1 w-10 my-2 bg-[#da0f83]">
+                  </div>
 
                   <address class="text-sm text-center w-11/12">
                     {{ sponsor.ville }}
@@ -176,13 +205,19 @@
               </a>
             </div>
           @end
-
+          
         </div>
       </div>
 
       <!-- Boutons -->
-      <button id="prevSponsors" class="absolute -left-8 top-1/2 -translate-y-1/2 bg-white border px-3 py-1 shadow">‹</button>
-      <button id="nextSponsors" class="absolute -right-8 top-1/2 -translate-y-1/2 bg-white border px-3 py-1 shadow">›</button>
+      <button
+        id="prevSponsors"
+        class="absolute -left-8 top-1/2 -translate-y-1/2 bg-white border px-3 py-1 shadow"
+      >‹</button>
+      <button
+        id="nextSponsors"
+        class="absolute -right-8 top-1/2 -translate-y-1/2 bg-white border px-3 py-1 shadow"
+      >›</button>
 
       <a
         href="/sponsors"
@@ -193,81 +228,80 @@
 
     </section>
 
+    <script>
+      let index = 0;
 
-      <script>
-        let index = 0
-        const carousel = document.getElementById('carousel')
+      const carousel = document.getElementById("carousel");
 
-        function getVisible() {
-          return window.innerWidth < 768 ? 1 : 3 // md breakpoint
+      function getVisible() {
+        return window.innerWidth < 768 ? 1 : 3; // md breakpoint
+      }
+
+      function update() {
+        const visible = getVisible();
+        const translate = index * 100 / visible;
+        carousel.style.transform = `translateX(-${translate}%)`;
+      }
+
+      document.getElementById("next").addEventListener("click", () => {
+        const visible = getVisible();
+        const total = carousel.children.length;
+        if (index < total - visible) {
+          index++;
+          update();
         }
+      });
 
-        function update() {
-          const visible = getVisible()
-          const translate = (index * 100) / visible
-          carousel.style.transform = `translateX(-${translate}%)`
+      document.getElementById("prev").addEventListener("click", () => {
+        if (index > 0) {
+          index--;
+          update();
         }
+      });
+      // 🔥 super important → reset quand resize
 
-        document.getElementById('next').addEventListener('click', () => {
-          const visible = getVisible()
-          const total = carousel.children.length
+      window.addEventListener("resize", () => {
+        index = 0;
+        update();
+      });
 
-          if (index < total - visible) {
-            index++
-            update()
-          }
-        })
+      let indexSponsors = 0;
 
-        document.getElementById('prev').addEventListener('click', () => {
-          if (index > 0) {
-            index--
-            update()
-          }
-        })
+      const carouselSponsors = document.getElementById("carousel-sponsors");
 
-        // 🔥 super important → reset quand resize
-        window.addEventListener('resize', () => {
-          index = 0
-          update()
-        })
+      function getVisibleSponsors() {
+        if (window.innerWidth < 640) return 2;
+        if (window.innerWidth < 768) return 2;
+        return 4;
+      }
 
-        let indexSponsors = 0
-        const carouselSponsors = document.getElementById('carousel-sponsors')
+      function updateSponsors() {
+        const visible = getVisibleSponsors();
+        const translate = indexSponsors * 100 / visible;
+        carouselSponsors.style.transform = `translateX(-${translate}%)`;
+      }
 
-        function getVisibleSponsors() {
-          if (window.innerWidth < 640) return 2
-          if (window.innerWidth < 768) return 2
-          return 4
+      document.getElementById("nextSponsors").addEventListener("click", () => {
+        const visible = getVisibleSponsors();
+        const total = carouselSponsors.children.length;
+        if (indexSponsors < total - visible) {
+          indexSponsors++;
+          updateSponsors();
         }
+      });
 
-        function updateSponsors() {
-          const visible = getVisibleSponsors()
-          const translate = (indexSponsors * 100) / visible
-          carouselSponsors.style.transform = `translateX(-${translate}%)`
+      document.getElementById("prevSponsors").addEventListener("click", () => {
+        if (indexSponsors > 0) {
+          indexSponsors--;
+          updateSponsors();
         }
+      });
 
-        document.getElementById('nextSponsors').addEventListener('click', () => {
-          const visible = getVisibleSponsors()
-          const total = carouselSponsors.children.length
-
-          if (indexSponsors < total - visible) {
-            indexSponsors++
-            updateSponsors()
-          }
-        })
-
-        document.getElementById('prevSponsors').addEventListener('click', () => {
-          if (indexSponsors > 0) {
-            indexSponsors--
-            updateSponsors()
-          }
-        })
-
-        window.addEventListener('resize', () => {
-          indexSponsors = 0
-          updateSponsors()
-        })
-      </script>
+      window.addEventListener("resize", () => {
+        indexSponsors = 0;
+        updateSponsors();
+      });
+    </script>
   @end
 @end
 
