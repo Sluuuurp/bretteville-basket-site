@@ -19,15 +19,11 @@ const LogoutController = () => import('#controllers/auth/logout_controller')
 const LoginController = () => import('#controllers/auth/login_controller')
 const RefereesTableController = () => import('#controllers/referee_table/referees_table_controller')
 const HomeController = () => import('#controllers/home_controller')
+const DashboardController = () => import('#controllers/dashboard_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 
 //dashboard admin
-router
-  .get('/administration', async ({ view }) => {
-    return view.render('pages/admin/board')
-  })
-  .use(middleware.auth())
 
 //home
 router.get('/', [HomeController, 'index'])
@@ -38,8 +34,6 @@ router.get('/', [HomeController, 'index'])
 
 router.get('/login', [LoginController, 'show']).as('login.show')
 router.post('/login', [LoginController, 'store']).as('login.store')
-
-router.post('/logout', [LogoutController, 'handle']).as('logout')
 
 //liste des equipes et calendrier
 router.get('/equipes', [TeamsListController, 'show'])
@@ -72,6 +66,10 @@ router
     router.get('/evenements/:id/edit', [EventsController, 'edit'])
     router.patch('/evenements/:id', [EventsController, 'update'])
     router.delete('/evenements/:id', [EventsController, 'destroy'])
+
+    //
+    router.post('/logout', [LogoutController, 'handle']).as('logout')
+    router.get('/administration', [DashboardController, 'show'])
   })
   .use(middleware.auth())
 

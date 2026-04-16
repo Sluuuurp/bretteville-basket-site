@@ -1,16 +1,29 @@
 @layoutAdmin({pageTitle: 'admin dashboard'})
   @if (auth.user)
-    <p>
-      Logged as {{auth.user.fullName}}
-    </p>
 
-    <form method="post" action="{{ route('logout') }}">
-      {{ csrfField() }}
-      <button type="submit">Logout</button>
-    </form>
-  @else
-    <a href="{{ route('register.show') }}">Register</a>
-    <a href="{{ route('login.show') }}">Login</a>
+    <div class="font-manrope w-10/12 mx-auto rounded mt-5">
+      {{-- <p>
+        Utilisateur: {{auth.user.fullName}}
+      </p> --}}
+
+      <form method="post" action="{{ route('logout') }}">
+        {{ csrfField() }}
+      <button
+          type="submit"
+          class="mt-2 px-4 py-2 h-fit bg-[#0065a0]/90 text-white rounded hover:bg-[#0065a0] cursor-pointer inline-block"
+        >Déconnexion</button>
+      </form>
+    </div>
 
   @endif
+  <section
+    class="font-manrope w-10/12 mx-auto  bg-gray-100 shadow-2xl border border-gray-400 rounded p-8 mt-10"
+  >
+    <div class="flex flex-col">
+      <a href="/sponsors">Gestion sponsors</a>
+      <a href="/evenements">Gestion evenements</a>
+      <a href="/articles">Gestion articles</a>
+      <a href="/arbitrage/edit">Gestion table arbitrage</a>
+    </div>
+  </section>
 @end
