@@ -44,13 +44,13 @@ export function initCalendar() {
           <div class='h-5 w-full ${colorGender} absolute top-0 md:hidden'></div>
           <div class='flex h-10 md:h-15 text-center col-start-1 col-span-6 md: md:col-start-3 mt-2'>
             <p class='uppercase w-30 text-xs m-auto'>Bretteville Basket Cingal</p>
-            <img class='' src='/public/img/logo-bbc.png'>
+            <img class='' src='/img/logo-bbc.png'>
             <div class='flex items-center h-15 md:h-20 gap-3 md:gap-6 font-teko text-4xl'>
               <span> ${match.scoreBBC || '0'}</span>
-              <img class='' src='/public/img/versus.png'>
+              <img class='' src='/img/versus.png'>
               <span>${match.scoreExt}</span>
             </div>
-            <img class='ml-10' src=${match.img && !match.img.includes('defaultLogo') ? match.img : '/public/img/logo-ffbb.jpg'} />
+            <img class='ml-10' src=${match.img && !match.img.includes('defaultLogo') ? match.img : '/img/logo-ffbb.jpg'} />
             <p class='uppercase w-30 text-xs  m-auto'>${match.equipe}</p>
           </div>
         </div>

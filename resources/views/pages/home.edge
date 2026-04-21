@@ -36,7 +36,7 @@
         @else
           <div
             class="h-80 w-full bg-position-[center_18%] bg-cover "
-            style="background-image: url('/public/img/logo-bbc.png')"
+            style="background-image: url('/img/logo-bbc.png')"
           >
           </div>
           <a href="/evenements">
@@ -92,17 +92,17 @@
 
                     <div class='flex h-10 md:h-15 justify-center my-4 items-center'>
 
-                      <img class="h-10" src='/public/img/logo-bbc.png' />
+                      <img class="h-10" src='/img/logo-bbc.png' />
 
                       <div class='flex items-center gap-3 font-teko text-4xl'>
                         <span>{{ match.scoreBBC || '0' }}</span>
-                        <img src='/public/img/versus.png' />
+                        <img src='/img/versus.png' />
                         <span>{{ match.scoreExt }}</span>
                       </div>
 
                       <img
                         class='ml-5 h-10'
-                        src="{{ match.img && !match.img.includes('defaultLogo') ? match.img : '/public/img/logo-ffbb.jpg' }}"
+                        src="{{ match.img && !match.img.includes('defaultLogo') ? match.img : '/img/logo-ffbb.jpg' }}"
                       />
                     </div>
 
