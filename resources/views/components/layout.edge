@@ -20,6 +20,7 @@
     <meta property="og:site_name" content="Bretteville Basket Cingal" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="{{ request.completeUrl() }}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>
       {{ pageTitle || test }}
@@ -105,9 +106,9 @@
 
     <footer class="mt-30">
       <div class="bg-roses">
-        <img src="/img/footer.png" class="w-min-full" alt="image bandeau footer" />
-        <div class="flex justify-between">
-          <address class="font-manrope not-italic  ml-20 pb-4 text-sm sm:text-base">
+        <img src="/img/footer.png" class="w-min-full bg-repeat" alt="image bandeau footer" />
+        <div class="flex justify-between relative">
+          <address class="font-manrope not-italic ml-4 sm:ml-20 pb-4 text-xs sm:text-base">
             <div class="flex items-center">
               <img src="/img/graphics-solid-squarephonesvg.png" alt="icone mobile" />
               <p class="text-white ml-3 font-bold">
@@ -132,7 +133,10 @@
 
           </address>
 
-          <a class="text-white font-bold mr-6 mt-17 text-sm sm:text-base" href="/mentions-legales">Mentions Legales</a>
+          <a
+            class="text-white font-bold absolute right-4 bottom-7 sm:right-10 text-xs sm:text-base"
+            href="/mentions-legales"
+          >Mentions Legales</a>
         </div>
       </div>
     </footer>

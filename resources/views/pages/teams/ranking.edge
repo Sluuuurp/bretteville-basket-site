@@ -1,9 +1,15 @@
-@layout('components.layout')
+@layout({
+  pageTitle: "Classements",
+  metaDescription: "Classement de l'equipe de" + currentTeam?.nom,
+  metaKeywords: "basket, club, Bretteville Basket Cingal, Bretteville-sur-Laize, 14680, equipes" + currentTeam?.nom,
+  opengraphTitle:"classements - " + currentTeam?.nom,
+  opengraphDescription: "Classement de l equipe" + currentTeam?.nom
+})
 
   @slot('main')
 
     <h1
-      class="my-10 ml-2 sm:ml-auto container mx-auto font-teko font-bold uppercase text-2xl md:text-3xl pl-1"
+      class="my-10 sm:ml-auto container mx-auto font-teko font-bold uppercase text-2xl md:text-3xl pl-3"
     >
       Classement - {{ currentTeam?.nom }}
     </h1>
@@ -17,7 +23,7 @@
 
         <!-- COLONNE FIXE EQUIPE  -->
 
-        <div class="shrink-0 w-2/3 sm:w-1/3  bg-white ml-1">
+        <div class="shrink-0 w-2/3 sm:w-1/3  bg-white">
 
           <!-- HEADER -->
           <div class="h-14 flex items-center justify-center border-b border-r px-4 bg-white">
