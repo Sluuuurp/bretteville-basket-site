@@ -26,7 +26,7 @@
     </title>
 
   </head>
-  <body class="">
+  <body class="min-h-screen flex flex-col">
     <header
       class="bg-[url('/img/board.png')] flex justify-center md:justify-between w-full items-center relative h-30 sm:h-40 overflow-hidden"
     >
@@ -99,7 +99,7 @@
     </header>
 
     {{-- -------------------------- CONTENU --------------------------------- --}}
-    <main>
+    <main class="flex-1">
       {{{ await $slots.main() }}}
     </main>
 

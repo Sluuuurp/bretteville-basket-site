@@ -2,7 +2,9 @@
 
   @slot('main')
 
-    <h1 class="my-10 ml-2 sm:ml-auto container mx-auto font-teko font-bold uppercase text-3xl pl-1">
+    <h1
+      class="my-10 ml-2 sm:ml-auto container mx-auto font-teko font-bold uppercase text-2xl md:text-3xl pl-1"
+    >
       Classement - {{ currentTeam?.nom }}
     </h1>
 
@@ -15,7 +17,7 @@
 
         <!-- COLONNE FIXE EQUIPE  -->
 
-        <div class="shrink-0 bg-white ml-1">
+        <div class="shrink-0 w-2/3 sm:w-1/3  bg-white ml-1">
 
           <!-- HEADER -->
           <div class="h-14 flex items-center justify-center border-b border-r px-4 bg-white">
@@ -29,17 +31,17 @@
             >
               <div class="flex items-center gap-3">
 
-                <span class="w-6 text-center">
+                <span class=" sm:w-6 text-center">
                   {{ team.position }}
             </span>
 
                 <img
-                  class="h-8 w-8 object-contain"
+                  class="h-6 w-6 md:h-8 md:w-8 object-contain"
                   src="{{ team.logo && !team.logo.includes('defaultLogo') ? team.logo : '/img/logo-ffbb.jpg' }}"
                   alt=""
                 />
 
-                <span class="text-xs whitespace-nowrap">
+                <span class="text-xs w-2/3">
                   {{ team.equipe }}
             </span>
 
@@ -56,12 +58,12 @@
           <div class="min-w-max">
 
             <!-- HEADER -->
-            <div class="grid grid-cols-3 h-14 items-center min-w-160 border-b bg-white">
+            <div class="grid grid-cols-3 h-14 items-center sm:min-w-160 border-b bg-white">
 
-              <div class=" text-center ">
+              <div class=" pl-10 sm:text-center ">
                 PTS
               </div>
-              <div class="flex justify-between w-30">
+              <div class="flex justify-between w-30 pr-10">
                 <div class="px-1 text-center">
                   J
                 </div>
@@ -95,10 +97,10 @@
                 class="grid grid-cols-3 h-14 items-center {{ gender === 'F' ? 'even:bg-[#da0f83]/20' : 'even:bg-[#0065a0]/20' }}"
               >
 
-                <div class="text-center opacity-70 mx-1">
+                <div class="pl-10 sm:text-center opacity-70 mx-1 text-[0.90rem] sm:text-base">
                   {{ team.points }}
                 </div>
-                <div class="flex justify-between w-30">
+                <div class="flex justify-between w-30 pr-10 text-[0.90rem] sm:text-base">
                   <div class="px-1 text-center opacity-70">
                     {{ team.joues }}
                   </div>
@@ -112,7 +114,7 @@
                     {{ team.nuls }}
                   </div>
                 </div>
-                <div class="flex justify-between w-30">
+                <div class="flex justify-between w-30 text-[0.90rem] sm:text-base">
                   <div class="px-1 text-center opacity-70">
                     {{ team.scored }}
                   </div>

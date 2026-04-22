@@ -1,15 +1,21 @@
-@layout('components.layout')
+@layout({
+  pageTitle: "Equipes",
+  metaDescription: "Bienvenue sur le site du club du Bretteville Basket Cingal, retrouvez ici la liste de toute nos equipes",
+  metaKeywords: "basket, club, Bretteville Basket Cingal, Bretteville-sur-Laize, 14680, equipes",
+  opengraphTitle:"Liste des equipes du BBC",
+  opengraphDescription: "Bienvenue sur la liste des equipes du Bretteville Basket Cingal"
+})
 
   @slot('main')
     <section class=" flex flex-col items-center">
-      <div class="my-20 flex">
+      <div class="my-10 md:my-20 flex">
         <button
-          class="bg-black text-white mr-20 text-xl font-timeline py-1 px-5 [clip-path:polygon(10%_0,100%_0,90%_100%,0_100%)] relative group"
+          class="bg-black text-base text-white md:mr-20 md:text-xl font-timeline py-1 px-5 [clip-path:polygon(10%_0,100%_0,90%_100%,0_100%)] relative group"
           id="masc"
         >Masculin<span class="absolute bottom-0 left-0 w-0 h-1.5 bg-roses group-hover:w-full"></span></button>
 
         <button
-          class="bg-black text-white text-xl font-timeline py-1 px-5 [clip-path:polygon(10%_0,100%_0,90%_100%,0_100%)] relative group"
+          class="bg-black text-base text-white md:text-xl font-timeline py-1 px-5 [clip-path:polygon(10%_0,100%_0,90%_100%,0_100%)] relative group"
           id="fem"
         >Feminine<span class="absolute bottom-0 left-0 w-0 h-1.5 bg-roses group-hover:w-full"></span></button>
       </div>
