@@ -20,7 +20,8 @@ const LoginController = () => import('#controllers/auth/login_controller')
 const RefereesTableController = () => import('#controllers/referee_table/referees_table_controller')
 const HomeController = () => import('#controllers/home_controller')
 const DashboardController = () => import('#controllers/dashboard_controller')
-const TournamentRegistration = () => import('#controllers/tournament_registrations_controller')
+const TournamentRegistrationController = () =>
+  import('#controllers/tournament_registrations_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 
@@ -68,6 +69,9 @@ router
     router.patch('/evenements/:id', [EventsController, 'update'])
     router.delete('/evenements/:id', [EventsController, 'destroy'])
 
+    //dl csv tournoi
+    router.get('/administration/tournoicsv', [TournamentRegistrationController, 'exportCsv'])
+
     //
     router.post('/logout', [LogoutController, 'handle']).as('logout')
     router.get('/administration', [DashboardController, 'show'])
@@ -101,5 +105,5 @@ router.get('/arbitrage', [RefereesTableController, 'show'])
 router.on('/mentions-legales').render('pages/legal/mentions_legales')
 
 //inscription tournoi
-router.get('/inscription-tournoi', [TournamentRegistration, 'create'])
-router.post('/inscription-tournoi/store', [TournamentRegistration, 'store'])
+router.get('/inscription-tournoi', [TournamentRegistrationController, 'create'])
+router.post('/inscription-tournoi/store', [TournamentRegistrationController, 'store'])

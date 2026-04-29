@@ -10,7 +10,7 @@ export default class TournamentRegistrationsController {
       const payload = await request.validateUsing(storeTournamentRegistrationValidator)
 
       // ✅ Création en base
-      const registration = await TournamentRegistration.create({
+      await TournamentRegistration.create({
         clubNom: payload.club.nom,
         correspondant: payload.club.correspondant,
         telephone: payload.club.telephone,
@@ -25,7 +25,7 @@ export default class TournamentRegistrationsController {
         repas: payload.repas,
       })
 
-      //  OK
+      session.flash('success', 'demande enregistrée avec succès!')
       response.redirect('back')
     } catch (error) {
       if (error.messages) {
@@ -38,5 +38,24 @@ export default class TournamentRegistrationsController {
 
   public async create({ view }: HttpContext) {
     return view.render('pages/tournament_registration')
+  }
+
+  public async exportCsv({ response }: HttpContext) {
+    const registrations = await TournamentRegistration.all()
+
+    let csv = 'Club,Correspondant,Telephone,Email,U11F,U13F,U15F,U18G,U18F,Repas\n'
+
+    registrations.forEach((r) => {
+      csv += `${r.clubNom},${r.correspondant},${r.telephone},${r.email},${r.u11F},${r.u13F},${r.u15F},${r.u18G},${r.u18F},"${r.repas}"\n`
+    })
+
+    response.header('Content-Type', 'text/csv')
+    response.header('Content-Disposition', 'attachment; filename="inscriptions.csv"')
+
+    return response.send(csv)
+  }
+
+  public async index({ view }: HttpContext) {
+    // logique export ici
   }
 }

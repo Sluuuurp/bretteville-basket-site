@@ -8,7 +8,7 @@
 
   @slot('main')
 
-    <section class="font-manrope w-6/12 mx-auto rounded p-8 mt-5">
+    <section class="font-manrope w-11/12 md:w-6/12 mx-auto rounded p-8 mt-5">
 
       @if (flashMessages.has('success'))
         <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
@@ -45,6 +45,7 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
         <!-- CLUB -->
+
         <div class="flex flex-col gap-2">
           <label class="text-sm sm:text-base font-medium">Nom du club*</label>
           <input
@@ -57,7 +58,7 @@
         </div>
 
         <div class="flex flex-col gap-2">
-          <label class="text-sm sm:text-base font-medium">Correspondant*</label>
+          <label class="text-sm sm:text-base font-medium">Correspondant d'equipe sur place*</label>
           <input
             type="text"
             name="club[correspondant]"
@@ -68,7 +69,7 @@
         </div>
 
         <div class="flex flex-col gap-2">
-          <label class="text-sm sm:text-base font-medium">Téléphone*</label>
+          <label class="text-sm sm:text-base font-medium">Téléphone du correspondant*</label>
           <input
             type="tel"
             name="club[telephone]"
@@ -77,7 +78,7 @@
         </div>
 
         <div class="flex flex-col gap-2 mb-10">
-          <label class="text-sm sm:text-base font-medium">Email*</label>
+          <label class="text-sm sm:text-base font-medium">Adresse mal de contact*</label>
           <input
             type="email"
             name="club[email]"
@@ -85,14 +86,16 @@
           />
         </div>
 
-        <hr />
-
         <!-- EQUIPES -->
-        <div class="mb-10">
-          <h2 class="text-xl font-semibold mb-4">
+        <div class="mb-10 bg-gray-100 shadow-2xl border border-gray-400 rounded p-5">
+          <h2
+            class="text-xl font-semibold mb-4 underline decoration-[#da0f83] decoration-3 underline-offset-6"
+          >
             Inscription des équipes
           </h2>
-
+          <p class=" mb-8">
+            Quelles sont les equipes que vous voulez inscrire? et combien par categorie ? *
+          </p>
           <div class="overflow-x-auto">
             <table class="w-full text-center border-collapse">
 
@@ -241,13 +244,39 @@
         </div>
 
         <!-- REPAS -->
+        <h2 class="text-xl font-semibold underline decoration-[#da0f83] decoration-3 underline-offset-6 ">
+          Reservation de repas
+        </h2>
+        <p>
+          Veuillez nous indiquez ci dessous: <span class="font-semibold">Quels repas? /Nbr de Repas (avec ou sans porc)/Total</span>
+          Exemple: - Repas samedi midi/15 sans porc, 10 avec porc/112.5€ <br />
+          <span class="font-semibold underline">Si aucun repas veuillez nous l'indiquer aussi !</span>
+        </p>
+        <img src="/img/tarif-repas.png" class="max-w-120" alt="grille tarifaire des repas" />
         <div>
-          <textarea name="repas" rows="4" class="border input w-full font-mono"></textarea>
+          <textarea
+            name="repas"
+            class="border input w-full font-mono"
+            placeholder="Exemple: - Repas samedi midi/15 sans porc, 10 Avec porc/ 112.5€"
+          ></textarea>
         </div>
 
+        <div>
+          <p>
+            Veuillez trouver le liens hello asso pour le règlement des inscriptions et repas .
+            L'inscription ne sera validée que lorsque le règlement sera effectif .
+          </p>
+
+          <a
+            href="https://www.helloasso.com/associations/bretteville-basket-cingal/adhesions/les-trophees-du-cingal-2026"
+            class="text-blue-500 font-semibold uppercase my-4 block underline"
+          >Paiment  hello asso, Cliquer ici</a>
+
+          <img src="img/qr-helloasso.png" class="max-w-100" alt="qr code hello asso" />
+        </div>
         <!-- SUBMIT -->
         <button type="submit" class="bg-[#0065a0]/90 text-white py-1 px-2 w-fit hover:bg-[#0065a0]">
-          Valider votre inscription
+          Valider votre demande
     </button>
 
       </form>
