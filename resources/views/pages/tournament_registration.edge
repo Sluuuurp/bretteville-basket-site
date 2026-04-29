@@ -1,0 +1,258 @@
+@layout({
+  pageTitle: "Inscription trophee du cingal - BBC",
+  metaDescription: "Inscription trophee du cingal - BBC",
+  metaKeywords: "basket, club, Bretteville Basket Cingal, Bretteville-sur-Laize, 14680, tournoi, trophee cingal",
+  opengraphTitle:"Inscription trophee du cingal - BBC",
+  opengraphDescription: "Inscription trophee du cingal - BBC"
+})
+
+  @slot('main')
+
+    <section class="font-manrope w-6/12 mx-auto rounded p-8 mt-5">
+
+      @if (flashMessages.has('success'))
+        <div class="p-2 mb-4 text-green-700 bg-green-100 rounded">
+          {{ flashMessages.get('success') }}
+        </div>
+      @endif
+      
+      @if(flashMessages.has('errors'))
+        <ul class="text-red-500">
+          @each(error in flashMessages.get('errors'))
+            <li>
+              {{ error.message }}
+            </li>
+          @endeach
+        </ul>
+      @endif
+      
+      <a
+        href="/evenements"
+        class="px-2 py-1 block mb-6 w-fit border border-gray-500 text-sm font-semibold hover:text-[#0065a0] hover:border-[#0065a0]"
+      >
+        ← Retour à la liste
+  </a>
+
+      <h1
+        class="text-3xl font-bold mb-8 underline decoration-[#da0f83] decoration-3 underline-offset-6 uppercase font-teko"
+      >
+        Inscription Trophee du Cingal
+      </h1>
+
+      <form action="/inscription-tournoi/store" method="POST" class="flex flex-col gap-4">
+
+        <!-- CSRF -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+        <!-- CLUB -->
+        <div class="flex flex-col gap-2">
+          <label class="text-sm sm:text-base font-medium">Nom du club*</label>
+          <input
+            type="text"
+            name="club[nom]"
+            required
+            maxlength="250"
+            class="input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm sm:text-base font-medium">Correspondant*</label>
+          <input
+            type="text"
+            name="club[correspondant]"
+            required
+            maxlength="250"
+            class="input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm sm:text-base font-medium">Téléphone*</label>
+          <input
+            type="tel"
+            name="club[telephone]"
+            class="input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2 mb-10">
+          <label class="text-sm sm:text-base font-medium">Email*</label>
+          <input
+            type="email"
+            name="club[email]"
+            class="input max-w-100 border rounded border-black/40 focus:outline-none focus:ring focus:ring-blue-500 text-sm font-sans pl-1"
+          />
+        </div>
+
+        <hr />
+
+        <!-- EQUIPES -->
+        <div class="mb-10">
+          <h2 class="text-xl font-semibold mb-4">
+            Inscription des équipes
+          </h2>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-center border-collapse">
+
+              <thead>
+                <tr>
+                  <th class="text-left p-2">
+                  </th>
+                  @each(n in [0,1,2,3,4,5])
+                    <th class="p-2">
+                      {{ n }}
+                    </th>
+                  @endeach
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <!-- U11F -->
+                <tr>
+                  <td class="text-left p-2 font-medium">
+                    U11F (dimanche)
+                  </td>
+                  @each(n in [0,1,2,3,4,5])
+                    <td>
+                      <label>
+                        <input
+                          type="radio"
+                          name="equipes[u11f]"
+                          value="{{ n }}"
+                          class="hidden peer"
+                          {{ n === 0 ? 'checked' : '' }}
+                        />
+                        <div
+                          class="px-3 py-1 border rounded cursor-pointer peer-checked:bg-[#0065a0] peer-checked:text-white"
+                        >
+                          {{ n }}
+                        </div>
+                      </label>
+                    </td>
+                  @endeach
+                </tr>
+
+                <!-- U13F -->
+                <tr>
+                  <td class="text-left p-2 font-medium">
+                    U13F (dimanche)
+                  </td>
+                  @each(n in [0,1,2,3,4,5])
+                    <td>
+                      <label>
+                        <input
+                          type="radio"
+                          name="equipes[u13f]"
+                          value="{{ n }}"
+                          class="hidden peer"
+                          {{ n === 0 ? 'checked' : '' }}
+                        />
+                        <div
+                          class="px-3 py-1 border rounded cursor-pointer peer-checked:bg-[#0065a0] peer-checked:text-white"
+                        >
+                          {{ n }}
+                        </div>
+                      </label>
+                    </td>
+                  @endeach
+                </tr>
+
+                <!-- U15F -->
+                <tr>
+                  <td class="text-left p-2 font-medium">
+                    U15F (samedi)
+                  </td>
+                  @each(n in [0,1,2,3,4,5])
+                    <td>
+                      <label>
+                        <input
+                          type="radio"
+                          name="equipes[u15f]"
+                          value="{{ n }}"
+                          class="hidden peer"
+                          {{ n === 0 ? 'checked' : '' }}
+                        />
+                        <div
+                          class="px-3 py-1 border rounded cursor-pointer peer-checked:bg-[#0065a0] peer-checked:text-white"
+                        >
+                          {{ n }}
+                        </div>
+                      </label>
+                    </td>
+                  @endeach
+                </tr>
+
+                <!-- U18G -->
+                <tr>
+                  <td class="text-left p-2 font-medium">
+                    U18G (samedi)
+                  </td>
+                  @each(n in [0,1,2,3,4,5])
+                    <td>
+                      <label>
+                        <input
+                          type="radio"
+                          name="equipes[u18g]"
+                          value="{{ n }}"
+                          class="hidden peer"
+                          {{ n === 0 ? 'checked' : '' }}
+                        />
+                        <div
+                          class="px-3 py-1 border rounded cursor-pointer peer-checked:bg-[#0065a0] peer-checked:text-white"
+                        >
+                          {{ n }}
+                        </div>
+                      </label>
+                    </td>
+                  @endeach
+                </tr>
+
+                <!-- U18F -->
+                <tr>
+                  <td class="text-left p-2 font-medium">
+                    U18F (samedi)
+                  </td>
+                  @each(n in [0,1,2,3,4,5])
+                    <td>
+                      <label>
+                        <input
+                          type="radio"
+                          name="equipes[u18f]"
+                          value="{{ n }}"
+                          class="hidden peer"
+                          {{ n === 0 ? 'checked' : '' }}
+                        />
+                        <div
+                          class="px-3 py-1 border rounded cursor-pointer peer-checked:bg-[#0065a0] peer-checked:text-white"
+                        >
+                          {{ n }}
+                        </div>
+                      </label>
+                    </td>
+                  @endeach
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- REPAS -->
+        <div>
+          <textarea name="repas" rows="4" class="border input w-full font-mono"></textarea>
+        </div>
+
+        <!-- SUBMIT -->
+        <button type="submit" class="bg-[#0065a0]/90 text-white py-1 px-2 w-fit hover:bg-[#0065a0]">
+          Valider votre inscription
+    </button>
+
+      </form>
+
+    </section>
+
+  @end
+@end

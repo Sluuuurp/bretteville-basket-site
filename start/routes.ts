@@ -20,6 +20,7 @@ const LoginController = () => import('#controllers/auth/login_controller')
 const RefereesTableController = () => import('#controllers/referee_table/referees_table_controller')
 const HomeController = () => import('#controllers/home_controller')
 const DashboardController = () => import('#controllers/dashboard_controller')
+const TournamentRegistration = () => import('#controllers/tournament_registrations_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 
@@ -96,4 +97,9 @@ router.post('/reservations/store', [ReservationsController, 'store'])
 //table d arbitrage
 router.get('/arbitrage', [RefereesTableController, 'show'])
 
+//mentions legales
 router.on('/mentions-legales').render('pages/legal/mentions_legales')
+
+//inscription tournoi
+router.get('/inscription-tournoi', [TournamentRegistration, 'create'])
+router.post('/inscription-tournoi/store', [TournamentRegistration, 'store'])
