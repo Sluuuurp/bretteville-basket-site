@@ -119,8 +119,37 @@
         </div>
 
         <!-- Boutons -->
-        <button id="prev" class="absolute -left-8 top-6/10 -translate-y-1/2 bg-white border px-3 py-1 shadow">‹</button>
-        <button id="next" class="absolute -right-8 top-6/10 -translate-y-1/2 bg-white border px-3 py-1 shadow">›</button>
+        <button id="prev" class="absolute -left-12 top-6/10 -translate-y-1/2 bg-white px-3 py-1 shadow">
+          <svg class="w-8 h-18" viewBox="0 0 60 120" fill="none">
+            <!-- rose -->
+            <path d="M52 8 L22 60 L52 112" stroke="#e5007d" stroke-width="14" stroke-linecap="square" />
+
+            <!-- noir -->
+            <path d="M42 8 L12 60 L42 112" stroke="black" stroke-width="14" stroke-linecap="square" />
+          </svg>
+        </button>
+
+        <button id="next" class="absolute -right-12 top-6/10 -translate-y-1/2 bg-white px-3 py-1 shadow">
+          <svg class="w-8 h-18" viewBox="0 0 60 120" fill="none" viewBox="0 0 60 120" fill="none">
+            <!-- rose derrière -->
+            <path
+              d="M8 8 L38 60 L8 112"
+              stroke="#e5007d"
+              stroke-width="14"
+              stroke-linecap="square"
+              stroke-linejoin="miter"
+            />
+
+            <!-- noir devant -->
+            <path
+              d="M18 8 L48 60 L18 112"
+              stroke="black"
+              stroke-width="14"
+              stroke-linecap="square"
+              stroke-linejoin="miter"
+            />
+          </svg>
+        </button>
 
       @else
         <p class="text-xl font-semibold text-center">
@@ -210,14 +239,36 @@
       </div>
 
       <!-- Boutons -->
-      <button
-        id="prevSponsors"
-        class="absolute -left-8 top-1/2 -translate-y-1/2 bg-white border px-3 py-1 shadow"
-      >‹</button>
-      <button
-        id="nextSponsors"
-        class="absolute -right-8 top-1/2 -translate-y-1/2 bg-white border px-3 py-1 shadow"
-      >›</button>
+      <button id="prevSponsors" class="absolute -left-12 top-42 -translate-y-1/2 bg-white px-3 py-1 shadow">
+        <svg class="w-8 h-18" viewBox="0 0 60 120" fill="none">
+          <!-- rose -->
+          <path d="M52 8 L22 60 L52 112" stroke="#e5007d" stroke-width="14" stroke-linecap="square" />
+
+          <!-- noir -->
+          <path d="M42 8 L12 60 L42 112" stroke="black" stroke-width="14" stroke-linecap="square" />
+        </svg>
+      </button>
+      <button id="nextSponsors" class="absolute -right-12 top-42 -translate-y-1/2 bg-white px-3 py-1 shadow">
+        <svg class="w-8 h-18" viewBox="0 0 60 120" fill="none" viewBox="0 0 60 120" fill="none">
+          <!-- rose derrière -->
+          <path
+            d="M8 8 L38 60 L8 112"
+            stroke="#e5007d"
+            stroke-width="14"
+            stroke-linecap="square"
+            stroke-linejoin="miter"
+          />
+
+          <!-- noir devant -->
+          <path
+            d="M18 8 L48 60 L18 112"
+            stroke="black"
+            stroke-width="14"
+            stroke-linecap="square"
+            stroke-linejoin="miter"
+          />
+        </svg>
+      </button>
 
       <a
         href="/sponsors"
