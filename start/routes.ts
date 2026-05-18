@@ -24,6 +24,7 @@ const TournamentRegistrationController = () =>
   import('#controllers/tournament_registrations_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+import mail from '@adonisjs/mail/services/main'
 
 //dashboard admin
 
@@ -68,6 +69,9 @@ router
     router.get('/evenements/:id/edit', [EventsController, 'edit'])
     router.patch('/evenements/:id', [EventsController, 'update'])
     router.delete('/evenements/:id', [EventsController, 'destroy'])
+
+    //delete une reservation
+    router.delete('/reservations//id', [ReservationsController, 'destroy'])
 
     //dl csv tournoi
     router.get('/administration/tournoicsv', [TournamentRegistrationController, 'exportCsv'])

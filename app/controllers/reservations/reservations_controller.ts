@@ -3,6 +3,7 @@ import Reservation from '#models/reservation'
 import { randomUUID } from 'node:crypto'
 import Article from '#models/articles'
 import { storeReservationValidator } from '#validators/reservation'
+import mail from '@adonisjs/mail/services/main'
 
 export default class ReservationsController {
   /**
@@ -49,6 +50,47 @@ export default class ReservationsController {
         })
       }
 
+      const itemsWithArticles = await Promise.all(
+        checkData.items.map(async (item) => {
+          const article = await Article.find(item.articleId)
+
+          return {
+            articleName: article?.name || 'Article inconnu',
+            size: item.size,
+            quantity: item.quantity,
+          }
+        })
+      )
+
+      await mail.send((message) => {
+        message.to('ton-mail-club@mail.fr').subject('Nouvelle réservation Bretteville Basket')
+          .html(`
+      <h2>Nouvelle réservation</h2>
+
+      <p><strong>Nom :</strong> ${checkData.firstname} ${checkData.lastname}</p>
+      <p><strong>Email :</strong> ${checkData.email}</p>
+      <p><strong>Téléphone :</strong> ${checkData.phone || 'Non renseigné'}</p>
+
+      <h3>Articles réservés</h3>
+
+      <ul>
+        ${itemsWithArticles
+          .map(
+            (item) => `
+              <li>
+                <strong>${item.articleName}</strong><br>
+                Taille : ${item.size}<br>
+                Quantité : ${item.quantity}
+              </li>
+            `
+          )
+          .join('')}
+      </ul>
+
+      <p><strong>Token :</strong> ${reservation.token}</p>
+    `)
+      })
+
       session.flash('success', 'Réservation enregistrée !')
       return response.redirect('back')
     } catch (error) {
@@ -78,5 +120,17 @@ export default class ReservationsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params, response, session }: HttpContext) {
+    const reservation = await Reservation.findOrFail(params.id)
+
+    // Supprime les items liés
+    await reservation.related('reservationItems').query().delete()
+
+    // Supprime la réservation
+    await reservation.delete()
+
+    session.flash('success', 'Réservation supprimée !')
+
+    return response.redirect().back()
+  }
 }
