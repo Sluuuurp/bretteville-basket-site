@@ -9,17 +9,43 @@ export default class ReservationsController {
   /**
    * Display a list of resource
    */
- async index({ view }: HttpContext) {
-  const reservations = await Reservation.query()
-    .preload('reservationItems', (query) => {
-      query.preload('article')
-    })
-    .orderBy('createdAt', 'desc')
+  async index({ view, request }: HttpContext) {
+    const search = request.input('search')
+    const status = request.input('status')
+    const product = request.input('product')
+    const articles = await Article.all()
 
-  return view.render('pages/reservations/index', {
-    reservations,
-  })
-}
+    let query = Reservation.query()
+      .preload('reservationItems', (query) => {
+        query.preload('article')
+      })
+      .orderBy('createdAt', 'desc')
+
+    // recherche nom / email
+    if (search) {
+      query.where((builder) => {
+        builder.whereILike('firstname', `%${search}%`).orWhereILike('lastname', `%${search}%`).orWhereILike('email', `%${search}%`)
+      })
+    }
+
+    // filtre statut
+    if (status) {
+      query.where('status', status)
+    }
+
+    const reservations = await query
+
+    // filtre produit (après preload)
+    const filteredReservations = product
+      ? reservations.filter((reservation) =>
+          reservation.reservationItems.some((item) => item.article?.name === product)
+        )
+      : reservations
+
+    return view.render('pages/reservations/index', {
+      reservations: filteredReservations, articles
+    })
+  }
 
   /**
    * Display form to create a new record
@@ -144,15 +170,15 @@ export default class ReservationsController {
     return response.redirect().back()
   }
 
-  async updateStatus({ params, request, response, session }:HttpContext) {
-  const reservation = await Reservation.findOrFail(params.id)
+  async updateStatus({ params, request, response, session }: HttpContext) {
+    const reservation = await Reservation.findOrFail(params.id)
 
-  reservation.status = request.input('status')
+    reservation.status = request.input('status')
 
-  await reservation.save()
+    await reservation.save()
 
-  session.flash('success', 'Statut mis à jour')
+    session.flash('success', 'Statut mis à jour')
 
-  return response.redirect().back()
-}
+    return response.redirect().back()
+  }
 }

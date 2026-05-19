@@ -5,9 +5,50 @@
 <div class="max-w-6xl mx-auto p-6">
     <h1 class="text-3xl font-bold mb-8">Réservations</h1>
 
+    <form method="GET" class="flex gap-4 mb-6">
+
+        <input type="text" name="search" placeholder="Nom ou email" value="{{ request.qs().search || '' }}"
+            class="border rounded px-3 py-2" />
+
+        <select name="status" class="border rounded px-3 py-2">
+            <option value="" {{ !request.qs().status ? 'selected' : '' }}>
+                Tous statuts
+            </option>
+
+            <option value="reservé" {{ request.qs().status==='reservé' ? 'selected' : '' }}>
+                Réservé
+            </option>
+
+            <option value="payer" {{ request.qs().status==='payer' ? 'selected' : '' }}>
+                Payé
+            </option>
+
+            <option value="livrer" {{ request.qs().status==='livrer' ? 'selected' : '' }}>
+                Livré
+            </option>
+        </select>
+
+        <select name="product" class="border rounded px-3 py-2">
+            <option value="">Tous produits</option>
+
+            @each(article in articles)
+            <option value="{{ article.name }}" {{ request.qs().product===article.name ? 'selected' : '' }}>
+                {{ article.name }}
+            </option>
+            @endeach
+        </select>
+
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">
+            Filtrer
+        </button>
+
+    </form>
+
     @if(reservations.length === 0)
     <p class="text-gray-500">Aucune réservation</p>
     @else
+
+
     <div class="space-y-6">
         @each(reservation in reservations)
         <div class="border rounded-xl p-6 shadow-sm bg-white">
