@@ -14,17 +14,15 @@ const EventsController = () => import('#controllers/events_news/events_controlle
 const ArticlesController = () => import('#controllers/shop/articles_controller')
 const ReservationsController = () => import('#controllers/reservations/reservations_controller')
 const SponsorsController = () => import('#controllers/sponsors/sponsors_controller')
-const RegisterController = () => import('#controllers/auth/register_controller')
+//const RegisterController = () => import('#controllers/auth/register_controller')
 const LogoutController = () => import('#controllers/auth/logout_controller')
 const LoginController = () => import('#controllers/auth/login_controller')
 const RefereesTableController = () => import('#controllers/referee_table/referees_table_controller')
 const HomeController = () => import('#controllers/home_controller')
 const DashboardController = () => import('#controllers/dashboard_controller')
-const TournamentRegistrationController = () =>
-  import('#controllers/tournament_registrations_controller')
+const TournamentRegistrationController = () => import('#controllers/tournament_registrations_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
-import mail from '@adonisjs/mail/services/main'
 
 //dashboard admin
 
@@ -74,6 +72,7 @@ router
     router.get('/reservations', [ReservationsController, 'index'])
     router.delete('/reservations/:id', [ReservationsController, 'destroy'])
     router.patch('/reservations/:id/status',[ReservationsController, 'updateStatus'])
+    router.get('/reservations/csv', [ReservationsController, 'exportCsv'])
 
     //dl csv tournoi
     router.get('/administration/tournoicsv', [TournamentRegistrationController, 'exportCsv'])

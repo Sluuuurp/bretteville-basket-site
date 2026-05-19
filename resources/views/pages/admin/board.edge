@@ -1,33 +1,60 @@
 @layoutAdmin({pageTitle: 'admin dashboard'})
-  @if (auth.user)
+@if (auth.user)
 
-    <div class="font-manrope w-10/12 mx-auto rounded mt-5">
-      {{-- <p>
-        Utilisateur: {{auth.user.fullName}}
-      </p> --}}
+<div class="font-manrope w-10/12 mx-auto rounded mt-5">
+  {{-- <p>
+    Utilisateur: {{auth.user.fullName}}
+  </p> --}}
 
-      <form method="post" action="{{ route('logout') }}">
-        {{ csrfField() }}
-      <button
-          type="submit"
-          class="mt-2 px-4 py-2 h-fit bg-[#0065a0]/90 text-white rounded hover:bg-[#0065a0] cursor-pointer inline-block"
-        >Déconnexion</button>
-      </form>
-    </div>
+  <form method="post" action="{{ route('logout') }}">
+    {{ csrfField() }}
+    <button type="submit"
+      class="mt-2 px-4 py-2 h-fit bg-[#0065a0]/90 text-white rounded hover:bg-[#0065a0] cursor-pointer inline-block">Déconnexion</button>
+  </form>
+</div>
 
-  @endif
-  <section
-    class="font-manrope w-10/12 mx-auto  bg-gray-100 shadow-2xl border border-gray-400 rounded p-8 mt-10"
-  >
-    <div class="flex flex-col">
-      <a href="/sponsors">Gestion sponsors</a>
-      <a href="/evenements">Gestion evenements</a>
-      <a href="/articles">Gestion articles</a>
-      <a href="/arbitrage/edit">Gestion table arbitrage</a>
-    </div>
+@endif
+<section class="font-manrope w-10/12 mx-auto  bg-gray-100 shadow-2xl border border-gray-400 rounded p-8 mt-10">
+  <div class="flex flex-col gap-&">
+    <a href="/sponsors">Gestion sponsors</a>
+    <a href="/evenements">Gestion evenements</a>
+    <a href="/articles">Gestion articles</a>
+    <a href="/arbitrage/edit">Gestion table arbitrage</a>
+    <a href="/reservations">Listes des Reservations</a>
+  </div>
 
-    <a href="/administration/tournoicsv" class="bg-green-600 text-white px-3 py-1 rounded">
-      Export CSV
-</a>
-  </section>
+  <a href="/reservations/csv" class="bg-green-600 mt-5 inline-block text-white px-3 py-1 rounded">
+    Export CSV
+  </a>
+
+  <div class="mt-10">
+    <table class="w-full border">
+      <thead>
+        <tr class="border">
+          <th>Article</th>
+          <th>XS</th>
+          <th>S</th>
+          <th>M</th>
+          <th>L</th>
+          <th>XL</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @each(entry in sizeSummary)
+        <tr>
+          <td class="text-center p-1">{{ entry[0] }}</td>
+          <td class="text-center p-1">{{ entry[1].XS || 0 }}</td>
+          <td class="text-center p-1">{{ entry[1].S || 0 }}</td>
+          <td class="text-center p-1">{{ entry[1].M || 0 }}</td>
+          <td class="text-center p-1">{{ entry[1].L || 0 }}</td>
+          <td class="text-center p-1">{{ entry[1].XL || 0 }}</td>
+        </tr>
+        @endeach
+      </tbody>
+    </table>
+  </div>
+
+
+</section>
 @end

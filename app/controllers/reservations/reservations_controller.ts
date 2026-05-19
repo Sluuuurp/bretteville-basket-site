@@ -24,7 +24,10 @@ export default class ReservationsController {
     // recherche nom / email
     if (search) {
       query.where((builder) => {
-        builder.whereILike('firstname', `%${search}%`).orWhereILike('lastname', `%${search}%`).orWhereILike('email', `%${search}%`)
+        builder
+          .whereILike('firstname', `%${search}%`)
+          .orWhereILike('lastname', `%${search}%`)
+          .orWhereILike('email', `%${search}%`)
       })
     }
 
@@ -43,7 +46,8 @@ export default class ReservationsController {
       : reservations
 
     return view.render('pages/reservations/index', {
-      reservations: filteredReservations, articles
+      reservations: filteredReservations,
+      articles,
     })
   }
 
@@ -181,4 +185,34 @@ export default class ReservationsController {
 
     return response.redirect().back()
   }
+
+  async exportCsv({ response }: HttpContext) {
+    const reservations = await Reservation.query()
+      .preload('reservationItems', (query) => {
+        query.preload('article')
+      })
+      .orderBy('createdAt', 'desc')
+
+    const headers = ['Prenom', 'Nom', 'Email', 'tel (optionel)', 'Statut', 'Produits', 'Date']
+
+    const rows = reservations.map((reservation) => [
+      reservation.firstname,
+      reservation.lastname,
+      reservation.email,
+      reservation.phone,
+      reservation.status,
+      reservation.reservationItems
+        .map((item) => `${item.article?.name} (${item.size} x${item.quantity})`)
+        .join(' | '),
+      reservation.createdAt.toFormat('dd/MM/yyyy'),
+    ])
+
+    const csv = [headers.join(';'), ...rows.map((row) => row.join(';'))].join('\n')
+
+    response.header('Content-Type', 'text/csv')
+    response.header('Content-Disposition', 'attachment; filename="reservations.csv"')
+
+    return response.send(csv)
+  }
+
 }

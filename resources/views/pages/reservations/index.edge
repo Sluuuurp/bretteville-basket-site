@@ -41,7 +41,9 @@
         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">
             Filtrer
         </button>
-
+        <p class="text-sm text-gray-600">
+            {{ reservations.length }} commande(s) affichée(s)
+        </p>
     </form>
 
     @if(reservations.length === 0)
