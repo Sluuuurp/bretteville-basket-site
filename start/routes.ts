@@ -70,8 +70,10 @@ router
     router.patch('/evenements/:id', [EventsController, 'update'])
     router.delete('/evenements/:id', [EventsController, 'destroy'])
 
-    //delete une reservation
-    router.delete('/reservations//id', [ReservationsController, 'destroy'])
+    //reservation
+    router.get('/reservations', [ReservationsController, 'index'])
+    router.delete('/reservations/:id', [ReservationsController, 'destroy'])
+    router.patch('/reservations/:id/status',[ReservationsController, 'updateStatus'])
 
     //dl csv tournoi
     router.get('/administration/tournoicsv', [TournamentRegistrationController, 'exportCsv'])

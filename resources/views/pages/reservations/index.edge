@@ -1,0 +1,91 @@
+@layoutAdmin({pageTitle: 'Creation Sponsors'})
+
+@slot('main')
+
+<div class="max-w-6xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-8">Réservations</h1>
+
+    @if(reservations.length === 0)
+    <p class="text-gray-500">Aucune réservation</p>
+    @else
+    <div class="space-y-6">
+        @each(reservation in reservations)
+        <div class="border rounded-xl p-6 shadow-sm bg-white">
+
+            <!-- Infos client -->
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h2 class="text-xl font-semibold">
+                        {{ reservation.firstname }} {{ reservation.lastname }}
+                    </h2>
+
+                    <p class="text-gray-600">{{ reservation.email }}</p>
+
+                    @if(reservation.phone)
+                    <p class="text-gray-600">{{ reservation.phone }}</p>
+                    @end
+                </div>
+
+                <div class="text-right">
+                    <span class="px-3 py-1 text-yellow-800 text-sm">
+                        <form action="/reservations/{{ reservation.id }}/status?_method=PATCH" method="POST">
+                            <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+                            <select name="status" onchange="this.form.submit()" class="border rounded px-2 py-1">
+                                <option value="reservé" {{ reservation.status==='reservé' ? 'selected' : '' }}>
+                                    reservé
+                                </option>
+
+                                <option value="payer" {{ reservation.status==='payer' ? 'selected' : '' }}>
+                                    Payé
+                                </option>
+
+                                <option value="livrer" {{ reservation.status==='livrer' ? 'selected' : '' }}>
+                                    Livré
+                                </option>
+                            </select>
+                        </form>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Articles -->
+            <div class="mb-4">
+                <h3 class="font-medium mb-2">Articles réservés</h3>
+
+                <ul class="space-y-2">
+                    @each(item in reservation.reservationItems)
+                    <li class="p-3 bg-gray-50 rounded-lg">
+                        <div class="font-medium">{{ item.article.name }}</div>
+                        <div class="text-sm text-gray-600">
+                            Taille : {{ item.size }} • Quantité : {{ item.quantity }}
+                        </div>
+                    </li>
+                    @end
+                </ul>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-between items-center pt-4 border-t">
+                <small class="text-gray-500">
+                    Token : {{ reservation.token }}
+                </small>
+
+                <form action="/reservations/{{ reservation.id }}?_method=DELETE" method="POST">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+                    <button type="submit" class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+                        onclick="return confirm('Supprimer cette réservation ?')">
+                        Supprimer
+                    </button>
+                </form>
+            </div>
+
+        </div>
+        @end
+    </div>
+    @end
+</div>
+
+@end
+@end

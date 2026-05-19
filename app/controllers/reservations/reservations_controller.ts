@@ -9,7 +9,17 @@ export default class ReservationsController {
   /**
    * Display a list of resource
    */
-  async index({}: HttpContext) {}
+ async index({ view }: HttpContext) {
+  const reservations = await Reservation.query()
+    .preload('reservationItems', (query) => {
+      query.preload('article')
+    })
+    .orderBy('createdAt', 'desc')
+
+  return view.render('pages/reservations/index', {
+    reservations,
+  })
+}
 
   /**
    * Display form to create a new record
@@ -37,7 +47,7 @@ export default class ReservationsController {
         lastname: checkData.lastname,
         email: checkData.email,
         phone: checkData.phone || null,
-        status: 'pending',
+        status: 'reservé',
         token: randomUUID(), // pour lien unique si nécessaire
       })
 
@@ -133,4 +143,16 @@ export default class ReservationsController {
 
     return response.redirect().back()
   }
+
+  async updateStatus({ params, request, response, session }:HttpContext) {
+  const reservation = await Reservation.findOrFail(params.id)
+
+  reservation.status = request.input('status')
+
+  await reservation.save()
+
+  session.flash('success', 'Statut mis à jour')
+
+  return response.redirect().back()
+}
 }
