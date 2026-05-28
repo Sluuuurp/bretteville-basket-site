@@ -6,10 +6,6 @@ export default class TeamsListController {
   public async show({ request, view }: HttpContext) {
     const scraper = new FfbbScrapService()
 
-    // const teams = await scraper.getTeam(
-    //   'https://competitions.ffbb.com/ligues/nor/comites/0014/clubs/nor0014052'
-    // )
-
     const teams = await CacheScrapService.get('teams_list', async () => {
       return await scraper.getTeam(
         'https://competitions.ffbb.com/ligues/nor/comites/0014/clubs/nor0014052'

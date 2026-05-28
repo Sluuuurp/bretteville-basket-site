@@ -2,7 +2,7 @@ import vine from '@vinejs/vine'
 
 export const storeEventsValidator = vine.compile(
   vine.object({
-    title: vine.string().maxLength(250),
+    title: vine.string().maxLength(100),
 
     content: vine.string().maxLength(3000).optional(),
 
@@ -20,7 +20,7 @@ export const storeEventsValidator = vine.compile(
 
 export const updateEventsValidator = vine.compile(
   vine.object({
-    title: vine.string().maxLength(250),
+    title: vine.string().maxLength(100),
 
     content: vine.string().maxLength(3000).optional(),
 

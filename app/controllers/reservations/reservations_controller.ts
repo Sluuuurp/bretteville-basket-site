@@ -102,6 +102,7 @@ export default class ReservationsController {
         })
       )
 
+      // envoi du mail
       await mail.send((message) => {
         message.to('ton-mail-club@mail.fr').subject('Nouvelle réservation Bretteville Basket')
           .html(`

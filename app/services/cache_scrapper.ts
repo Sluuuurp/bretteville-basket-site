@@ -6,22 +6,25 @@ class CacheScrapService {
   constructor() {
     this.cache = {}
     this.timestamps = {}
-    this.expire = 6 * 60 * 60 * 1000 // 6h
+    // 6 * 60 min * 60 sec * 1000 ms
+    this.expire = 6 * 60 * 60 * 1000 
   }
 
-  async get(key, fetchFn) {
+  //fetchfn -> la fonction de scrapping a passé en param 
+  async get(cacheName, fetchFn) {
     const now = Date.now()
 
-    if (this.cache[key] && this.timestamps[key] && now - this.timestamps[key] < this.expire) {
-      return this.cache[key]
+    //check si donnee deja en cache && le timespant existe && si le timestanp pas expiré
+    if (this.cache[cacheName] && this.timestamps[cacheName] && now - this.timestamps[cacheName] < this.expire) {
+      return this.cache[cacheName]
     }
 
-    console.log(`SCRAP EXECUTÉ pour ${key}`)
+    console.log(`SCRAP EXECUTÉ pour ${cacheName}`)
 
     const data = await fetchFn()
 
-    this.cache[key] = data
-    this.timestamps[key] = now
+    this.cache[cacheName] = data
+    this.timestamps[cacheName] = now
 
     return data
   }
