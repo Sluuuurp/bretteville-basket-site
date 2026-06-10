@@ -43,7 +43,7 @@ export default class EventsController {
         content: checkData.content,
       })
 
-      // 3️⃣ Gérer les images
+      //  Gerer les images
       const images: { path: string; alt?: string }[] = []
 
       if (checkData.images && checkData.images.length > 0) {
@@ -62,7 +62,7 @@ export default class EventsController {
       return response.redirect('/evenements')
     } catch (error) {
       if (error.messages) {
-        // Récupère toutes les erreurs Vine et les envoie à la vue
+        // Recup toutes les erreurs Vine et les envoie à la vue
         session.flash('errors', error.messages)
       }
       return response.redirect('back')
@@ -159,10 +159,10 @@ export default class EventsController {
       }
     }
 
-    // 2️⃣ Supprimer l’événement
+    //  Supprimer l'evenement
     await event.delete()
 
-    // 3️⃣ Flash + redirect
+    // Flash et redirect
     session.flash('success', 'Événement supprimé !')
     return response.redirect('/evenements')
   }

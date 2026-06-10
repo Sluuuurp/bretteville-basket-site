@@ -15,11 +15,13 @@ class CacheScrapService {
     const now = Date.now()
 
     //check si donnee deja en cache && le timespant existe && si le timestanp pas expiré
-    if (this.cache[cacheName] && this.timestamps[cacheName] && now - this.timestamps[cacheName] < this.expire) {
+    if (this.cache[cacheName] && 
+      this.timestamps[cacheName] && 
+      now - this.timestamps[cacheName] < this.expire) {
       return this.cache[cacheName]
     }
 
-    console.log(`SCRAP EXECUTÉ pour ${cacheName}`)
+    console.log(`SCRAP executé pour ${cacheName}`)
 
     const data = await fetchFn()
 
