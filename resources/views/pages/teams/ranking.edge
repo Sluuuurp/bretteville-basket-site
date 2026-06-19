@@ -19,34 +19,34 @@
         href="/equipes"
         class="px-2 py-1 text-white font-manrope font-bold block w-fit mb-10 ml-2 bg-[#0065a0]"
       >&lt;- EQUIPE</a>
-      <div class="flex border font-manrope font-bold">
+      <div role="table" class="flex border font-manrope font-bold">
 
         <!-- COLONNE FIXE EQUIPE  -->
 
-        <div class="shrink-0 w-2/3 sm:w-1/3  bg-white">
+        <div role="rowgroup" class="shrink-0 w-2/3 sm:w-1/3  bg-white">
 
           <!-- HEADER -->
-          <div class="h-14 flex items-center justify-center border-b border-r px-4 bg-white">
+          <div role="columnheader" class="h-14 flex items-center justify-center border-b border-r px-4 bg-white">
             Equipes
           </div>
 
           <!-- BODY -->
           @each(team in ranking)
-            <div
+            <div role="row"
               class="h-14 flex items-center border-r px-4 {{ gender === 'F' ? 'even:bg-[#da0f83]/20' : 'even:bg-[#0065a0]/20' }}"
             >
               <div class="flex items-center gap-3">
-                <span class=" sm:w-6 text-center">
+                <span role="cell" class=" sm:w-6 text-center">
                   {{ team.position }}
                 </span>
 
                 <img
                   class="h-6 w-6 md:h-8 md:w-8 object-contain"
                   src="{{ team.logo && !team.logo.includes('defaultLogo') ? team.logo : '/img/logo-ffbb.jpg' }}"
-                  alt=""
+                  alt="logo de {{ team.equipe}}"
                 />
 
-                <span class="text-xs w-2/3">
+                <span role="rowheader" class="text-xs w-2/3">
                   {{ team.equipe }}
                 </span>
 
@@ -57,40 +57,43 @@
         </div>
 
         <!-- PARTIE SCROLLABLE     -->
-        <div class="overflow-x-auto w-full">
+        <div 
+          class="overflow-x-auto w-full"
+          aria-label="Faire défiler horizontalement pour voir les statistiques"
+        >
 
           <div class="min-w-max">
 
             <!-- HEADER -->
-            <div class="grid grid-cols-3 h-14 items-center sm:min-w-160 border-b bg-white">
+            <div role="row" class="grid grid-cols-3 h-14 items-center sm:min-w-160 border-b bg-white">
 
-              <div class=" pl-10 sm:text-center ">
+              <abbr role="columnheader" title="Points" class=" pl-10 sm:text-center no-underline">
                 PTS
-              </div>
-              <div class="flex justify-between w-30 pr-10">
-                <div class="px-1 text-center">
+              </abbr>
+              <div role="row" class="flex justify-between w-30 pr-10">
+                <abbr role="columnheader"  title="Matchs joués" class="px-1 text-center no-underline">
                   J
-                </div>
-                <div class="px-1 text-center">
+                </abbr>
+                <abbr role="columnheader"  title="Matchs gagnés" class="px-1 text-center no-underline">
                   G
-                </div>
-                <div class="px-1 text-center">
+                </abbr>
+                <abbr role="columnheader"  title="Matchs perdus" class="px-1 text-center no-underline">
                   P
-                </div>
-                <div class="px-1 text-center">
+                </abbr>
+                <abbr role="columnheader"  title="Matchs nuls" class="px-1 text-center no-underline">
                   N
-                </div>
+                </abbr>
               </div>
-              <div class="flex justify-between w-30">
-                <div class="px-1 text-center">
+              <div role="row" class="flex justify-between w-30">
+                <abbr role="columnheader"  title="Points marqués" class="px-1 text-center no-underline">
                   M
-                </div>
-                <div class="px-1 text-center">
+                </abbr>
+                <abbr role="columnheader"  title="Points encaissés" class="px-1 text-center no-underline">
                   E
-                </div>
-                <div class="px-1 text-center">
+                </abbr>
+                <abbr role="columnheader"  title="Différentiel" class="px-1 text-center no-underline">
                   D
-                </div>
+                </abbr>
               </div>
 
             </div>
@@ -99,33 +102,34 @@
             @each(team in ranking)
               <div
                 class="grid grid-cols-3 h-14 items-center {{ gender === 'F' ? 'even:bg-[#da0f83]/20' : 'even:bg-[#0065a0]/20' }}"
+                role="row"
               >
 
-                <div class="pl-10 sm:text-center opacity-70 mx-1 text-[0.90rem] sm:text-base">
+                <div role="cell"  class="pl-10 sm:text-center opacity-70 mx-1 text-[0.90rem] sm:text-base">
                   {{ team.points }}
                 </div>
-                <div class="flex justify-between w-30 pr-10 text-[0.90rem] sm:text-base">
+                <div role="row" class="flex justify-between w-30 pr-10 text-[0.90rem] sm:text-base">
                   <div class="px-1 text-center opacity-70">
                     {{ team.joues }}
                   </div>
-                  <div class="px-1 text-center opacity-70">
+                  <div role="cell" class="px-1 text-center opacity-70">
                     {{ team.gagnes }}
                   </div>
-                  <div class="px-1 text-center opacity-70">
+                  <div role="cell" class="px-1 text-center opacity-70">
                     {{ team.perdus }}
                   </div>
-                  <div class="px-1 text-center opacity-70">
+                  <div role="cell" class="px-1 text-center opacity-70">
                     {{ team.nuls }}
                   </div>
                 </div>
-                <div class="flex justify-between w-30 text-[0.90rem] sm:text-base">
-                  <div class="px-1 text-center opacity-70">
+                <div role="row" class="flex justify-between w-30 text-[0.90rem] sm:text-base">
+                  <div role="cell" class="px-1 text-center opacity-70">
                     {{ team.scored }}
                   </div>
-                  <div class="px-1 text-center opacity-70">
+                  <div role="cell" class="px-1 text-center opacity-70">
                     {{ team.taked }}
                   </div>
-                  <div class="px-1 text-center opacity-70">
+                  <div role="cell" class="px-1 text-center opacity-70">
                     {{ team.differential }}
                   </div>
                 </div>
