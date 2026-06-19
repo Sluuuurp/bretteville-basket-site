@@ -17,7 +17,6 @@ export default class TeamsListController {
     // Ici on rend la page Edge et on passe les données
 
     if (request.input('gender')) {
-      // Si c'est un fetch AJAX, on retourne **la partielle uniquement**
       return view.render('components/teams-list', { teams: teamsFiltered, gender })
     }
 

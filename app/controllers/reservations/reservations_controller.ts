@@ -77,7 +77,7 @@ export default class ReservationsController {
         lastname: checkData.lastname,
         email: checkData.email,
         phone: checkData.phone || null,
-        status: 'reservé',
+        status: 'reserver',
         token: randomUUID(), // pour lien unique si nécessaire
       })
 
@@ -95,7 +95,7 @@ export default class ReservationsController {
           const article = await Article.find(item.articleId)
 
           return {
-            articleName: article?.name || 'Article inconnu',
+            articleName: article?.name,
             size: item.size,
             quantity: item.quantity,
           }
@@ -104,32 +104,33 @@ export default class ReservationsController {
 
       // envoi du mail
       await mail.send((message) => {
-        message.to('ton-mail-club@mail.fr').subject('Nouvelle réservation Bretteville Basket')
-          .html(`
-      <h2>Nouvelle réservation</h2>
+        message.to('ton-mail-club@mail.fr')
+        .subject('Nouvelle réservation Bretteville Basket')
+        .html(`
+          <h2>Nouvelle réservation</h2>
 
-      <p><strong>Nom :</strong> ${checkData.firstname} ${checkData.lastname}</p>
-      <p><strong>Email :</strong> ${checkData.email}</p>
-      <p><strong>Téléphone :</strong> ${checkData.phone || 'Non renseigné'}</p>
+          <p><strong>Nom :</strong> ${checkData.firstname} ${checkData.lastname}</p>
+          <p><strong>Email :</strong> ${checkData.email}</p>
+          <p><strong>Téléphone :</strong> ${checkData.phone || 'Non renseigné'}</p>
 
-      <h3>Articles réservés</h3>
+          <h3>Articles réservés</h3>
 
-      <ul>
-        ${itemsWithArticles
-          .map(
-            (item) => `
-              <li>
-                <strong>${item.articleName}</strong><br>
-                Taille : ${item.size}<br>
-                Quantité : ${item.quantity}
-              </li>
-            `
-          )
-          .join('')}
-      </ul>
+          <ul>
+            ${itemsWithArticles
+              .map(
+                (item) => `
+                  <li>
+                    <strong>${item.articleName}</strong><br>
+                    Taille : ${item.size}<br>
+                    Quantité : ${item.quantity}
+                  </li>
+                `
+              )
+              .join('')}
+          </ul>
 
-      <p><strong>Token :</strong> ${reservation.token}</p>
-    `)
+          <p><strong>Token :</strong> ${reservation.token}</p>
+        `)
       })
 
       session.flash('success', 'Réservation enregistrée !')

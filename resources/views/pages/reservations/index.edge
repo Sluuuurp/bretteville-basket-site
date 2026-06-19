@@ -15,7 +15,7 @@
                 Tous statuts
             </option>
 
-            <option value="reservé" {{ request.qs().status==='reservé' ? 'selected' : '' }}>
+            <option value="reserver" {{ request.qs().status==='reserver' ? 'selected' : '' }}>
                 Réservé
             </option>
 
@@ -75,7 +75,7 @@
                             <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
                             <select name="status" onchange="this.form.submit()" class="border rounded px-2 py-1">
-                                <option value="reservé" {{ reservation.status==='reservé' ? 'selected' : '' }}>
+                                <option value="reserver" {{ reservation.status==='reserver' ? 'selected' : '' }}>
                                     reservé
                                 </option>
 
