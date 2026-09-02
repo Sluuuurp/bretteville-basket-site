@@ -71,7 +71,7 @@ router
     //reservation
     router.get('/reservations', [ReservationsController, 'index'])
     router.delete('/reservations/:id', [ReservationsController, 'destroy'])
-    router.patch('/reservations/:id/status',[ReservationsController, 'updateStatus'])
+    router.patch('/reservations/:id/status', [ReservationsController, 'updateStatus'])
     router.get('/reservations/csv', [ReservationsController, 'exportCsv'])
 
     //dl csv tournoi
