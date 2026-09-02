@@ -3,12 +3,53 @@ import Reservation from '#models/reservation'
 import { randomUUID } from 'node:crypto'
 import Article from '#models/articles'
 import { storeReservationValidator } from '#validators/reservation'
+import mail from '@adonisjs/mail/services/main'
 
 export default class ReservationsController {
   /**
    * Display a list of resource
    */
-  async index({}: HttpContext) {}
+  async index({ view, request }: HttpContext) {
+    const search = request.input('search')
+    const status = request.input('status')
+    const product = request.input('product')
+    const articles = await Article.all()
+
+    let query = Reservation.query()
+      .preload('reservationItems', (query) => {
+        query.preload('article')
+      })
+      .orderBy('createdAt', 'desc')
+
+    // recherche nom / email
+    if (search) {
+      query.where((builder) => {
+        builder
+          .whereILike('firstname', `%${search}%`)
+          .orWhereILike('lastname', `%${search}%`)
+          .orWhereILike('email', `%${search}%`)
+      })
+    }
+
+    // filtre statut
+    if (status) {
+      query.where('status', status)
+    }
+
+    const reservations = await query
+
+    // filtre produit (après preload)
+    const filteredReservations = product
+      ? reservations.filter((reservation) =>
+          reservation.reservationItems.some((item) => item.article?.name === product)
+        )
+      : reservations
+
+    return view.render('pages/reservations/index', {
+      reservations: filteredReservations,
+      articles,
+    })
+  }
 
   /**
    * Display form to create a new record
@@ -36,7 +77,7 @@ export default class ReservationsController {
         lastname: checkData.lastname,
         email: checkData.email,
         phone: checkData.phone || null,
-        status: 'pending',
+        status: 'reserver',
         token: randomUUID(), // pour lien unique si nécessaire
       })
 
@@ -48,6 +89,49 @@ export default class ReservationsController {
           quantity: Number(item.quantity),
         })
       }
+
+      const itemsWithArticles = await Promise.all(
+        checkData.items.map(async (item) => {
+          const article = await Article.find(item.articleId)
+
+          return {
+            articleName: article?.name,
+            size: item.size,
+            quantity: item.quantity,
+          }
+        })
+      )
+
+      // envoi du mail
+      await mail.send((message) => {
+        message.to('ton-mail-club@mail.fr')
+        .subject('Nouvelle réservation Bretteville Basket')
+        .html(`
+          <h2>Nouvelle réservation</h2>
+
+          <p><strong>Nom :</strong> ${checkData.firstname} ${checkData.lastname}</p>
+          <p><strong>Email :</strong> ${checkData.email}</p>
+          <p><strong>Téléphone :</strong> ${checkData.phone || 'Non renseigné'}</p>
+
+          <h3>Articles réservés</h3>
+
+          <ul>
+            ${itemsWithArticles
+              .map(
+                (item) => `
+                  <li>
+                    <strong>${item.articleName}</strong><br>
+                    Taille : ${item.size}<br>
+                    Quantité : ${item.quantity}
+                  </li>
+                `
+              )
+              .join('')}
+          </ul>
+
+          <p><strong>Token :</strong> ${reservation.token}</p>
+        `)
+      })
 
       session.flash('success', 'Réservation enregistrée !')
       return response.redirect('back')
@@ -78,5 +162,59 @@ export default class ReservationsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params, response, session }: HttpContext) {
+    const reservation = await Reservation.findOrFail(params.id)
+
+    // Supprime les items liés
+    await reservation.related('reservationItems').query().delete()
+
+    // Supprime la réservation
+    await reservation.delete()
+
+    session.flash('success', 'Réservation supprimée !')
+
+    return response.redirect().back()
+  }
+
+  async updateStatus({ params, request, response, session }: HttpContext) {
+    const reservation = await Reservation.findOrFail(params.id)
+
+    reservation.status = request.input('status')
+
+    await reservation.save()
+
+    session.flash('success', 'Statut mis à jour')
+
+    return response.redirect().back()
+  }
+
+  async exportCsv({ response }: HttpContext) {
+    const reservations = await Reservation.query()
+      .preload('reservationItems', (query) => {
+        query.preload('article')
+      })
+      .orderBy('createdAt', 'desc')
+
+    const headers = ['Prenom', 'Nom', 'Email', 'tel (optionel)', 'Statut', 'Produits', 'Date']
+
+    const rows = reservations.map((reservation) => [
+      reservation.firstname,
+      reservation.lastname,
+      reservation.email,
+      reservation.phone,
+      reservation.status,
+      reservation.reservationItems
+        .map((item) => `${item.article?.name} (${item.size} x${item.quantity})`)
+        .join(' | '),
+      reservation.createdAt.toFormat('dd/MM/yyyy'),
+    ])
+
+    const csv = [headers.join(';'), ...rows.map((row) => row.join(';'))].join('\n')
+
+    response.header('Content-Type', 'text/csv')
+    response.header('Content-Disposition', 'attachment; filename="reservations.csv"')
+
+    return response.send(csv)
+  }
+
 }

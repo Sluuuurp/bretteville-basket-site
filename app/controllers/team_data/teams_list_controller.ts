@@ -6,10 +6,6 @@ export default class TeamsListController {
   public async show({ request, view }: HttpContext) {
     const scraper = new FfbbScrapService()
 
-    // const teams = await scraper.getTeam(
-    //   'https://competitions.ffbb.com/ligues/nor/comites/0014/clubs/nor0014052'
-    // )
-
     const teams = await CacheScrapService.get('teams_list', async () => {
       return await scraper.getTeam(
         'https://competitions.ffbb.com/ligues/nor/comites/0014/clubs/nor0014052'
@@ -21,7 +17,6 @@ export default class TeamsListController {
     // Ici on rend la page Edge et on passe les données
 
     if (request.input('gender')) {
-      // Si c'est un fetch AJAX, on retourne **la partielle uniquement**
       return view.render('components/teams-list', { teams: teamsFiltered, gender })
     }
 

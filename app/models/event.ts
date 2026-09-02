@@ -20,12 +20,12 @@ export default class Event extends BaseModel {
   @column({
     prepare: (value: { path: string; alt?: string }[]) => JSON.stringify(value || []),
     consume: (value: string | { path: string; alt?: string }[] | null) => {
-      if (!value) return [] // null ou vide
-      if (Array.isArray(value)) return value // déjà un tableau JS
+      if (!value) return [] // tableau vide
+      if (Array.isArray(value)) return value // si déjà un tableau JS
       try {
         return JSON.parse(value) // sinon parse la chaîne JSON
       } catch {
-        return [] // fallback si corrompu
+        return [] // tab vide si erreur
       }
     },
   })
