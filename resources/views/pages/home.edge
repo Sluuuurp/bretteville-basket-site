@@ -239,7 +239,10 @@
       </div>
 
       <!-- Boutons -->
-      <button id="prevSponsors" class="absolute -left-12 top-42 -translate-y-1/2 bg-white px-3 py-1 shadow">
+      <button
+        id="prevSponsors"
+        class="absolute -left-12 top-42 -translate-y-1/2 bg-white px-3 py-1 shadow hidden sm:block"
+      >
         <svg class="w-8 h-18" viewBox="0 0 60 120" fill="none">
           <!-- rose -->
           <path d="M52 8 L22 60 L52 112" stroke="#e5007d" stroke-width="14" stroke-linecap="square" />
@@ -248,7 +251,10 @@
           <path d="M42 8 L12 60 L42 112" stroke="black" stroke-width="14" stroke-linecap="square" />
         </svg>
       </button>
-      <button id="nextSponsors" class="absolute -right-12 top-42 -translate-y-1/2 bg-white px-3 py-1 shadow">
+      <button
+        id="nextSponsors"
+        class="absolute -right-12 top-42 -translate-y-1/2 bg-white px-3 py-1 shadow hidden sm:block"
+      >
         <svg class="w-8 h-18" viewBox="0 0 60 120" fill="none" viewBox="0 0 60 120" fill="none">
           <!-- rose derrière -->
           <path
@@ -280,48 +286,19 @@
     </section>
 
     <script>
-      let index = 0;
-
-      const carousel = document.getElementById("carousel");
-
-      function getVisible() {
-        return window.innerWidth < 768 ? 1 : 3; // md breakpoint
-      }
-
-      function update() {
-        const visible = getVisible();
-        const translate = index * 100 / visible;
-        carousel.style.transform = `translateX(-${translate}%)`;
-      }
-
-      document.getElementById("next").addEventListener("click", () => {
-        const visible = getVisible();
-        const total = carousel.children.length;
-        if (index < total - visible) {
-          index++;
-          update();
-        }
-      });
-
-      document.getElementById("prev").addEventListener("click", () => {
-        if (index > 0) {
-          index--;
-          update();
-        }
-      });
-      // 🔥 super important → reset quand resize
-
-      window.addEventListener("resize", () => {
-        index = 0;
-        update();
-      });
-
       let indexSponsors = 0;
+
+      let startX = 0;
+
+      let endX = 0;
+
+      let autoScroll = true;
+
+      let autoScrollInterval;
 
       const carouselSponsors = document.getElementById("carousel-sponsors");
 
       function getVisibleSponsors() {
-        if (window.innerWidth < 640) return 2;
         if (window.innerWidth < 768) return 2;
         return 4;
       }
@@ -332,26 +309,84 @@
         carouselSponsors.style.transform = `translateX(-${translate}%)`;
       }
 
-      document.getElementById("nextSponsors").addEventListener("click", () => {
+      function nextSponsor() {
         const visible = getVisibleSponsors();
         const total = carouselSponsors.children.length;
-        if (indexSponsors < total - visible) {
-          indexSponsors++;
-          updateSponsors();
+        indexSponsors++;
+        if (indexSponsors > total - visible) {
+          indexSponsors = 0;
         }
+        updateSponsors();
+      }
+
+      function prevSponsor() {
+        const visible = getVisibleSponsors();
+        const total = carouselSponsors.children.length;
+        indexSponsors--;
+        if (indexSponsors < 0) {
+          indexSponsors = total - visible;
+        }
+        updateSponsors();
+      }
+      // ─────────────────────────────
+      // AUTO SCROLL
+      // ─────────────────────────────
+
+      function startAutoScroll() {
+        autoScrollInterval = setInterval(() => {
+          if (autoScroll) {
+            nextSponsor();
+          }
+        }, 3e3);
+      }
+
+      function stopAutoScroll() {
+        autoScroll = false;
+        clearInterval(autoScrollInterval);
+      }
+      // ─────────────────────────────
+      // BOUTONS
+      // ─────────────────────────────
+
+      document.getElementById("nextSponsors").addEventListener("click", () => {
+        stopAutoScroll();
+        nextSponsor();
       });
 
       document.getElementById("prevSponsors").addEventListener("click", () => {
-        if (indexSponsors > 0) {
-          indexSponsors--;
-          updateSponsors();
+        stopAutoScroll();
+        prevSponsor();
+      });
+      // ─────────────────────────────
+      // SWIPE MOBILE
+      // ─────────────────────────────
+
+      carouselSponsors.addEventListener("touchstart", event => {
+        stopAutoScroll();
+        startX = event.touches[0].clientX;
+      });
+
+      carouselSponsors.addEventListener("touchend", event => {
+        endX = event.changedTouches[0].clientX;
+        const difference = startX - endX;
+        if (Math.abs(difference) < 50) return;
+        if (difference > 0) {
+          nextSponsor();
+        } else {
+          prevSponsor();
         }
       });
+      // ─────────────────────────────
+      // RESIZE
+      // ─────────────────────────────
 
       window.addEventListener("resize", () => {
         indexSponsors = 0;
         updateSponsors();
       });
+      // Démarrage automatique
+
+      startAutoScroll();
     </script>
   @end
 @end
